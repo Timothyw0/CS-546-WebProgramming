@@ -6,9 +6,11 @@ const main = async () => {
   try {
     await db.collection("post").dropCollection();
     await db.collection("user").dropCollection();
+    await db.collection("comments").dropCollection();
   } catch (e) {}
   // Start seeding
   const postCollection = await db.collection("post");
+  const commentsCollection = await db.collection("comments");
   /* 
     POST Collection:
     _id (ObjectID)
@@ -28,6 +30,16 @@ const main = async () => {
       text: text,
     };
   };
+  
+  const makeComments = function (id, userId, postId, comment) {
+        // userId and postId must be an ObjectID
+        return {
+            _id: id,
+            userId: userId,
+            postId: postId,
+            comment: comment
+        };
+    };
 
   // Add userID to post likes array
   // userID must be an ObjectID
@@ -120,7 +132,14 @@ const main = async () => {
     ['60732518372d3ae3b871f315', '6073261f162457f64eddacfb', '60732579ee3a5bd593f2771a', '60732f6f9344955ba436a1bc'], //friends
     ['606f04246c785b72ecce993f'], // posts
     [], //recipes
-    [], //comments
+    [
+    const TimComments = makeComments(
+        (id = ObjectId("60733824fe2a30f88c67da7e")),
+        (userId = "607322eb50dc91a9bc14955b"),
+        (postId = "606f04246c785b72ecce993f"),
+        (comment = "This beer is bitter!")
+    )
+    ], //Tim's comments
     "" //profilePicture
   )
 
@@ -136,7 +155,14 @@ const main = async () => {
     ['607322eb50dc91a9bc14955b', '60732579ee3a5bd593f2771a', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
     ['606f04cf30078a027490273e'], // posts
     [], //recipes
-    [], //comments
+    [
+      const kishanComments = makeComments(
+        (id = ObjectId("6073381063d7181c540f28e0")),
+        (userId = "60732518372d3ae3b871f315"),
+        (postId = "606f04cf30078a027490273e"),
+        (comment = "This drink is very good!")
+    )
+    ], //Kishan's comments
     "" //profilePicture
   )
 
@@ -152,7 +178,14 @@ const main = async () => {
     ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
     ['606f054262b48cb2e8dc5af7'], // posts
     [], //recipes
-    [], //comments
+    [
+   const BillyComments = makeComments(
+        (id = ObjectId("607338388c1c24ffef2c1a5a")),
+        (userId = "60732579ee3a5bd593f2771a"),
+        (postId = "606f054262b48cb2e8dc5af7"),
+        (comment = "This wine is smooth!")
+    )
+    ], //Billy's comments
     "" //profilePicture
   )
 
@@ -168,7 +201,14 @@ const main = async () => {
     ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '60732579ee3a5bd593f2771a'], //friends
     ['606f05f5cba5cb48b03f2abc'], // posts
     [], //recipes
-    [], //comments
+    [
+      const avaniComments = makeComments(
+        (id = ObjectId("607337e263b9943b8a37c81a")),
+        (userId = "60732f6f9344955ba436a1bc"),
+        (postId = "606f05f5cba5cb48b03f2abc"),
+        (comment = "This is a super cool vodka!")
+    );
+    ], //Avani's comments
     "" //profilePicture
   )
 
@@ -184,7 +224,14 @@ const main = async () => {
     ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '60732579ee3a5bd593f2771a', '60732f6f9344955ba436a1bc'], //friends
     ['606f05bb4e7e233e61f8beb7'], // posts
     [], //recipes
-    [], //comments
+    [
+   const PatrickComments = makeComments(
+        (id = ObjectId("60733847d2186378688423fe")),
+        (userId = "6073261f162457f64eddacfb"),
+        (postId = "606f05bb4e7e233e61f8beb7"),
+        (comment = "A proper gentlemens drinks!")
+    )
+    ], //Patrick's comments
     "" //profilePicture
   )
 
