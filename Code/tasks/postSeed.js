@@ -18,7 +18,7 @@ const main = async () => {
     text (String)
   */
 
-  const makePost = function (id, creator, recipe = null, text) {
+  const makePost = function (id, creator, recipe = "", text) {
     // creator and recipe must be an ObjectID
     return {
       _id: id,
@@ -54,6 +54,7 @@ const main = async () => {
   const kishanPost = makePost(
     (id = ObjectId("606f04cf30078a027490273e")),
     (creator = "60732518372d3ae3b871f315"),
+    (recipe = ""),
     (text =
       "The weather is beautiful today and I am thinking of drinking a sweet cocktail. Any recommendations?")
   );
@@ -80,6 +81,7 @@ const main = async () => {
   const patrickPost = makePost(
     (id = ObjectId("606f05bb4e7e233e61f8beb7")),
     (creator = "6073261f162457f64eddacfb"),
+    (recipe = ""),
     (text =
       "What's everyone's favorite spirit? I'm thinking about trying something new")
   );

@@ -17,6 +17,63 @@ function checkStr(str, param) {
   return str.trim();
 }
 
+// Check creator function: should be ObjectID and in user collection
+// Input: String
+// Output: Trimmed ObjectID
+async function isUser(id) {
+  const userCollection = await users();
+  let cleanCreator = checkStr(id);
+  try {
+    cleanCreator = ObjectId(cleanCreator);
+  } catch (e) {
+    throw `${e} in isUser`;
+  }
+  const isUser = await userCollection.findOne({ _id: cleanCreator });
+  if (!isUser) {
+    throw `Error, ${id} is not a user in HTML`;
+  }
+  return cleanCreator.toString();
+}
+
+// Check post function: should be ObjectID and in post collection
+// Input: String
+// Output: Trimmed ObjectID
+async function isPost(id) {
+  const postCollection = await posts();
+  // Error check the post id
+  let cleanPost = checkStr(id);
+  try {
+    cleanPost = ObjectId(cleanPost);
+  } catch (e) {
+    throw `${e} in isPost`;
+  }
+  const postList = await postCollection.findOne({ _id: cleanPost });
+  if (!postList) {
+    throw `Error, ${id} is not a post in HTML`;
+  }
+  return cleanPost.toString();
+}
+
+// Check recipe function: should be ObjectID and in post collection
+// Input: String
+// Output: Trimmed ObjectID
+// TODO
+async function isRecipe(id) {
+  //const recipeCollection = await recipes();
+  // Error check the post id
+  //   let cleanRecipe = checkStr(id);
+  //   try {
+  //     cleanRecipe = ObjectId(cleanRecipe);
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  //   const recipeList = await recipeCollection.findOne({ _id: cleanRecipe });
+  //   if (!recipeList) {
+  //     throw `Error, ${id} is not a recipe in HTML`;
+  //   }
+  //   return cleanRecipe.toString();
+}
+
 // TODO: Modify
 // Check array function: is array and non empty, all elements should be strings
 // Input: Array
@@ -60,9 +117,11 @@ async function getFriendPosts(uid) {
     throw e;
   }
   // Find the user's friend list
-  const friendList = await userCollection
-    .findOne({ _id: idObj }, { projection: { _id: 0, friends: 1 } })
-    .toArray();
+  const friendObject = await userCollection.findOne(
+    { _id: idObj },
+    { projection: { _id: 0, friends: 1 } }
+  );
+  const friendList = friendObject.friends;
   // Now that we have user's friends, get all posts
   const postList = await getAllPosts();
   // Iterate through the postList and only return posts that were created by a friend
@@ -99,8 +158,153 @@ async function getPostById(id) {
   return reqPost;
 }
 
+// Create post function
+// Input: creator string, recipe string (optional), text string
+// Output: Newly created post
+async function addPost(creator, recipe = "", text) {
+  const postCollection = await posts();
+  // TODO
+  // const recipeCollection = await recipes();
+
+  // Error check creator string, should be ObjectId and it should be a user in user collection
+  let cleanCreator = await isUser(creator);
+  // Error check recipe
+  if (recipe.length > 0) {
+    // TODO
+    // let cleanRecipe = isRecipe(recipe)
+  } else {
+    cleanRecipe = "";
+  }
+  // Error check text
+  let cleanText = checkStr(text);
+  // Everything passed, let's add the new post
+  let newPost = {
+    creator: cleanCreator,
+    likes: [],
+    recipe: cleanRecipe,
+    text: cleanText,
+  };
+  // Insert new post
+  const newInsert = await postCollection.insertOne(newPost);
+  if (newInsert.insertedCount === 0) {
+    throw `Error, could not insert new post`;
+  }
+  return await this.getPostById(newInsert.insertedId.toString());
+}
+
+// Update post function, this function cannot add/remove likes
+// Input: Post ID and object with fields:
+//        post id, creator string, recipe string, text string
+// Output: Newly updated post
+async function updatePost(postID, updatedPost) {
+  const postCollection = await posts();
+  let newPost = {};
+  // Error check the post id
+  let cleanPost = await isPost(postID);
+  // Check creator field
+  if (updatedPost.creator) {
+    try {
+      let cleanCreator;
+      // Error check the creator
+      cleanCreator = await isUser(creator);
+    } catch (e) {
+      throw e;
+    }
+    newPost.creator = cleanCreator;
+  }
+
+  // Error check the recipe
+  // TODO
+  // let cleanRecipe = isRecipe(recipe)
+
+  // Check text field
+  if (updatedPost.text) {
+    let cleanText;
+    try {
+      // Error check the string
+      cleanText = checkStr(updatedPost.text);
+    } catch (e) {
+      throw e;
+    }
+    newPost.text = cleanText;
+  }
+
+  // Everything looks good, let's update
+  const updateStatus = await postCollection.updateOne(
+    { _id: ObjectId(cleanPost) },
+    { $set: newPost }
+  );
+  if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
+    throw "Error, update failed";
+  }
+  return await this.getPostById(cleanPost);
+}
+
+// Add like to post function
+// Input: Post ID and userID to add to like array
+// Output: Newly updated post
+async function addLike(postID, userLiked) {
+  const postCollection = await posts();
+  // Error check postID
+  let cleanPost = await isPost(postID);
+  // Error check the userID
+  let cleanUser = await isUser(userLiked);
+  // Everything looks good let's add user to post array
+  const updateStatus = await postCollection.updateOne(
+    { _id: ObjectId(cleanPost) },
+    { $addToSet: { likes: cleanUser } }
+  );
+  if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
+    throw "Error, add like failed";
+  }
+  return await this.getPostById(cleanPost);
+}
+
+// Remove like from post function
+// Input: Post ID and userID to remove from like array
+// Output: Newly updated post
+async function removeLike(postID, userDisliked) {
+  const postCollection = await posts();
+  // Error check postID
+  let cleanPost = await isPost(postID);
+  // Error check the userID
+  let cleanUser = await isUser(userDisliked);
+  // Everything looks good let's remove the user from post array
+  const updateStatus = await postCollection.updateOne(
+    { _id: ObjectId(cleanPost) },
+    { $pull: { likes: cleanUser } }
+  );
+  if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
+    throw "Error, remove like failed";
+  }
+  return await this.getPostById(cleanPost);
+}
+
+// Revmoe post function
+// Input: Post ID
+// Output: Object of {postID, deleted: true} or throws
+async function removePost(postID) {
+  const postCollection = await posts();
+  // Error check postID
+  let cleanPost = await isPost(postID);
+  // Everything looks good let's remove the post
+  const deleteInfo = await postCollection.removeOne({
+    _id: ObjectId(cleanPost),
+  });
+  if (deleteInfo.deletedCount === 0) {
+    throw `Error, could not delete post with id ${cleanPost}`;
+  }
+  const returnInfo = { postID: cleanPost, deleted: true };
+  return returnInfo;
+}
+
 module.exports = {
   getAllPosts,
   getFriendPosts,
   getPostById,
+  addPost,
+  updatePost,
+  addLike,
+  removeLike,
+  removePost,
 };
