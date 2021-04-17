@@ -133,7 +133,7 @@ const main = async () => {
     'Kishans',  // username
     'kishans@gmail.com', //email
     '12/12/1994', //age
-    /**todo - auth */ 'passwordkishan', //hashPassword
+    'passwordkishan', //hashPassword
     ['607322eb50dc91a9bc14955b', '60732579ee3a5bd593f2771a', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
     ['606f04cf30078a027490273e'], // posts
     [], //recipes
@@ -149,7 +149,7 @@ const main = async () => {
     'wking',  // username
     'wkingsbe@stevens.edu', //email
     '12/12/1994', //age
-    /**todo - auth */ 'passwordbilly', //hashPassword
+    'passwordbilly', //hashPassword
     ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
     ['606f054262b48cb2e8dc5af7'], // posts
     [], //recipes
@@ -165,7 +165,7 @@ const main = async () => {
     'achheta',  // username
     'achheta@gmail.com', //email
     '12/12/1994', //age
-    /**todo - auth */ 'passwordavani', //hashPassword
+    'passwordavani', //hashPassword
     ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '60732579ee3a5bd593f2771a'], //friends
     ['606f05f5cba5cb48b03f2abc'], // posts
     [], //recipes
@@ -181,7 +181,7 @@ const main = async () => {
     'ppondo',  // username
     'ppondo@stevens.edu', //email
     '12/12/1994', //age
-    /**todo - auth */ 'passwordpat', //hashPassword
+    'passwordpat', //hashPassword
     ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '60732579ee3a5bd593f2771a', '60732f6f9344955ba436a1bc'], //friends
     ['606f05bb4e7e233e61f8beb7'], // posts
     [], //recipes

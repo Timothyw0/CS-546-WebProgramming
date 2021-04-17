@@ -59,7 +59,8 @@ async function createUser(firstName, lastName, username, email, dateOfBirth, pas
         friends: friends,
         posts: posts,
         recipes: recipes,
-        comments: comments
+        comments: comments,
+        profilePicture: ""
     };
 
     const userCollection = await user();
@@ -146,11 +147,77 @@ async function addFriendToUser(userId, friendId) {
     return await getUserById(userId);
 }
 
+async function addPostToUser(userId, postId) {
+    if (!validation.validId(userId)) throw 'invalid user id';
+    if (!validation.validId(postId)) throw 'invalid post id';
+
+    const currentUser = await getUserById(userId);
+    //const postToAdd = await getPostById(postId);
+
+    if(currentUser === null) throw 'User not found';
+    //if(postToAdd === null) throw 'Post not found';
+
+    for (let post of currentUser.posts) {
+        if(postId === post) throw 'This post is already included';
+    }
+
+    const userCollection = await user();
+    const updatedUser = userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { posts: postId } });
+    if(updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0) throw 'Post could not be added.';
+
+    return await getUserById(userId);
+}
+
+async function addRecipeToUser(userId, recipeId) {
+    if (!validation.validId(userId)) throw 'invalid user id';
+    if (!validation.validId(recipeId)) throw 'invalid recipe id';
+
+    const currentUser = await getUserById(userId);
+    //const recipeToAdd = await getRecipeById(recipeId);
+
+    if(currentUser === null) throw 'User not found';
+    //if(recipeToAdd === null) throw 'Recipe not found';
+
+    for (let recipe of currentUser.recipes) {
+        if(recipeId === recipe) throw 'This recipe is already included';
+    }
+
+    const userCollection = await user();
+    const updatedUser = userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { recipes: recipeId } });
+    if(updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0) throw 'Recipe could not be added.';
+
+    return await getUserById(userId);
+}
+
+async function addCommentToUser(userId, commentId) {
+    if (!validation.validId(userId)) throw 'invalid user id';
+    if (!validation.validId(commentId)) throw 'invalid comment id';
+
+    const currentUser = await getUserById(userId);
+    //const commentToAdd = await getCommentById(commentId);
+
+    if(currentUser === null) throw 'User not found';
+    //if(commentToAdd === null) throw 'Comment not found';
+
+    for (let comment of currentUser.comments) {
+        if(commentId === comment) throw 'This comment is already included';
+    }
+
+    const userCollection = await user();
+    const updatedUser = userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { comments: commentId } });
+    if(updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0) throw 'Comment could not be added.';
+
+    return await getUserById(userId);
+}
+
 module.exports = {
     getUserById,
     getAllUsers,
     createUser,
     createSeedUser,
     findUserByUsername,
-    addFriendToUser
+    addFriendToUser,
+    addPostToUser,
+    addRecipeToUser,
+    addCommentToUser
 }
