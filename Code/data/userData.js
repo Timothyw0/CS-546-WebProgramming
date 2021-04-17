@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const validation = require('./validation');
 const { ObjectId } = require('mongodb');
+const { post } = require('../config/mongoCollections');
 
 async function getUserById(id) {
     if(!validation.validId(id)) throw 'Invalid User Id input';
@@ -156,7 +157,8 @@ async function addPostToUser(userId, postId) {
 
     if(currentUser === null) throw 'User not found';
     //if(postToAdd === null) throw 'Post not found';
-
+    //if(postToAdd.userId !== userId) throw 'Post not created by this user';
+    
     for (let post of currentUser.posts) {
         if(postId === post) throw 'This post is already included';
     }
@@ -177,6 +179,7 @@ async function addRecipeToUser(userId, recipeId) {
 
     if(currentUser === null) throw 'User not found';
     //if(recipeToAdd === null) throw 'Recipe not found';
+    //if(recipeToAdd.userId !== userId) throw 'Recipe not created by this user';
 
     for (let recipe of currentUser.recipes) {
         if(recipeId === recipe) throw 'This recipe is already included';
@@ -198,6 +201,7 @@ async function addCommentToUser(userId, commentId) {
 
     if(currentUser === null) throw 'User not found';
     //if(commentToAdd === null) throw 'Comment not found';
+    //if(commentToAdd.userId !== userId) throw 'Comment not created by this user';
 
     for (let comment of currentUser.comments) {
         if(commentId === comment) throw 'This comment is already included';
