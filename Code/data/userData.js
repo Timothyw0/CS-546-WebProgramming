@@ -137,8 +137,8 @@ async function addFriendToUser(userId, friendId) {
     if(currentUser === null) throw 'User not found';
     if(friendUser === null) throw 'User not found';
 
-    for (let friend of currentUser.friends) {
-        if(friendId === friend) throw 'Already friends with this user.';
+    for (let userFriend of currentUser.friends) {
+        if(friendId === userFriend) throw 'Already friends with this user.';
     }
 
     const userCollection = await user();
@@ -159,8 +159,8 @@ async function addPostToUser(userId, postId) {
     //if(postToAdd === null) throw 'Post not found';
     //if(postToAdd.userId !== userId) throw 'Post not created by this user';
     
-    for (let post of currentUser.posts) {
-        if(postId === post) throw 'This post is already included';
+    for (let userPost of currentUser.posts) {
+        if(postId === userPost) throw 'This post is already included';
     }
 
     const userCollection = await user();
@@ -181,8 +181,8 @@ async function addRecipeToUser(userId, recipeId) {
     //if(recipeToAdd === null) throw 'Recipe not found';
     //if(recipeToAdd.userId !== userId) throw 'Recipe not created by this user';
 
-    for (let recipe of currentUser.recipes) {
-        if(recipeId === recipe) throw 'This recipe is already included';
+    for (let userRecipe of currentUser.recipes) {
+        if(recipeId === userRecipe) throw 'This recipe is already included';
     }
 
     const userCollection = await user();
@@ -203,8 +203,8 @@ async function addCommentToUser(userId, commentId) {
     //if(commentToAdd === null) throw 'Comment not found';
     //if(commentToAdd.userId !== userId) throw 'Comment not created by this user';
 
-    for (let comment of currentUser.comments) {
-        if(commentId === comment) throw 'This comment is already included';
+    for (let userComment of currentUser.comments) {
+        if(commentId === userComment) throw 'This comment is already included';
     }
 
     const userCollection = await user();
