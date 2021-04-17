@@ -24,6 +24,18 @@ function validDate(date) {
     return true;
 }
 
+function validAge(date) {
+    let today = new Date();
+    let dob = newDate(date);
+    let age = today.getFullYear() - dob.getFullYear();
+    if (today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate < dob.getDate())) {
+        age -= 1;
+    }
+
+    if (age < 21) return false;
+    return true;
+}
+
 function validId(id) {
     if (!ObjectId(id) || !validString(id)) return false;
     return true;
@@ -33,5 +45,6 @@ module.exports = {
     validString,
     validEmail,
     validDate,
-    validId
+    validId,
+    validAge
 }

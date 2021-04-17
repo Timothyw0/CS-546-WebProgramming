@@ -16,6 +16,16 @@ async function getUserById(id) {
     return userFound;
 }
 
+async function getAllUsers() {
+    const userCollection = await user();
+    const allUsers = userCollection.find({}).toArray();
+    for( let singleUser of allUsers) {
+        singleUser._id = singleUser._id.toString();
+    }
+
+    return allUsers;
+}
+
 module.exports = {
     getUserById
 }
