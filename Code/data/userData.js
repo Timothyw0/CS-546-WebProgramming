@@ -116,9 +116,41 @@ async function createSeedUser(_id, firstName, lastName, username, email, dateOfB
     return addedUser;
 }
 
+async function findUserByUsername(username) {
+    if (!validation.validString(username)) throw 'invalid username';
+
+    const userCollection = await user();
+    const userFound = await userCollection.findOne({ username: username })
+    if(userFound === null) throw 'User not found.';
+
+    return userFound;
+}
+
+async function addFriendToUser(userId, friendId) {
+    if (!validation.validId(userId) || !validation.validId(friendId)) throw 'invalid user id';
+
+    const currentUser = await getUserById(userId);
+    const friendUser = await getUserById(friendId);
+
+    if(currentUser === null) throw 'User not found';
+    if(friendUser === null) throw 'User not found';
+
+    for (let friend of currentUser.friends) {
+        if(friendId === friend) throw 'Already friends with this user.';
+    }
+
+    const userCollection = await user();
+    const updatedUser = userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { friends: friendId } });
+    if(updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0) throw 'Friend could not be added.';
+
+    return await getUserById(userId);
+}
+
 module.exports = {
     getUserById,
     getAllUsers,
     createUser,
-    createSeedUser
+    createSeedUser,
+    findUserByUsername,
+    addFriendToUser
 }
