@@ -92,15 +92,20 @@ async function addCommentsToPost(commentId, postId) {
 async function removeComment(commentId) {
     const commentsCollection = await comments();
 
-    let cleanComment = await isComment(commentId);
+    let parsedId = ObjectId(commentId);
+    try {
+        let parsedId = ObjectId(commentId)
+    } catch (e) {
+        console.log('Invalid object id format');
+    }
 
     const deleteInfo = await commentsCollection.removeOne({
-        _id: ObjectId(cleanComment),
+        _id: ObjectId(parsedId),
     });
     if (deleteInfo.deletedCount === 0) {
-        throw `Error, could not delete post with id ${cleanComment}`;
+        throw `Error, could not delete post with id ${parsedId}`;
     }
-    const returnInfo = { commentId: cleanComment, deleted: true };
+    const returnInfo = { commentId: parsedId, deleted: true };
     return returnInfo;
 }
 
