@@ -1,7 +1,5 @@
 const mongoCollections = require("../config/mongoCollection");
 const comments = mongoCollections.comments;
-const posts = mongoCollections.post;
-const users = mongoCollections.user;
 let { ObjectId } = require("mongodb");
 
 //Start database function ********************************
@@ -13,7 +11,7 @@ async function getAllComments() {
     return commentsList;
 }
 
-//Get comments by its ID
+//Get comment by id
 async function getCommentsById(id) {
     if (!id) throw `Please provide id`;
     if (id.length < 1) throw 'Id can not be empty';
@@ -25,7 +23,6 @@ async function getCommentsById(id) {
         console.log('Invalid object id format');
     }
     const findComments = await commentsCollection.findOne({ _id: parsedId });
-    // If the array is empty, throw an error
     if (findComments.length === 0) {
         throw `No comments found for ID: ${id}`;
     }
@@ -38,6 +35,7 @@ async function addComments(postId, UserId, comment) {
     if (!postId || !UserId || !comment) throw 'Please provide all the details';
     if (typeof comment !== 'string') throw 'Please provide proper type of comment';
     const commentsCollection = await comments();
+
     let newComments = {
         postId: postId,
         UserId: UserId,
@@ -51,54 +49,45 @@ async function addComments(postId, UserId, comment) {
     return await this.getCommentsById(insertInfo.insertedId.toString());
 }
 
-//Update Comments
+//Add comments to user and post
 
-// async function updateComments(commentId, updatedComments) {
-//     if (!commentId) throw 'Please provide id';
+async function addCommentsToUser(commentId, userId) {
+    if (!commentId || !userId) throw `Please provide id`;
+    let parsedId = ObjectId(commentId);
+    try {
+        let parsedId = ObjectId(commentId)
+    } catch (e) {
+        console.log('Invalid object id format');
+    }
 
-//     const commentsCollection = await this.getCommentsById(commentId);
-//     if (commentsCollection.length === 0) throw 'Comments not found';
-//     try {
-//         let parsedId = ObjectId(commentId)
-//     } catch (e) {
-//         console.log('Invalid object id format');
-//     }
-//     if (updatedComments.userId) {
-//         if (!updatedComments.userId) throw `You need to provide userId`;
-//         if (typeof updatedComments.userId !== 'string') throw `Please provide proper type of userId`
-//     }
-
-//     if (updatedComments.postId) {
-//         if (!updatedComments.postId) throw `You need to provide postId`;
-//         if (typeof updatedComments.postId !== 'string') throw `Please provide proper type of postId`
-//     }
-
-//     if (updatedComments.comment) {
-//         if (!updatedComments.comment) throw `You need to provide comment`;
-//         if (typeof updatedComments.comment !== 'string') throw `Please provide proper type of comment`;
-//     }
-
-//     const updateStatus = await commentsCollection.updateOne(
-//         { _id: ObjectId(commentId) },
-//         { $set: updatedComments }
-//     );
-//     if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
-//         throw "Error, update failed";
-//     }
-//     return await this.getCommentsById(commentId);
-// }
-
-async function addCommentsToUser(commentId, userId){
     const commentsCollection = await this.getCommentsById(commentId);
-    if(commentsCollection === null) throw `Comments not found`;
-    
-    const updatedComments = commentsCollection.updateOne({ _id: ObjectId(commentId) }, { $push: { comment: userId } });
-    if(updatedComments.modifiedCount === 0 && updatedComments.deletedCount === 0) throw 'Recipe could not be added.';
+    if (commentsCollection === null) throw `Comment not found`;
+
+    const updatedComments = commentsCollection.updateOne({ _id: parsedId }, { $push: { comment: userId } });
+    if (updatedComments.modifiedCount === 0 && updatedComments.deletedCount === 0) throw 'comment could not be added.';
 
     return await getUserById(commentId);
 
 }
 
+async function addCommentsToPost(commentId, postId) {
+    if (!commentId || !postId) throw `Please provide id`;
+    let parsedId = ObjectId(commentId);
+    try {
+        let parsedId = ObjectId(commentId)
+    } catch (e) {
+        console.log('Invalid object id format');
+    }
+
+    const commentsCollection = await this.getCommentsById(commentId);
+    if (commentsCollection === null) throw `Comment not found`;
+
+    const updatedComments = commentsCollection.updateOne({ _id: parsedId }, { $push: { comment: postId } });
+    if (updatedComments.modifiedCount === 0 && updatedComments.deletedCount === 0) throw 'comment could not be added.';
+
+    return await getUserById(commentId);
+
+}
 
 async function removeComment(commentId) {
     const commentsCollection = await comments();
@@ -122,7 +111,7 @@ module.exports = {
     getAllComments,
     getCommentsById,
     addComments,
-    //updateComments,
     addCommentsToUser,
+    addCommentsToPost,
     removeComment
 };
