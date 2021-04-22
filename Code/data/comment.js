@@ -103,10 +103,10 @@ async function removeComment(commentId) {
         _id: ObjectId(parsedId),
     });
     if (deleteInfo.deletedCount === 0) {
-        throw `Error, could not delete post with id ${parsedId}`;
+        throw `Error, could not delete comment with id ${parsedId}`;
     }
-    const returnInfo = { commentId: parsedId, deleted: true };
-    return returnInfo;
+    const removeCommentInfo = { commentId: parsedId, deleted: true };
+    return removeCommentInfo;
 }
 
 
