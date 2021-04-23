@@ -1,46 +1,34 @@
-// file is currently being used to test my DB functions
+const express = require("express");
+const app = express();
+const static = express.static(__dirname + "/public");
+const configRoutes = require("./routes");
+const exphbs = require("express-handlebars");
+const Handlebars = require("handlebars");
 
-const data = require("./data");
-const postData = data.posts;
+const handlebarsInstance = exphbs.create({
+  defaultLayout: "main",
+  // Specify helpers which are only registered on this instance.
+  helpers: {
+    asJSON: (obj, spacing) => {
+      if (typeof spacing === "number")
+        return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
 
-async function main() {
-  console.log("Getting all posts");
-  console.log(await postData.getAllPosts());
-  console.log("Getting post by ID");
-  console.log(await postData.getPostById("606f05f5cba5cb48b03f2abc"));
-  console.log("Getting friend's posts by ID");
-  console.log(await postData.getFriendPosts("607322eb50dc91a9bc14955b"));
+      return new Handlebars.SafeString(JSON.stringify(obj));
+    },
+  },
+  partialsDir: ["views/partials/"],
+});
 
-  console.log("Inserting a new post");
-  const newPost = await postData.addPost(
-    "606f04246c785b72ecce993f",
-    "",
-    "This is Tim's new test post"
-  );
-  console.log(newPost);
+app.use("/public", static);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-  console.log("Updating a new post");
-  console.log(
-    await postData.updatePost(newPost._id.toString(), {
-      text: "Tim's post has been updated",
-    })
-  );
+app.engine("handlebars", handlebarsInstance.engine);
+app.set("view engine", "handlebars");
 
-  console.log("Adding a like to the new post");
-  console.log(
-    await postData.addLike(newPost._id.toString(), "607322eb50dc91a9bc14955b")
-  );
+configRoutes(app);
 
-  console.log("Removing a like to the new post");
-  console.log(
-    await postData.removeLike(
-      newPost._id.toString(),
-      "607322eb50dc91a9bc14955b"
-    )
-  );
-
-  console.log("Removing the post all together");
-  console.log(await postData.removePost(newPost._id.toString()));
-}
-
-main();
+app.listen(3000, () => {
+  console.log("We've now got a server!");
+  console.log("Your routes will be running on http://localhost:3000");
+});

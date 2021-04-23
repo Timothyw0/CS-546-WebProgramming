@@ -54,6 +54,25 @@ async function isPost(id) {
   return cleanPost.toString();
 }
 
+// Get user's name function
+// Input: String objectID
+// Output: User's name
+async function getName(id) {
+  const userCollection = await users();
+  // Error check the post id
+  let cleanID = checkStr(id);
+  try {
+    cleanID = ObjectId(cleanID);
+  } catch (e) {
+    throw `${e} in getName`;
+  }
+  const isUser = await userCollection.findOne({ _id: cleanID });
+  if (!isUser) {
+    throw `Error, ${id} is not a user in HTML`;
+  }
+  return isUser.username;
+}
+
 // Check recipe function: should be ObjectID and in post collection
 // Input: String
 // Output: Trimmed ObjectID
@@ -74,21 +93,6 @@ async function isRecipe(id) {
   //   return cleanRecipe.toString();
 }
 
-// TODO: Modify
-// Check array function: is array and non empty, all elements should be strings
-// Input: Array
-// Output: Trimmed/cleaned array
-// function checkArr(arr, param) {
-//   if (!arr) throw `Error: ${param} not provided`;
-//   if (!Array.isArray(arr)) throw `Error: ${param} is not an array`;
-//   if (arr.length === 0) throw `Error: ${param} is an empty array`;
-//   let cleanArr = [];
-//   for (let i = 0; i < arr.length; i++) {
-//     cleanArr[i] = checkStr(arr[i], "genre");
-//   }
-//   return cleanArr;
-// }
-
 /*
     BEGIN DATABASE FUNCTIONS
 */
@@ -98,6 +102,17 @@ async function isRecipe(id) {
 async function getAllPosts() {
   const postCollection = await posts();
   const postList = await postCollection.find({}).toArray();
+  for (let i = 0; i < postList.length; i++) {
+    let likeList = "";
+    postList[i].username = await getName(postList[i].creator);
+    for (let j = 0; j < postList[i].likes.length; j++) {
+      let likeID = postList[i].likes[j];
+      likeList += `${await getName(likeID)}, `;
+    }
+    if (likeList.length !== 0) {
+      postList[i].likeList = likeList.slice(0, -2);
+    }
+  }
   return postList;
 }
 

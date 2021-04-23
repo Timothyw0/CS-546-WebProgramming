@@ -1,0 +1,24 @@
+<div class="post">
+    <h5>
+        <a href="/feed">
+            {{username}} - TODO attach hyperlinks to profile
+        </a>
+    </h5>
+    <h6>{{ date }}</h6>
+    {{#if recipe}}
+    <p>{{ recipe }}</p>
+    {{/if}}
+    <br />
+    <p>{{ text }}</p>
+    {{#if likeList}}
+    <p>
+        <em>{{ likeList }} like this post</em>
+    </p>
+    {{/if}}
+    <a href="" class="postInteraction">
+        Like
+    </a>
+    <a href="" class="postInteraction">
+        Comment
+    </a>
+</div>
