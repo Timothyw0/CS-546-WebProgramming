@@ -77,3 +77,28 @@ body {
 footer {
   text-align: center;
 }
+
+/* Add post page CSS */
+.add-post {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
+
+.add-post label {
+  font-weight: bold;
+}
+
+.add-post textarea {
+  width: 300px;
+  height: 150px;
+}
+
+#errorDiv p {
+  color: red;
+  font-weight: bold;
+}
+
+#successDiv {
+  padding-top: 20px;
+}

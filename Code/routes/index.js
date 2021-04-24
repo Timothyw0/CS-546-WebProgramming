@@ -1,4 +1,4 @@
-//const postRoutes = require('./posts');
+const postRoutes = require("./posts");
 const postData = require("../data/posts");
 
 const constructorMethod = (app) => {
@@ -7,6 +7,8 @@ const constructorMethod = (app) => {
       allPosts: await postData.getAllPosts(),
     });
   });
+
+  app.use("/posts", postRoutes);
 
   app.use("*", (req, res) => {
     res.sendStatus(404);

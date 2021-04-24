@@ -101,14 +101,22 @@ async function isRecipe(id) {
 // Output: List of all posts
 async function getAllPosts() {
   const postCollection = await posts();
-  const postList = await postCollection.find({}).toArray();
+  const postList = await postCollection.find({}).sort({ date: -1 }).toArray();
+  // Go through posts and add the usernames to the post and set the likeString to be displayed
   for (let i = 0; i < postList.length; i++) {
+    let iLiked = false;
     let likeList = "";
     postList[i].username = await getName(postList[i].creator);
     for (let j = 0; j < postList[i].likes.length; j++) {
       let likeID = postList[i].likes[j];
-      likeList += `${await getName(likeID)}, `;
+      let likeName = await getName(likeID);
+      likeList += `${likeName}, `;
+      // If I already liked set the flag to true
+      if (likeName === "timothyw0") {
+        iLiked = true;
+      }
     }
+    postList[i].liked = iLiked;
     if (likeList.length !== 0) {
       postList[i].likeList = likeList.slice(0, -2);
     }
@@ -166,6 +174,23 @@ async function getPostById(id) {
   }
   // Find the post by ID
   const reqPost = await postCollection.findOne({ _id: idObj });
+  // Get the username and usernames of people who liked
+  let iLiked = false;
+  let likeList = "";
+  reqPost.username = await getName(reqPost.creator);
+  for (let j = 0; j < reqPost.likes.length; j++) {
+    let likeID = reqPost.likes[j];
+    let likeName = await getName(likeID);
+    likeList += `${likeName}, `;
+    // If I already liked set the flag to true
+    if (likeName === "timothyw0") {
+      iLiked = true;
+    }
+  }
+  reqPost.liked = iLiked;
+  if (likeList.length !== 0) {
+    reqPost.likeList = likeList.slice(0, -2);
+  }
   // If the array is empty, throw an error
   if (reqPost.length === 0) {
     throw `No post found for ID: ${cleanID}`;
@@ -184,6 +209,7 @@ async function addPost(creator, recipe = "", text) {
   // Error check creator string, should be ObjectId and it should be a user in user collection
   let cleanCreator = await isUser(creator);
   // Error check recipe
+  let cleanRecipe;
   if (recipe.length > 0) {
     // TODO
     // let cleanRecipe = isRecipe(recipe)
@@ -198,6 +224,7 @@ async function addPost(creator, recipe = "", text) {
     likes: [],
     recipe: cleanRecipe,
     text: cleanText,
+    date: new Date(),
   };
   // Insert new post
   const newInsert = await postCollection.insertOne(newPost);
@@ -257,7 +284,7 @@ async function updatePost(postID, updatedPost) {
 
 // Add like to post function
 // Input: Post ID and userID to add to like array
-// Output: Newly updated post
+// Output: New likeString
 async function addLike(postID, userLiked) {
   const postCollection = await posts();
   // Error check postID
@@ -272,7 +299,8 @@ async function addLike(postID, userLiked) {
   if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
     throw "Error, add like failed";
   }
-  return await this.getPostById(cleanPost);
+  const newLikes = await this.getPostById(cleanPost);
+  return newLikes.likeList;
 }
 
 // Remove like from post function
@@ -292,7 +320,8 @@ async function removeLike(postID, userDisliked) {
   if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
     throw "Error, remove like failed";
   }
-  return await this.getPostById(cleanPost);
+  const newLikes = await this.getPostById(cleanPost);
+  return newLikes.likeList;
 }
 
 // Revmoe post function
