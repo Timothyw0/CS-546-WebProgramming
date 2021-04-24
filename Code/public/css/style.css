@@ -86,12 +86,24 @@ footer {
 }
 
 .add-post label {
+  margin-top: 50px;
   font-weight: bold;
 }
 
+.add-post select {
+  border: 0;
+  width: 500px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
 .add-post textarea {
-  width: 300px;
+  width: 500px;
   height: 150px;
+  border: 0;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
 }
 
 #errorDiv p {

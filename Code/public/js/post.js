@@ -44,7 +44,12 @@
 
     $.ajax(requestConfig).then(function (responseMessage) {
       successDiv.removeAttr("hidden");
-      successDiv.append("<h3>Post successfully added! Cheers!</h3>");
+      successDiv.append(
+        "<h3>Post successfully added! Cheers!</h3><p>Please wait to be redirected</p>"
+      );
+      setTimeout(() => {
+        $(location).attr("href", "/feed");
+      }, 2000);
     });
   });
 })(window.jQuery);
