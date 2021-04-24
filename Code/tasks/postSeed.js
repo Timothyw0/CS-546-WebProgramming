@@ -28,6 +28,17 @@ const main = async () => {
       text: text,
     };
   };
+  
+  const makeReceipe = function (id, creator, ingredients, tasteScale,youtubeLink) {
+      // creator and recipe must be an ObjectID
+      return {
+        _id: id,
+        creator: creator,
+        ingredients: ingredients,
+        tasteScale: tasteScale,
+        youtubeLink: youtubeLink,
+      };
+    };
 
   // Add userID to post likes array
   // userID must be an ObjectID
@@ -135,7 +146,13 @@ const main = async () => {
     /**todo - auth */ '788D21CB525DDE84EFAF42AC7015B550', //hashPassword
     ['607322eb50dc91a9bc14955b', '60732579ee3a5bd593f2771a', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
     ['606f04cf30078a027490273e'], // posts
-    [], //recipes
+    [const kishanReceipe=makeReceipe(
+    (id=ObjectId("607225b75fa9cb544b0e06c5")),
+    (creator="creator ID"),3
+    (ingredients=["Whiskey","Rum"]),
+    (tasteScale=6),
+    (youtubeLink="youtube link")
+);], //recipes
     [], //comments
     "" //profilePicture
   )
