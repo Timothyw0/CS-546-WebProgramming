@@ -97,9 +97,17 @@ async function isRecipe(id) {
     BEGIN DATABASE FUNCTIONS
 */
 // Get all posts function
-// Input: None
+// Input: User ID
 // Output: List of all posts
-async function getAllPosts() {
+async function getAllPosts(id) {
+  // Error check the id
+  let cleanID = checkStr(id);
+  try {
+    ObjectId(cleanID);
+  } catch (e) {
+    throw e;
+  }
+  // Everything looks good, we can move on
   const postCollection = await posts();
   const postList = await postCollection.find({}).sort({ date: -1 }).toArray();
   // Go through posts and add the usernames to the post and set the likeString to be displayed
@@ -119,6 +127,10 @@ async function getAllPosts() {
     postList[i].liked = iLiked;
     if (likeList.length !== 0) {
       postList[i].likeList = likeList.slice(0, -2);
+    }
+    // Check if this post is the users
+    if (postList[i].creator === cleanID) {
+      postList[i].canEdit = true;
     }
   }
   return postList;
@@ -159,16 +171,23 @@ async function getFriendPosts(uid) {
 }
 
 // Get post by ID function
-// Input: String of post ID
+// Input: String of post ID and userID
 // Output: Single post object
-async function getPostById(id) {
+async function getPostById(id, userID) {
   const postCollection = await posts();
-  // Error check uid
+  // Error check id
   let cleanID = checkStr(id);
   // Try to convert uid into Object ID
   let idObj;
   try {
     idObj = ObjectId(cleanID);
+  } catch (e) {
+    throw e;
+  }
+  // Error check userID
+  let cleanUser = checkStr(userID);
+  try {
+    ObjectId(cleanUser);
   } catch (e) {
     throw e;
   }
@@ -190,6 +209,10 @@ async function getPostById(id) {
   reqPost.liked = iLiked;
   if (likeList.length !== 0) {
     reqPost.likeList = likeList.slice(0, -2);
+  }
+  // If creator is userID, then set canEdit to true
+  if (reqPost.creator === cleanUser) {
+    reqPost.canEdit = true;
   }
   // If the array is empty, throw an error
   if (reqPost.length === 0) {
@@ -231,7 +254,7 @@ async function addPost(creator, recipe = "", text) {
   if (newInsert.insertedCount === 0) {
     throw `Error, could not insert new post`;
   }
-  return await this.getPostById(newInsert.insertedId.toString());
+  return await this.getPostById(newInsert.insertedId.toString(), cleanCreator);
 }
 
 // Update post function, this function cannot add/remove likes
@@ -245,10 +268,10 @@ async function updatePost(postID, updatedPost) {
   let cleanPost = await isPost(postID);
   // Check creator field
   if (updatedPost.creator) {
+    let cleanCreator;
     try {
-      let cleanCreator;
       // Error check the creator
-      cleanCreator = await isUser(creator);
+      cleanCreator = await isUser(updatedPost.creator);
     } catch (e) {
       throw e;
     }
@@ -279,7 +302,7 @@ async function updatePost(postID, updatedPost) {
   if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
     throw "Error, update failed";
   }
-  return await this.getPostById(cleanPost);
+  return await this.getPostById(cleanPost, newPost.creator);
 }
 
 // Add like to post function
@@ -299,7 +322,7 @@ async function addLike(postID, userLiked) {
   if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
     throw "Error, add like failed";
   }
-  const newLikes = await this.getPostById(cleanPost);
+  const newLikes = await this.getPostById(cleanPost, cleanUser);
   return newLikes.likeList;
 }
 
@@ -320,11 +343,11 @@ async function removeLike(postID, userDisliked) {
   if (!updateStatus.matchedCount && !updateStatus.modifiedCount) {
     throw "Error, remove like failed";
   }
-  const newLikes = await this.getPostById(cleanPost);
+  const newLikes = await this.getPostById(cleanPost, cleanUser);
   return newLikes.likeList;
 }
 
-// Revmoe post function
+// Remove post function
 // Input: Post ID
 // Output: Object of {postID, deleted: true} or throws
 async function removePost(postID) {

@@ -26,6 +26,7 @@ const main = async () => {
       likes: [],
       recipe: recipe,
       text: text,
+      date: new Date(),
     };
   };
 

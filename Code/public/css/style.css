@@ -109,8 +109,64 @@ footer {
 #errorDiv p {
   color: red;
   font-weight: bold;
+  text-align: center;
 }
 
 #successDiv {
   padding-top: 20px;
+  text-align: center;
+}
+
+/* Edit post feed icon styling */
+.post h5 {
+  float: left;
+}
+
+.editIcon img {
+  float: right;
+  max-width: 1.5%;
+  height: auto;
+}
+
+.post h6 {
+  clear: both;
+}
+
+/* Edit post page CSS */
+.edit-post h2,
+h3,
+label,
+select,
+form {
+  text-align: center;
+}
+
+.edit-post h2 {
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
+
+.edit-post label {
+  margin-top: 50px;
+  font-weight: bold;
+}
+
+.edit-post select {
+  border: 0;
+  width: 500px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+.edit-post textarea {
+  width: 500px;
+  height: 150px;
+  border: 0;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+}
+
+.edit-post input {
+  margin-bottom: 15px;
 }
