@@ -26,6 +26,13 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
+app.use(session({
+  name: 'AuthCookie',
+  secret: 'secret string',
+  resave: false,
+  saveUninitialized: true
+}));
+
 configRoutes(app);
 
 app.listen(3000, () => {
