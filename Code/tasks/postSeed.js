@@ -1,5 +1,6 @@
 const connection = require("../config/mongoConnection");
 let { ObjectId } = require("mongodb");
+const users = require('../data/userData');
 
 const main = async () => {
   const db = await connection();
@@ -112,108 +113,90 @@ const main = async () => {
   // users seeding
 
   // tim user info
-  const tim = await users.create(
-    ObjectId("607322eb50dc91a9bc14955b"), //_id
-    "Timothy", //firstName
-    "Wang", //lastName
-    "timothyw0", // username
-    "timothyw0@gmail.com", //email
-    24, //age
-    /**todo - auth */ "788D21CB525DDE84EFAF42AC7015B550", //hashPassword
-    [
-      "60732518372d3ae3b871f315",
-      "6073261f162457f64eddacfb",
-      "60732579ee3a5bd593f2771a",
-      "60732f6f9344955ba436a1bc",
-    ], //friends
-    ["606f04246c785b72ecce993f"], // posts
+  const tim = await users.createSeedUser(
+    ObjectId('607322eb50dc91a9bc14955b'), //_id 
+    'Timothy', //firstName
+    'Wang',  //lastName
+    'timothyw0',  // username
+    'timothyw0@gmail.com', //email
+    '12/12/1994', //age
+    'passwordtim', //hashPassword
+    ['60732518372d3ae3b871f315', '6073261f162457f64eddacfb', '60732579ee3a5bd593f2771a', '60732f6f9344955ba436a1bc'], //friends
+    ['606f04246c785b72ecce993f'], // posts
     [], //recipes
     [], //comments
     "" //profilePicture
   );
 
   // kishan user info
-  const kishan = await users.create(
-    ObjectId("60732518372d3ae3b871f315"), //_id
-    "Kishan", //firstName
-    "Senjaliya", //lastName
-    "Kishans", // username
-    "kishans@gmail.com", //email
-    24, //age
-    /**todo - auth */ "788D21CB525DDE84EFAF42AC7015B550", //hashPassword
-    [
-      "607322eb50dc91a9bc14955b",
-      "60732579ee3a5bd593f2771a",
-      "6073261f162457f64eddacfb",
-      "60732f6f9344955ba436a1bc",
-    ], //friends
-    ["606f04cf30078a027490273e"], // posts
+  const kishan = await users.createSeedUser(
+    ObjectId('60732518372d3ae3b871f315'), //_id 
+    'Kishan', //firstName
+    'Senjaliya',  //lastName
+    'Kishans',  // username
+    'kishans@gmail.com', //email
+    '12/12/1994', //age
+    'passwordkishan', //hashPassword
+    ['607322eb50dc91a9bc14955b', '60732579ee3a5bd593f2771a', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
+    ['606f04cf30078a027490273e'], // posts
     [], //recipes
     [], //comments
     "" //profilePicture
   );
 
   // billy user info
-  const billy = await users.create(
-    ObjectId("60732579ee3a5bd593f2771a"), //_id
-    "William", //firstName
-    "Kingsberry", //lastName
-    "wking", // username
-    "wkingsbe@stevens.edu", //email
-    24, //age
-    /**todo - auth */ "788D21CB525DDE84EFAF42AC7015B550", //hashPassword
-    [
-      "607322eb50dc91a9bc14955b",
-      "60732518372d3ae3b871f315",
-      "6073261f162457f64eddacfb",
-      "60732f6f9344955ba436a1bc",
-    ], //friends
-    ["606f054262b48cb2e8dc5af7"], // posts
+  const billy = await users.createSeedUser(
+    ObjectId('60732579ee3a5bd593f2771a'), //_id 
+    'William', //firstName
+    'Kingsberry',  //lastName
+    'wking',  // username
+    'wkingsbe@stevens.edu', //email
+    '12/12/1994', //age
+    'passwordbilly', //hashPassword
+    ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
+    ['606f054262b48cb2e8dc5af7'], // posts
     [], //recipes
     [], //comments
     "" //profilePicture
   );
 
   // avani user info
-  const avani = await users.create(
-    ObjectId("60732f6f9344955ba436a1bc"), //_id
-    "Avani", //firstName
-    "Chheta", //lastName
-    "achheta", // username
-    "achheta@gmail.com", //email
-    24, //age
-    /**todo - auth */ "788D21CB525DDE84EFAF42AC7015B550", //hashPassword
-    [
-      "607322eb50dc91a9bc14955b",
-      "60732518372d3ae3b871f315",
-      "60732579ee3a5bd593f2771a",
-    ], //friends
-    ["606f05f5cba5cb48b03f2abc"], // posts
+  const avani = await users.createSeedUser(
+    ObjectId('60732f6f9344955ba436a1bc'), //_id 
+    'Avani', //firstName
+    'Chheta',  //lastName
+    'achheta',  // username
+    'achheta@gmail.com', //email
+    '12/12/1994', //age
+    'passwordavani', //hashPassword
+    ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '60732579ee3a5bd593f2771a'], //friends
+    ['606f05f5cba5cb48b03f2abc'], // posts
     [], //recipes
     [], //comments
     "" //profilePicture
   );
 
   // pat user info
-  const pat = await users.create(
-    ObjectId("6073261f162457f64eddacfb"), //_id
-    "Patrick", //firstName
-    "Pondo", //lastName
-    "ppondo", // username
-    "ppondo@stevens.edu", //email
-    24, //age
-    /**todo - auth */ "788D21CB525DDE84EFAF42AC7015B550", //hashPassword
-    [
-      "607322eb50dc91a9bc14955b",
-      "60732518372d3ae3b871f315",
-      "60732579ee3a5bd593f2771a",
-      "60732f6f9344955ba436a1bc",
-    ], //friends
-    ["606f05bb4e7e233e61f8beb7"], // posts
+  const pat = await users.createSeedUser(
+    ObjectId('6073261f162457f64eddacfb'), //_id 
+    'Patrick', //firstName
+    'Pondo',  //lastName
+    'ppondo',  // username
+    'ppondo@stevens.edu', //email
+    '12/12/1994', //age
+    'passwordpat', //hashPassword
+    ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '60732579ee3a5bd593f2771a', '60732f6f9344955ba436a1bc'], //friends
+    ['606f05bb4e7e233e61f8beb7'], // posts
     [], //recipes
     [], //comments
     "" //profilePicture
-  );
+  )
+  
+  console.log(tim);
+  console.log(kishan);
+  console.log(billy);
+  console.log(avani);
+  console.log(pat);
 
   console.log("Done seeding collections in database");
   await db.serverConfig.close();
