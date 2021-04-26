@@ -1,10 +1,13 @@
 const mongoCollections = require('../config/mongoCollections');
 const user = mongoCollections.user;
+// const post = mongoCollections.post;
+// const comment = mongoCollections.comment;
+// const recipe = mongoCollections.recipe;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const validation = require('./validation');
 const { ObjectId } = require('mongodb');
-const { post } = require('../config/mongoCollections');
+
 
 async function getUserById(id) {
     if(!validation.validId(id)) throw 'Invalid User Id input';
