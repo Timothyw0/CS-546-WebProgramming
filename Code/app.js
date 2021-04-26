@@ -34,7 +34,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.use('/private', (req, res, next) => {
+app.use('/feed', (req, res, next) => {
   if (!req.session.user) {
     return res.redirect('/');
   } else {
