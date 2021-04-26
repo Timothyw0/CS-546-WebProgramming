@@ -4,119 +4,126 @@ let { ObjectId } = require("mongodb");
 
 //Start database function ********************************
 
+//Get comments by its ID
+async function getCommentsById(id) {
+  if (!id) throw "Please provide id";
+  if (typeof id !== "string") throw "Comment id is not valid string";
+  if (id.length === null) throw "Id can not be empty";
+  id = id.trim();
+
+  const commentsCollection = await comments();
+  let parsedId = ObjectId(id);
+  try {
+    let parsedId = ObjectId(id);
+  } catch (e) {
+    console.log("Invalid object id format");
+  }
+
+  const findComments = await commentsCollection.findOne({ _id: parsedId });
+
+  if (findComments.length === null) {
+    throw `No comments found for ID: ${parsedId}`;
+  }
+  return findComments;
+}
+
 //Get All comments
 async function getAllComments() {
-    const commentsCollection = await comments();
-    const commentsList = await commentsCollection.find({}).toArray();
-    return commentsList;
+  const commentsCollection = await comments();
+  const commentsList = await commentsCollection.find({}).toArray();
+  return commentsList;
 }
 
-//Get comment by id
-async function getCommentsById(id) {
-    if (!id) throw `Please provide id`;
-    if (id.length < 1) throw 'Id can not be empty';
-    const commentsCollection = await comments();
-    let parsedId = ObjectId(id);
+//Create Comments
+async function createComment(userId, postId, comment) {
+  if (!userId || !postId || !comment) throw "Please provide all the details";
+  if (typeof userId !== "string") throw "userId is not valid string";
+  userId = userId.trim();
+  if (typeof postId !== "string") throw "postId is not valid string";
+  postId = postId.trim();
+  if (typeof comment !== "string")
+    throw "Please provide proper type of comment";
+  comment = comment.trim();
+
+  //Add comment
+  const commentsCollection = await comments();
+
+  let newComments = {
+    userId: userId,
+    postId: postId,
+    comment: comment,
+  };
+
+  const insertInfo = await commentsCollection.insertOne(newComments);
+  if (insertInfo.insertedCount === 0) {
+    throw `Could not insert new comment`;
+  }
+  return await this.getCommentsById(insertInfo.insertedId.toString());
+}
+
+async function removeComment(id) {
+  const commentsCollection = await comments();
+  if (!id) throw "Please provide id";
+  if (typeof id !== "string") throw "Id is not a valid string";
+  const deleteInfo = await commentsCollection.removeOne({
+    _id: ObjectId(id),
+  });
+  if (deleteInfo.deletedCount === 0) {
+    throw `Error, could not delete post with id ${id}`;
+  }
+  return;
+}
+
+async function updateComment(id, comment) {
+  if (!id) throw "Please provide comment id";
+  const updatedComments = {};
+  if (!comment) {
+    throw "Please provide comment for update";
+  } else {
+    updatedComments.comment = comment;
+  }
+  let parsedId = ObjectId(id);
+  if (typeof id === "string") {
     try {
-        let parsedId = ObjectId(id)
+      let parsedId = ObjectId(id);
     } catch (e) {
-        console.log('Invalid object id format');
+      console.log("Invalid object id format");
     }
-    const findComments = await commentsCollection.findOne({ _id: parsedId });
-    if (findComments.length === 0) {
-        throw `No comments found for ID: ${id}`;
-    }
-    return findComments;
+  }
+  const commentsCollection = await comments();
+  const updateCommentInfo = await commentsCollection.updateOne(
+    { _id: parsedId },
+    { $set: updatedComments }
+  );
+
+  if (updateCommentInfo.modifiedCount === 0) throw "Could not update comment";
+
+  return await this.getCommentsById(id);
 }
 
-//Add Comments
+async function getAllCommentsOfuser(userId) {
+  if (!userId) throw "Please provid valid id";
+  if (typeof userId !== "string") throw "userId is not a valid string";
+  userId = userId.trim();
+  const commentsCollection = await comments();
+  const AllComment = await commentsCollection
+    .find({
+      userId: { $eq: userId },
+    })
+    .toArray();
 
-async function addComments(postId, UserId, comment) {
-    if (!postId || !UserId || !comment) throw 'Please provide all the details';
-    if (typeof comment !== 'string') throw 'Please provide proper type of comment';
-    const commentsCollection = await comments();
+  for (let i of AllComment) {
+    i._id = i._id.toString();
+  }
 
-    let newComments = {
-        postId: postId,
-        UserId: UserId,
-        comment: comment
-    }
-
-    const insertInfo = await commentsCollection.insertOne(newComments);
-    if (insertInfo.insertedCount === 0) {
-        throw `Could not insert new comment`;
-    }
-    return await this.getCommentsById(insertInfo.insertedId.toString());
+  return AllComment;
 }
-
-//Add comments to user and post
-
-async function addCommentsToUser(commentId, userId) {
-    if (!commentId || !userId) throw `Please provide id`;
-    let parsedId = ObjectId(commentId);
-    try {
-        let parsedId = ObjectId(commentId)
-    } catch (e) {
-        console.log('Invalid object id format');
-    }
-
-    const commentsCollection = await this.getCommentsById(commentId);
-    if (commentsCollection === null) throw `Comment not found`;
-
-    const updatedComments = commentsCollection.updateOne({ _id: parsedId }, { $push: { comment: userId } });
-    if (updatedComments.modifiedCount === 0 && updatedComments.deletedCount === 0) throw 'comment could not be added.';
-
-    return await getUserById(commentId);
-
-}
-
-async function addCommentsToPost(commentId, postId) {
-    if (!commentId || !postId) throw `Please provide id`;
-    let parsedId = ObjectId(commentId);
-    try {
-        let parsedId = ObjectId(commentId)
-    } catch (e) {
-        console.log('Invalid object id format');
-    }
-
-    const commentsCollection = await this.getCommentsById(commentId);
-    if (commentsCollection === null) throw `Comment not found`;
-
-    const updatedComments = commentsCollection.updateOne({ _id: parsedId }, { $push: { comment: postId } });
-    if (updatedComments.modifiedCount === 0 && updatedComments.deletedCount === 0) throw 'comment could not be added.';
-
-    return await getUserById(commentId);
-
-}
-
-async function removeComment(commentId) {
-    const commentsCollection = await comments();
-
-    let parsedId = ObjectId(commentId);
-    try {
-        let parsedId = ObjectId(commentId)
-    } catch (e) {
-        console.log('Invalid object id format');
-    }
-
-    const deleteInfo = await commentsCollection.removeOne({
-        _id: ObjectId(parsedId),
-    });
-    if (deleteInfo.deletedCount === 0) {
-        throw `Error, could not delete comment with id ${parsedId}`;
-    }
-    const removeCommentInfo = { commentId: parsedId, deleted: true };
-    return removeCommentInfo;
-}
-
-
-
 
 module.exports = {
-    getAllComments,
-    getCommentsById,
-    addComments,
-    addCommentsToUser,
-    addCommentsToPost,
-    removeComment
+  getCommentsById,
+  getAllComments,
+  updateComment,
+  createComment,
+  removeComment,
+  getAllCommentsOfuser,
 };
