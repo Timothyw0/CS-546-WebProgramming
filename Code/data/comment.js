@@ -101,14 +101,14 @@ async function updateComment(id, comment) {
   return await this.getCommentsById(id);
 }
 
-async function getAllCommentsOfuser(userId) {
+async function getAllCommentsOfpost(postId) {
   if (!userId) throw "Please provid valid id";
-  if (typeof userId !== "string") throw "userId is not a valid string";
-  userId = userId.trim();
+  if (typeof userId !== "string") throw "postId is not a valid string";
+  postId = postId.trim();
   const commentsCollection = await comments();
   const AllComment = await commentsCollection
     .find({
-      userId: { $eq: userId },
+      postId: { $eq: postId },
     })
     .toArray();
 
@@ -125,5 +125,5 @@ module.exports = {
   updateComment,
   createComment,
   removeComment,
-  getAllCommentsOfuser,
+  getAllCommentsOfpost,
 };
