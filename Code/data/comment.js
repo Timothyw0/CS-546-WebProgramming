@@ -102,21 +102,21 @@ async function updateComment(id, comment) {
 }
 
 async function getAllCommentsOfpost(postId) {
-  if (!userId) throw "Please provid valid id";
-  if (typeof userId !== "string") throw "postId is not a valid string";
+  if (!postId) throw "Please provide valid postId";
+  if (typeof postId !== "string") throw "postId is not a valid string";
   postId = postId.trim();
   const commentsCollection = await comments();
-  const AllComment = await commentsCollection
+  const AllComments = await commentsCollection
     .find({
       postId: { $eq: postId },
     })
     .toArray();
 
-  for (let i of AllComment) {
+  for (let i of AllComments) {
     i._id = i._id.toString();
   }
 
-  return AllComment;
+  return AllComments;
 }
 
 module.exports = {
