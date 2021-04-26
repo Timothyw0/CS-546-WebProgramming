@@ -1,0 +1,172 @@
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: lightslategray;
+  overflow: hidden;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Make logout button in topnav appear on the right */
+.topnav .logout,
+.topnav .myprofile {
+  float: right;
+}
+
+/* Adjust the topnav logo */
+.topnav .logo {
+  float: left;
+  max-width: 3%;
+  height: auto;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Post css */
+.post {
+  background: white;
+  padding: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 20px;
+}
+
+.postInteraction {
+  padding: 10px;
+}
+
+body {
+  background: #f1f1f1;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {
+  float: left;
+  width: 75%;
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 25%;
+  padding: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+footer {
+  text-align: center;
+}
+
+/* Add post page CSS */
+.add-post {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
+
+.add-post label {
+  margin-top: 50px;
+  font-weight: bold;
+}
+
+.add-post select {
+  border: 0;
+  width: 500px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+.add-post textarea {
+  width: 500px;
+  height: 150px;
+  border: 0;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+}
+
+#errorDiv p {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+#successDiv {
+  padding-top: 20px;
+  text-align: center;
+}
+
+/* Edit post feed icon styling */
+.post h5 {
+  float: left;
+}
+
+.editIcon img {
+  float: right;
+  max-width: 1.5%;
+  height: auto;
+}
+
+.post h6 {
+  clear: both;
+}
+
+/* Edit post page CSS */
+.edit-post h2,
+h3,
+label,
+select,
+form {
+  text-align: center;
+}
+
+.edit-post h2 {
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
+
+.edit-post label {
+  margin-top: 50px;
+  font-weight: bold;
+}
+
+.edit-post select {
+  border: 0;
+  width: 500px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+.edit-post textarea {
+  width: 500px;
+  height: 150px;
+  border: 0;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+}
+
+.edit-post input {
+  margin-bottom: 15px;
+}

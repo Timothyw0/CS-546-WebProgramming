@@ -19,7 +19,7 @@ const main = async () => {
     text (String)
   */
 
-  const makePost = function (id, creator, recipe = null, text) {
+  const makePost = function (id, creator, recipe = "", text) {
     // creator and recipe must be an ObjectID
     return {
       _id: id,
@@ -27,6 +27,7 @@ const main = async () => {
       likes: [],
       recipe: recipe,
       text: text,
+      date: new Date(),
     };
   };
 
@@ -55,6 +56,7 @@ const main = async () => {
   const kishanPost = makePost(
     (id = ObjectId("606f04cf30078a027490273e")),
     (creator = "60732518372d3ae3b871f315"),
+    (recipe = ""),
     (text =
       "The weather is beautiful today and I am thinking of drinking a sweet cocktail. Any recommendations?")
   );
@@ -81,6 +83,7 @@ const main = async () => {
   const patrickPost = makePost(
     (id = ObjectId("606f05bb4e7e233e61f8beb7")),
     (creator = "6073261f162457f64eddacfb"),
+    (recipe = ""),
     (text =
       "What's everyone's favorite spirit? I'm thinking about trying something new")
   );
@@ -123,7 +126,7 @@ const main = async () => {
     [], //recipes
     [], //comments
     "" //profilePicture
-  )
+  );
 
   // kishan user info
   const kishan = await users.createSeedUser(
@@ -139,7 +142,7 @@ const main = async () => {
     [], //recipes
     [], //comments
     "" //profilePicture
-  )
+  );
 
   // billy user info
   const billy = await users.createSeedUser(
@@ -155,7 +158,7 @@ const main = async () => {
     [], //recipes
     [], //comments
     "" //profilePicture
-  )
+  );
 
   // avani user info
   const avani = await users.createSeedUser(
@@ -171,7 +174,7 @@ const main = async () => {
     [], //recipes
     [], //comments
     "" //profilePicture
-  )
+  );
 
   // pat user info
   const pat = await users.createSeedUser(
@@ -194,9 +197,9 @@ const main = async () => {
   console.log(billy);
   console.log(avani);
   console.log(pat);
+
   console.log("Done seeding collections in database");
   await db.serverConfig.close();
 };
-
 
 main().catch(console.log);

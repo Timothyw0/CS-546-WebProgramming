@@ -1,0 +1,33 @@
+<div class="post">
+    <a href="/feed">
+        <h5>
+            {{username}} - TODO attach hyperlinks to profile
+        </h5>
+    </a>
+    <!-- if canEdit block -->
+    {{#if canEdit}}
+    <a href="/posts/edit/{{_id}}" class="editIcon">
+        <img src="/public/images/edit.png" alt="Edit this post" />
+    </a>
+    {{/if}}
+    <!-- end if block -->
+    <h6>{{ date }}</h6>
+    <!-- if recipe block -->
+    {{#if recipe}}
+    <p>{{ recipe }}</p>
+    {{/if}}
+    <!-- end if block -->
+    <br />
+    <p>{{ text }}</p>
+    <!-- if likeList block -->
+    <div id="likeDiv">
+        {{#if likeList}}
+        <p>
+            <em id="likeList">{{ likeList }} like this post</em>
+        </p>
+        {{/if}}
+    </div>
+    <!-- end if block -->
+    <!-- Hidden postID in order to make AJAX requests -->
+    <p id="postID" hidden>{{_id}}</p>
+</div>

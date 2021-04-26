@@ -1,0 +1,50 @@
+<div class="post" id="singlePost">
+    <a href="/feed">
+        <h5>
+            {{data.username}} - TODO attach hyperlinks to profile
+        </h5>
+    </a>
+    <!-- if canEdit block -->
+    {{#if data.canEdit}}
+    <a href="/posts/edit/{{data._id}}" class="editIcon">
+        <img src="/public/images/edit.png" alt="Edit this post" />
+    </a>
+    {{/if}}
+    <!-- end if block -->
+    <h6>{{ data.date }}</h6>
+    <!-- if recipe block -->
+    {{#if data.recipe}}
+    <p>{{ data.recipe }}</p>
+    {{/if}}
+    <!-- end if block -->
+    <br />
+    <p>{{ data.text }}</p>
+    <!-- if likeList block -->
+    <div id="likeDiv">
+        {{#if data.likeList}}
+        <p>
+            <em id="likeList">{{ data.likeList }} like this post</em>
+        </p>
+        {{/if}}
+    </div>
+    <!-- end if block -->
+    <!-- if liked block -->
+    {{#if data.liked}}
+    <a href="" id="likePost" class="postInteraction">
+        Unlike
+    </a>
+    {{else}}
+    <a href="" id="likePost" class="postInteraction">
+        Like
+    </a>
+    {{/if}}
+    <!-- end if block -->
+    <a href="" class="postInteraction">
+        Comment
+    </a>
+    <a href="/feed" class="postInteraction">
+        Return to Feed
+    </a>
+    <!-- Hidden postID in order to make AJAX requests -->
+    <p id="postID" hidden>{{ data._id }}</p>
+</div>
