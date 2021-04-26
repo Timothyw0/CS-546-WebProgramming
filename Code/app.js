@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require('express-session')
 const app = express();
 const static = express.static(__dirname + "/public");
 const configRoutes = require("./routes");
@@ -32,6 +33,22 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
+app.use('/private', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.use('/login', (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/private');
+  } else {
+    next();
+  }
+});
 
 configRoutes(app);
 
