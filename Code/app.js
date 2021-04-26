@@ -44,7 +44,7 @@ app.use('/feed', (req, res, next) => {
 
 app.use('/login', (req, res, next) => {
   if (req.session.user) {
-    return res.redirect('/private');
+    return res.redirect('/feed');
   } else {
     next();
   }
