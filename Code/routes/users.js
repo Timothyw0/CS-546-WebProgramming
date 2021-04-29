@@ -95,6 +95,39 @@ router.post('/signup', async (req, res) => {
             signupInfo: newUser
         });
     }
+
+    try {
+        const addedUser = await userData.createUser(
+            newUser.firstName,
+            newUser.lastName,
+            newUser.lastName,
+            newUser.email,
+            newUser.dateOfBirth,
+            newUser.password
+        );
+
+        req.session.user = {
+            _id: addedUser._id,
+            firstName: addedUser.firstName,
+            lastName: addedUser.lastName,
+            username: addedUser.username,
+            email: addedUser.email,
+            dateOfBirth: addedUser.dateOfBirth,
+            friends: addedUser.friends,
+            posts: addedUser.posts,
+            recipes: addedUser.recipes,
+            comments: addedUser.comments,
+            profilePicture: addedUser.profilePicture
+        };
+        res.redirect('/feed');
+    } catch(e) {
+        errors.push(e);
+        res.status(403).render('users/signup', {
+            title: signUp,
+            userInfo: newUser,
+            errors: errors
+        });
+    }
 });
 
 router.get('/profile/:id', async (req, res) => {
@@ -132,6 +165,11 @@ router.get('/profile/:id', async (req, res) => {
             }
         });
     }
+});
+
+router.get('/logout', async (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
 });
 
 module.exports = router;
