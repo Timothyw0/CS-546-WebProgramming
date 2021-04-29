@@ -153,7 +153,7 @@ router.get('/profile/:id', async (req, res) => {
         });
     }
     res.render('users/profile', {
-        title: req.session.user.username,
+        title: userFound.username,
         user: {
             _id: userFound._id,
             firstName: userFound.firstName,
