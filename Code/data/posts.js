@@ -158,7 +158,7 @@ async function getFriendPosts(uid) {
   );
   const friendList = friendObject.friends;
   // Now that we have user's friends, get all posts
-  const postList = await getAllPosts();
+  const postList = await getAllPosts(cleanUID);
   // Iterate through the postList and only return posts that were created by a friend
   let friendPosts = [];
   for (i = 0; i < postList.length; i++) {
@@ -168,6 +168,25 @@ async function getFriendPosts(uid) {
     }
   }
   return friendPosts;
+}
+
+// Get post by user ID function
+// Input: userID
+// Output: List of all posts by inputted user
+async function getPostByUser(userID) {
+  // Error check uid
+  let cleanUID = await isUser(userID);
+  // Get all posts and only return posts by userID
+  const postList = await getAllPosts(cleanUID);
+  let userPosts = [];
+  // Iterate through all posts and add user posts to array
+  for (let i = 0; i < postList.length; i++) {
+    let currPost = postList[i];
+    if (currPost.creator === cleanUID) {
+      userPosts.push(currPost);
+    }
+  }
+  return userPosts;
 }
 
 // Get post by ID function
@@ -369,6 +388,7 @@ module.exports = {
   getAllPosts,
   getFriendPosts,
   getPostById,
+  getPostByUser,
   addPost,
   updatePost,
   addLike,
