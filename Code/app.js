@@ -50,6 +50,14 @@ app.use('/login', (req, res, next) => {
   }
 });
 
+app.use('/signup', (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/feed');
+  } else {
+    next();
+  }
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {

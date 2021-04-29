@@ -9,9 +9,13 @@ router.get('/', async (req, res) => {
     if (req.session.user) {
         res.redirect('/feed');
     } else {
-        res.render('users/login', {title: 'Log In'});
+        res.redirect('/login', {title: 'Log In'});
     }
 });
+
+router.get('/login', async (req, res) => {
+    res.render('users/login', {title: 'Log In'})
+})
 
 router.post('/login', async(res, req) => {
     let errors = [];
@@ -52,15 +56,19 @@ router.post('/login', async(res, req) => {
     }
 });
 
+router.get('/signup', async (req, res) => {
+    res.render('users/signup', {title: 'Sign Up'})
+})
+
 router.post('/signup', async (req, res) => {
     let errors = [];
     let newUser = {
-        firstName: xss(req.body.firstName),
-        lastName: xss(req.body.lastName),
-        username: xss(req.body.username),
-        email: xss(req.body.email),
-        dateOfBirth: xss(req.body.dateOfBirth),
-        password: xss(req.body.password)
+        firstName: xss(req.body.firstName.trim()),
+        lastName: xss(req.body.lastName.trim()),
+        username: xss(req.body.username.toLowerCase().trim()),
+        email: xss(req.body.email.toLowerCase().trim()),
+        dateOfBirth: xss(req.body.dateOfBirth.trim()),
+        password: xss(req.body.password.trim())
     }
 
     if(!validator.validString(newUser.firstName)) errors.push('Invalid first name.');
@@ -88,3 +96,42 @@ router.post('/signup', async (req, res) => {
         });
     }
 });
+
+router.get('/profile/:id', async (req, res) => {
+    let errors = [];
+    if(req.params.id === req.session.user._id) {
+        res.render('users/profile', {
+            title: req.session.user.username,
+            user: req.session.user
+        });
+    } else {
+        const userFound = await userData.getUserById(req.params.id)
+        if(!userFound) {
+            errors.push('User not found');
+            // maybe we make a 404 page to render when something is not found
+            return res.status(404).render('users/not-found', {
+                title: 'Not Found',
+                errors: errors
+            });
+        }
+
+        res.render('users/profile', {
+            title: req.session.user.username,
+            user: {
+                _id: userFound._id,
+                firstName: userFound.firstName,
+                lastName: userFound.lastName,
+                username: userFound.username,
+                email: userFound.email,
+                dateOfBirth: userFound.dateOfBirth,
+                friends: userFound.friends,
+                posts: userFound.posts,
+                recipes: userFound.recipes,
+                comments: userFound.comments,
+                profilePicture: userFound.profilePicture
+            }
+        });
+    }
+});
+
+module.exports = router;
