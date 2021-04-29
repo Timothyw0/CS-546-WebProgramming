@@ -1,4 +1,5 @@
 const postRoutes = require("./posts");
+const userRoutes = require("./users");
 const postData = require("../data/posts");
 
 const constructorMethod = (app) => {
@@ -10,6 +11,7 @@ const constructorMethod = (app) => {
   });
 
   app.use("/posts", postRoutes);
+  app.use("/users", userRoutes);
 
   app.use("*", (req, res) => {
     res.sendStatus(404);
