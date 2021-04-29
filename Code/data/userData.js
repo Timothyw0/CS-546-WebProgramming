@@ -128,6 +128,7 @@ async function findUserByUsername(username) {
     const userFound = await userCollection.findOne({ username: username })
     if(userFound === null) throw 'User not found.';
 
+    userFound._id = userFound._id.toString();
     return userFound;
 }
 
