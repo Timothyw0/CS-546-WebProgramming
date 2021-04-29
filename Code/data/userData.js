@@ -157,11 +157,11 @@ async function addPostToUser(userId, postId) {
     if (!validation.validId(postId)) throw 'invalid post id';
 
     const currentUser = await getUserById(userId);
-    //const postToAdd = await getPostById(postId);
+    const postToAdd = await getPostById(postId, userId);
 
     if(currentUser === null) throw 'User not found';
-    //if(postToAdd === null) throw 'Post not found';
-    //if(postToAdd.userId !== userId) throw 'Post not created by this user';
+    if(postToAdd === null) throw 'Post not found';
+    if(postToAdd.creator !== userId) throw 'Post not created by this user';
     
     for (let userPost of currentUser.posts) {
         if(postId === userPost) throw 'This post is already included';
