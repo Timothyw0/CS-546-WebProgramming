@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const xss = require("xss");
 const userData = require("../data/userData");
+const postData = require("../data/posts");
 const bcrypt = require('bcrypt');
 const validator = require('../data/validation')
 
@@ -132,39 +133,41 @@ router.post('/signup', async (req, res) => {
 
 router.get('/profile/:id', async (req, res) => {
     let errors = [];
-    if(req.params.id === req.session.user._id) {
-        res.render('users/profile', {
-            title: req.session.user.username,
-            user: req.session.user
-        });
-    } else {
-        const userFound = await userData.getUserById(req.params.id)
-        if(!userFound) {
-            errors.push('User not found');
-            // maybe we make a 404 page to render when something is not found
-            return res.status(404).render('users/not-found', {
-                title: 'Not Found',
-                errors: errors
-            });
-        }
-
-        res.render('users/profile', {
-            title: req.session.user.username,
-            user: {
-                _id: userFound._id,
-                firstName: userFound.firstName,
-                lastName: userFound.lastName,
-                username: userFound.username,
-                email: userFound.email,
-                dateOfBirth: userFound.dateOfBirth,
-                friends: userFound.friends,
-                posts: userFound.posts,
-                recipes: userFound.recipes,
-                comments: userFound.comments,
-                profilePicture: userFound.profilePicture
-            }
+    const userFound = await userData.getUserById(req.params.id)
+    if(!userFound) {
+        errors.push('User not found');
+        // maybe we make a 404 page to render when something is not found
+        return res.status(404).render('users/not-found', {
+            title: 'Not Found',
+            errors: errors
         });
     }
+
+    const userPosts = await postData.getPostByUser(userFound._id);
+    if(!userPosts) {
+        errors.push('User posts not found');
+        // maybe we make a 404 page to render when something is not found
+        return res.status(404).render('users/not-found', {
+            title: 'Not Found',
+            errors: errors
+        });
+    }
+    res.render('users/profile', {
+        title: req.session.user.username,
+        user: {
+            _id: userFound._id,
+            firstName: userFound.firstName,
+            lastName: userFound.lastName,
+            username: userFound.username,
+            email: userFound.email,
+            dateOfBirth: userFound.dateOfBirth,
+            friends: userFound.friends,
+            posts: userPosts,
+            recipes: userFound.recipes,
+            comments: userFound.comments,
+            profilePicture: userFound.profilePicture
+        }
+    });
 });
 
 router.get('/logout', async (req, res) => {
