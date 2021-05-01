@@ -136,6 +136,58 @@ async function getAllPosts(id) {
   return postList;
 }
 
+// Get partial posts function
+// Input: User ID, N - number to skip
+// Output: List of 5 posts skipping N number of posts
+async function getPartialPosts(id, n) {
+  // Error check the id
+  let cleanID = checkStr(id);
+  try {
+    ObjectId(cleanID);
+  } catch (e) {
+    throw e;
+  }
+  // Error check n
+  if (typeof n !== "number") {
+    throw "Error: n is not a number in getPartialPosts";
+  }
+  // Everything looks good, we can move on
+  const postCollection = await posts();
+  const postList = await postCollection
+    .find({})
+    .sort({ date: -1, _id: 1 })
+    .limit(3)
+    .skip(n * 3)
+    .toArray();
+  // console.log(postList);
+  // console.log(postList.length);
+  // Go through posts and add the usernames to the post and set the likeString to be displayed
+  for (let i = 0; i < postList.length; i++) {
+    // console.log(postList[i]);
+    let iLiked = false;
+    let likeList = "";
+    postList[i].username = await getName(postList[i].creator);
+    for (let j = 0; j < postList[i].likes.length; j++) {
+      let likeID = postList[i].likes[j];
+      let likeName = await getName(likeID);
+      likeList += `${likeName}, `;
+      // If I already liked set the flag to true
+      if (likeName === "timothyw0") {
+        iLiked = true;
+      }
+    }
+    postList[i].liked = iLiked;
+    if (likeList.length !== 0) {
+      postList[i].likeList = likeList.slice(0, -2);
+    }
+    // Check if this post is the users
+    if (postList[i].creator === cleanID) {
+      postList[i].canEdit = true;
+    }
+  }
+  return postList;
+}
+
 // Get all posts based on your friends
 // Input: String of user ID
 // Output: List of posts that were created by the user's friends
@@ -386,6 +438,7 @@ async function removePost(postID) {
 
 module.exports = {
   getAllPosts,
+  getPartialPosts,
   getFriendPosts,
   getPostById,
   getPostByUser,

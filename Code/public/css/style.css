@@ -45,6 +45,14 @@
   margin-top: 20px;
 }
 
+.post h1 {
+  font-size: 25px;
+}
+
+.post h2 {
+  font-size: 15px;
+}
+
 .postInteraction {
   padding: 10px;
 }
@@ -76,6 +84,13 @@ body {
 
 footer {
   text-align: center;
+}
+
+#fetchMorePosts,
+#noMorePosts {
+  padding-left: 50px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 /* Add post page CSS */
@@ -133,12 +148,15 @@ footer {
 }
 
 /* Edit post page CSS */
-.edit-post h2,
-h3,
+.edit-post h1,
 label,
 select,
 form {
   text-align: center;
+}
+
+#postHyperlink {
+  text-align: left;
 }
 
 .edit-post h2 {

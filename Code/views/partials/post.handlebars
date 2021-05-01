@@ -1,8 +1,8 @@
 <div class="post">
     <a href="/feed">
-        <h5>
+        <h1 id="postHyperlink">
             {{username}} - TODO attach hyperlinks to profile
-        </h5>
+        </h1>
     </a>
     <!-- if canEdit block -->
     {{#if canEdit}}
@@ -11,7 +11,7 @@
     </a>
     {{/if}}
     <!-- end if block -->
-    <h6>{{ date }}</h6>
+    <h2 class="postDate">{{ date }}</h2>
     <!-- if recipe block -->
     {{#if recipe}}
     <p>{{ recipe }}</p>

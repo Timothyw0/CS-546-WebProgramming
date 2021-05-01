@@ -2,11 +2,33 @@ const express = require("express");
 const router = express.Router();
 const xss = require("xss");
 const postData = require("../data/posts");
+let { ObjectId } = require("mongodb");
+
+/*
+    HELPER FUNCTIONS TO CHECK USER INPUT 
+*/
+// Check string function: is string and non empty
+// Input: String
+// Output: Trimmed/cleaned string
+function checkStr(str, param) {
+  if (!str) throw `Error: ${param} not provided`;
+  if (typeof str !== "string") throw `Error: ${param} is not string`;
+  if (str.length === 0) throw `Error: ${param} is empty string`;
+  if (!str.trim().length === 0) throw `Error: ${param} is just empty spaces`;
+  return str.trim();
+}
 
 // GET localhost:3000/posts/add
 // Renders an HTML page with a form to add a new post using AJAX
 router.get("/add", async (req, res) => {
   res.render("posts/addPost");
+});
+
+// GET localhost:3000/posts/all
+// Return all posts in JSON format, used for checking for new posts
+router.get("/all", async (req, res) => {
+  const allPosts = await postData.getAllPosts("607322eb50dc91a9bc14955b");
+  res.json(allPosts);
 });
 
 // POST localhost:3000/posts/add
@@ -36,11 +58,41 @@ router.post("/add", async (req, res) => {
   }
 });
 
+// GET localhost:3000/posts/getMorePosts
+// Call DB function to get partialPosts when user clicks get more posts
+router.get("/getMorePosts", async (req, res) => {
+  let skipNum = req.query.skipPosts;
+  // Error check the body
+  if (!skipNum) {
+    throw `Error: No skip posts num provided in get partial posts route`;
+  }
+  let intSkipNum = parseInt(skipNum);
+  if (isNaN(intSkipNum)) {
+    throw `Error: Must pass in number to getMorePosts route`;
+  }
+  let data = await postData.getPartialPosts(
+    "607322eb50dc91a9bc14955b",
+    intSkipNum
+  );
+  res.json(data);
+});
+
 // GET localhost:3000/posts/{id}
 // Fetch the information related to a specific post because user expanded it
 router.get("/:id", async (req, res) => {
   if (!req.params.id) {
     throw `Error: No id provided in get expanded post`;
+  }
+  // Error check id
+  let cleanID = checkStr(req.params.id);
+  // Try to convert uid into Object ID
+  let idObj;
+  try {
+    idObj = ObjectId(cleanID);
+  } catch (e) {
+    console.log(e);
+    // Not an ID endpoint, throw a 404
+    res.sendStatus(404);
   }
   res.render("posts/viewPost", {
     // TODO: Add user session ID here
@@ -61,6 +113,26 @@ router.post("/like", async (req, res) => {
   if (!userID) {
     throw `Error: No user ID provided in like post route`;
   }
+  // Error check postID
+  let cleanID = checkStr(reqBody.id);
+  // Try to convert uid into Object ID
+  let idObj;
+  try {
+    idObj = ObjectId(cleanID);
+  } catch (e) {
+    // Not an ID endpoint, throw a 404
+    res.sendStatus(404);
+  }
+  // Error check userID
+  let cleanID2 = checkStr(reqBody.userID);
+  // Try to convert uid into Object ID
+  let idObj2;
+  try {
+    idObj2 = ObjectId(cleanID2);
+  } catch (e) {
+    // Not an ID endpoint, throw a 404
+    res.sendStatus(404);
+  }
   const newLikes = await postData.addLike(postID, userID);
   res.json({ likes: newLikes });
 });
@@ -78,6 +150,26 @@ router.post("/unlike", async (req, res) => {
   if (!userID) {
     throw `Error: No user ID provided in like post route`;
   }
+  // Error check postID
+  let cleanID = checkStr(reqBody.id);
+  // Try to convert uid into Object ID
+  let idObj;
+  try {
+    idObj = ObjectId(cleanID);
+  } catch (e) {
+    // Not an ID endpoint, throw a 404
+    res.sendStatus(404);
+  }
+  // Error check userID
+  let cleanID2 = checkStr(reqBody.userID);
+  // Try to convert uid into Object ID
+  let idObj2;
+  try {
+    idObj2 = ObjectId(cleanID2);
+  } catch (e) {
+    // Not an ID endpoint, throw a 404
+    res.sendStatus(404);
+  }
   const newLikes = await postData.removeLike(postID, userID);
   res.json({ likes: newLikes });
 });
@@ -87,6 +179,16 @@ router.post("/unlike", async (req, res) => {
 router.get("/edit/:id", async (req, res) => {
   if (!req.params.id) {
     throw `Error: No id provided in get expanded post`;
+  }
+  // Error check id
+  let cleanID = checkStr(req.params.id);
+  // Try to convert uid into Object ID
+  let idObj;
+  try {
+    idObj = ObjectId(cleanID);
+  } catch (e) {
+    // Not an ID endpoint, throw a 404
+    res.sendStatus(404);
   }
   // Check that the user is authorized to edit this page
   // TODO: Pass in user session ID
@@ -116,6 +218,16 @@ router.put("/edit", async (req, res) => {
   if (reqBody.recipe === "None") {
     reqBody.recipe = "";
   }
+  // Error check id
+  let cleanID = checkStr(reqBody.postID);
+  // Try to convert uid into Object ID
+  let idObj;
+  try {
+    idObj = ObjectId(cleanID);
+  } catch (e) {
+    // Not an ID endpoint, throw a 404
+    res.sendStatus(404);
+  }
   // Get the old post information
   // TODO: Pass in user session ID
   let oldPost = await postData.getPostById(
@@ -144,6 +256,16 @@ router.put("/edit", async (req, res) => {
 // User just confirmed to delete the post
 router.put("/delete", async (req, res) => {
   let reqBody = req.body;
+  // Error check id
+  let cleanID = checkStr(reqBody.postID);
+  // Try to convert uid into Object ID
+  let idObj;
+  try {
+    idObj = ObjectId(cleanID);
+  } catch (e) {
+    // Not an ID endpoint, throw a 404
+    res.sendStatus(404);
+  }
   // Error check that the user is authorized to delete
   // TODO: Pass in user session ID
   let oldPost = await postData.getPostById(

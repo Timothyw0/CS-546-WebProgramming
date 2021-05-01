@@ -1,5 +1,5 @@
 const express = require("express");
-const session = require('express-session')
+const session = require("express-session");
 const app = express();
 const static = express.static(__dirname + "/public");
 const configRoutes = require("./routes");
@@ -27,32 +27,34 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
-app.use(session({
-  name: 'AuthCookie',
-  secret: 'secret string',
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(
+  session({
+    name: "AuthCookie",
+    secret: "secret string",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
-app.use('/feed', (req, res, next) => {
+app.use("/feed", (req, res, next) => {
   if (!req.session.user) {
-    return res.redirect('/');
+    return res.redirect("/");
   } else {
     next();
   }
 });
 
-app.use('/login', (req, res, next) => {
+app.use("/login", (req, res, next) => {
   if (req.session.user) {
-    return res.redirect('/feed');
+    return res.redirect("/feed");
   } else {
     next();
   }
 });
 
-app.use('/signup', (req, res, next) => {
+app.use("/signup", (req, res, next) => {
   if (req.session.user) {
-    return res.redirect('/feed');
+    return res.redirect("/feed");
   } else {
     next();
   }
