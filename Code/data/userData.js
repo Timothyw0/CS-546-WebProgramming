@@ -1,8 +1,8 @@
 const mongoCollections = require('../config/mongoCollections');
 const user = mongoCollections.user;
-// const post = mongoCollections.post;
-// const comment = mongoCollections.comment;
-// const recipe = mongoCollections.recipe;
+const post = require('../data/posts');
+const comment = require('../data/comment');
+// const recipe = require('../data/recipe');
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const validation = require('./validation');
@@ -157,7 +157,7 @@ async function addPostToUser(userId, postId) {
     if (!validation.validId(postId)) throw 'invalid post id';
 
     const currentUser = await getUserById(userId);
-    const postToAdd = await getPostById(postId, userId);
+    const postToAdd = await post.getPostById(postId, userId);
 
     if(currentUser === null) throw 'User not found';
     if(postToAdd === null) throw 'Post not found';
@@ -201,11 +201,11 @@ async function addCommentToUser(userId, commentId) {
     if (!validation.validId(commentId)) throw 'invalid comment id';
 
     const currentUser = await getUserById(userId);
-    //const commentToAdd = await getCommentById(commentId);
+    const commentToAdd = await comment.getCommentsById(commentId);
 
     if(currentUser === null) throw 'User not found';
-    //if(commentToAdd === null) throw 'Comment not found';
-    //if(commentToAdd.userId !== userId) throw 'Comment not created by this user';
+    if(commentToAdd === null) throw 'Comment not found';
+    if(commentToAdd.userId !== userId) throw 'Comment not created by this user';
 
     for (let userComment of currentUser.comments) {
         if(commentId === userComment) throw 'This comment is already included';
