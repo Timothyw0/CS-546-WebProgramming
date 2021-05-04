@@ -15,7 +15,7 @@ router.get("/:id", async function (req, res) {
 
 router.get("/", async function (req, res) {
   try {
-    const commentList = await commentData.getAllComments;
+    const commentList = await commentData.getAllComments();
     res.json(commentList);
   } catch (e) {
     res.status(500).send();
@@ -24,7 +24,7 @@ router.get("/", async function (req, res) {
 
 router.get("/:id", async function (res, req) {
   try {
-    const commentListBypost = await commentData.getAllCommentsOfpost;
+    const commentListBypost = await commentData.getAllCommentsOfpost();
     res.json(commentListBypost);
   } catch (e) {
     res.status(500).send();
