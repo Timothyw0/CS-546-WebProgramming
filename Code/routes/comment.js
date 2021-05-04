@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
     res.status(400).json({ error: "You must provide post id for the comment" });
     return;
   }
-  if (!comment || typeof content !== "string") {
+  if (!comment || typeof comment !== "string") {
     res.status(400).json({ error: "Comment content can not be empty." });
     return;
   }
