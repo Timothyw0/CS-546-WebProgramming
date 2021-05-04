@@ -23,8 +23,12 @@ async function getUserById(id) {
 async function getAllUsers() {
     const userCollection = await user();
     const allUsers = userCollection.find({}).toArray();
-    for( let singleUser of allUsers) {
-        singleUser._id = singleUser._id.toString();
+    if (allUsers.length > 0) {
+        for( let singleUser of allUsers) {
+            singleUser._id = singleUser._id.toString();
+        }
+    } else {
+        throw 'No Users';
     }
 
     return allUsers;
@@ -85,16 +89,16 @@ async function createSeedUser(_id, firstName, lastName, username, email, dateOfB
     }
     if(!validation.validString(password)) throw 'Password must be a string';
 
-    const allUsers = await getAllUsers();
-    let usernameLowerCase = username.toLowerCase();
-    let emailLowerCase = email.toLowerCase();
-    for( let singleUser of allUsers) {
-        if(usernameLowerCase == singleUser.username) {
-            throw `User with username: ${username} already exists.`
-        } else if (emailLowerCase == singleUser.email) {
-            throw `User with email: ${email} already exists.`
-        }
-    }
+    // const allUsers = await getAllUsers();
+    // let usernameLowerCase = username.toLowerCase();
+    // let emailLowerCase = email.toLowerCase();
+    // for( let singleUser of allUsers) {
+    //     if(usernameLowerCase == singleUser.username) {
+    //         throw `User with username: ${username} already exists.`
+    //     } else if (emailLowerCase == singleUser.email) {
+    //         throw `User with email: ${email} already exists.`
+    //     }
+    // }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 

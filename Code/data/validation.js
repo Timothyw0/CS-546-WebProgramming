@@ -11,7 +11,7 @@ function validEmail(email) {
 }
 
 function validDate(date) {
-    checkString(date);
+    validString(date);
     let splitDate = date.split('/')
 
     if (splitDate[0].length > 2 || splitDate[0].length < 1) return false;
@@ -27,7 +27,6 @@ function validDate(date) {
 function validAge(date) {
     let today = new Date();
     let dob = new Date(date);
-    if (typeof dob !== Date) return false;
     let age = today.getFullYear() - dob.getFullYear();
     if (today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate < dob.getDate())) {
         age -= 1;

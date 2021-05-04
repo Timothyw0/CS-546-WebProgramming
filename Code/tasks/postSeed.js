@@ -1,6 +1,7 @@
 const connection = require("../config/mongoConnection");
 let { ObjectId } = require("mongodb");
 const users = require("../data/userData");
+const comment = require('../data/comment');
 
 const main = async () => {
   const db = await connection();
@@ -140,16 +141,11 @@ const main = async () => {
     ], //friends
     ["606f04246c785b72ecce993f"], // posts
     [], //recipes
-    [
-      makeComments(
-        (id = ObjectId("608f0aff669ecbe11b3d3271")),
-        (userId = "608f0bd76bfe13ef5d933f75"),
-        (postId = "608f0be8f28b5921f06aab9c"),
-        (comment = "This beer is bitter!")
-      ),
-    ], //comments
+    [], //comments
     "" //profilePicture
   );
+
+  const timComment = await comment.createComment("607322eb50dc91a9bc14955b", "606f054262b48cb2e8dc5af7", "nice") //tim comment
 
   // kishan user info
   const kishan = await users.createSeedUser(
@@ -168,16 +164,12 @@ const main = async () => {
     ], //friends
     ["606f04cf30078a027490273e"], // posts
     [], //recipes
-    [
-      makeComments(
-        (id = ObjectId("608f0c06a0e7a4c8784074b4")),
-        (userId = "608f0c1ebb70b0c0bc55b941"),
-        (postId = "608f0c1439981c5055b16ffd"),
-        (comment = "This drink is very good!")
-      ),
-    ], //comments
+    [], //comments
     "" //profilePicture
   );
+
+  const kishanComment = await comment.createComment("60732518372d3ae3b871f315", "606f054262b48cb2e8dc5af7", "very cool!") //tim comment
+
 
   // billy user info
   const billy = await users.createSeedUser(
@@ -196,17 +188,13 @@ const main = async () => {
     ], //friends
     ["606f054262b48cb2e8dc5af7"], // posts
     [], //recipes
-    [
-      makeComments(
-        (id = ObjectId("608f0c387ba11599eaebf2d1")),
-        (userId = "608f0c3f880209e0901a7882"),
-        (postId = "608f0c45f78baa5d52b71914"),
-        (comment = "This wine is smooth!")
-      ),
-    ], //comments
+    [], //comments
     "" //profilePicture
   );
 
+  const billyComment = await comment.createComment("60732579ee3a5bd593f2771a", "606f04cf30078a027490273e", "sounds delicious!") //tim comment
+
+  
   // avani user info
   const avani = await users.createSeedUser(
     ObjectId("60732f6f9344955ba436a1bc"), //_id
@@ -223,16 +211,10 @@ const main = async () => {
     ], //friends
     ["606f05f5cba5cb48b03f2abc"], // posts
     [], //recipes
-    [
-      makeComments(
-        (id = ObjectId("608f0c5f3dd95377d6d24562")),
-        (userId = "608f0c66b4abc31509c23398"),
-        (postId = "608f0c6d69154b18b870ba3f"),
-        (comment = "This is a super cool vodka!")
-      ),
-    ], //comments
+    [], //comments
     "" //profilePicture
   );
+  const avaniComment = await comment.createComment("60732f6f9344955ba436a1bc", "606f05bb4e7e233e61f8beb7", "looks super good.") //avani comment
 
   // pat user info
   const pat = await users.createSeedUser(
@@ -251,16 +233,10 @@ const main = async () => {
     ], //friends
     ["606f05bb4e7e233e61f8beb7"], // posts
     [], //recipes
-    [
-      makeComments(
-        (id = ObjectId("608f0c827e4ae20e08042817")),
-        (userId = "608f0c882fb6122f415d2914"),
-        (postId = "608f0c8f36ac861e045ec9b9"),
-        (comment = "A proper gentlemens drinks!")
-      ),
-    ], //comments
+    [], //comments
     "" //profilePicture
   );
+  const patComment = await comment.createComment("6073261f162457f64eddacfb", "606f05f5cba5cb48b03f2abc", "wooahh") //avani comment
 
   console.log(tim);
   console.log(kishan);
