@@ -1,6 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.post;
 const users = mongoCollections.user;
+const commentData = require("./comment");
 let { ObjectId } = require("mongodb");
 
 /*
@@ -184,6 +185,15 @@ async function getPartialPosts(id, n) {
     if (postList[i].creator === cleanID) {
       postList[i].canEdit = true;
     }
+    // Get the comments and attach them
+    let postComments = await commentData.getAllCommentsOfpost(
+      postList[i]._id.toString()
+    );
+    // Get the username of each commentor
+    for (let i = 0; i < postComments.length; i++) {
+      postComments[i].username = await getName(postComments[i].userId);
+    }
+    postList[i].comments = postComments;
   }
   return postList;
 }
@@ -264,6 +274,10 @@ async function getPostById(id, userID) {
   }
   // Find the post by ID
   const reqPost = await postCollection.findOne({ _id: idObj });
+  // If the array is empty, throw an error
+  if (reqPost.length === 0) {
+    throw `No post found for ID: ${cleanID}`;
+  }
   // Get the username and usernames of people who liked
   let iLiked = false;
   let likeList = "";
@@ -285,10 +299,13 @@ async function getPostById(id, userID) {
   if (reqPost.creator === cleanUser) {
     reqPost.canEdit = true;
   }
-  // If the array is empty, throw an error
-  if (reqPost.length === 0) {
-    throw `No post found for ID: ${cleanID}`;
+  // Get the comments and attach them
+  let postComments = await commentData.getAllCommentsOfpost(cleanID);
+  // Get the username of each commentor
+  for (let i = 0; i < postComments.length; i++) {
+    postComments[i].username = await getName(postComments[i].userId);
   }
+  reqPost.comments = postComments;
   return reqPost;
 }
 

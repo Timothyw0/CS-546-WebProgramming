@@ -45,6 +45,20 @@
     <a href="/feed" class="postInteraction">
         Return to Feed
     </a>
+    <!-- if block for comments -->
+    {{#if data.comments}}
+    <div class="commentDiv">
+        <!-- iterate through the comments -->
+        {{#each data.comments}}
+        <div class="individualComment">
+            <p class="commentUser">{{username}}</p>
+            <p class="commentText">{{comment}}</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    <!-- end if block -->
     <!-- Hidden postID in order to make AJAX requests -->
     <p id="postID" hidden>{{ data._id }}</p>
 </div>

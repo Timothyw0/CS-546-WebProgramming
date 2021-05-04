@@ -4,12 +4,6 @@
             {{username}} - TODO attach hyperlinks to profile
         </h1>
     </a>
-    <!-- if canEdit block -->
-    {{#if canEdit}}
-    <a href="/posts/edit/{{_id}}" class="editIcon">
-        <img src="/public/images/edit.png" alt="Edit this post" />
-    </a>
-    {{/if}}
     <!-- end if block -->
     <h2>{{ date }}</h2>
     <!-- if recipe block -->
@@ -27,6 +21,20 @@
         </p>
         {{/if}}
     </div>
+    <!-- end if block -->
+    <!-- if block for comments -->
+    {{#if comments}}
+    <div class="commentDiv">
+        <!-- iterate through the comments -->
+        {{#each comments}}
+        <div class="individualComment">
+            <p class="commentUser">{{username}}</p>
+            <p class="commentText">{{comment}}</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
     <!-- end if block -->
     <!-- Hidden postID in order to make AJAX requests -->
     <p id="postID" hidden>{{_id}}</p>

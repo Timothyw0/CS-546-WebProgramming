@@ -188,3 +188,23 @@ form {
 .edit-post input {
   margin-bottom: 15px;
 }
+
+/* Comment div styling */
+.commentDiv {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  margin-top: 30px;
+  padding: 10px;
+}
+
+.individualComment {
+  margin-bottom: -10px;
+}
+
+.commentUser {
+  font-weight: bold;
+}
+
+.commentText {
+  margin-top: -20px;
+}

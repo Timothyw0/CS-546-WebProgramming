@@ -52,6 +52,20 @@
     <a href="/posts/{{ _id }}" class="postInteraction">
         Expand Post
     </a>
+    <!-- if block for comments -->
+    {{#if comments}}
+    <div class="commentDiv">
+        <!-- iterate through the comments -->
+        {{#each comments}}
+        <div class="individualComment">
+            <p class="commentUser">{{username}}</p>
+            <p class="commentText">{{comment}}</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    <!-- end if block -->
     <!-- Hidden postID in order to make AJAX requests -->
     <p id="postID" hidden>{{_id}}</p>
 </div>`;
