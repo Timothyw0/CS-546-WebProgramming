@@ -1,47 +1,78 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const xss = require('xss');
-const commentData = require('../data/comment'); 
+const commentData = require("../data/comment");
 
-let { ObjectId } = require('mongodb');
+let { ObjectId } = require("mongodb");
 
-router.post('/comment/new', async (req, res) => {   
-    let errors = [];
-    let userId = req.session.user._id;
-    let postId = xss(req.body.postId.trim());
-    let comment = xss(req.body.comment.trim());
-    
-    if (!req.session.user) errors.push('Must log in to comment.');
-    if(!userId) errors.push('Please provide userId');
-    if(!postId) errors.push('Please provide post id');
-    if(!comment) errors.push('Please provide comment');
-    if(typeof userId !== 'string') errors.push('Invalid comment userid');
-    if(typeof postId !== 'string') errors.push('Invalid comment postid');
-    if(typeof comment !== 'string') errors.push('Please provide proper type');
- 
-
-    if (errors.length > 0) {
-        res.status(500).json({
-            success: false,
-            errors: errors,
-            message: 'Errors encountered'
-        });
-    }
-
-    try {
-        const commentInfo = await commentData.createComment(userId, postId, comment);
-        let commentLayout = {
-            comment: commentInfo.comment
-        };
-        res.render('partials/comment_info', { layout: null, ...commentLayout});
-    } catch (e) {
-        errors.push(e);
-        res.status(500).json({
-            success: false,
-            errors: errors
-        });
-    }
+router.get("/:id", async function (req, res) {
+  try {
+    const commentInfo = await commentData.getCommentsById(req.params.id);
+    res.json(commentInfo);
+  } catch (e) {
+    res.status(404).json({ message: "Comment is not found!" });
+  }
 });
 
+router.get("/", async function (req, res) {
+  try {
+    const commentList = await commentData.getAllComments;
+    res.json(commentList);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+router.get("/:id", async function (res, req) {
+  try {
+    const commentListBypost = await commentData.getAllCommentsOfpost;
+    res.json(commentListBypost);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+router.post("/", async (req, res) => {
+  let commentInfo = req.body;
+  if (!commentInfo) {
+    res.status(400).json({ error: "You must provide comment" });
+    return;
+  }
+
+  const { userId, postId, comment } = commentInfo;
+
+  if (!userId) {
+    res.status(400).json({ error: "You must provide user id for the comment" });
+    return;
+  }
+  if (!postId) {
+    res.status(400).json({ error: "You must provide post id for the comment" });
+    return;
+  }
+  if (!comment || typeof content !== "string") {
+    res.status(400).json({ error: "Comment content can not be empty." });
+    return;
+  }
+
+  try {
+    const newComment = await commentData.createComment(userId, postId, comment);
+    res.status(200).send(newComment);
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    await commentData.getCommentsById(req.params.id);
+  } catch (e) {
+    res.status(404).json({ error: "No Comment found" });
+  }
+  try {
+    const msg = await commentData.removeComment(req.params.id);
+    res.status(200).send(msg);
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+});
 
 module.exports = router;
