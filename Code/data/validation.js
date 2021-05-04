@@ -26,7 +26,7 @@ function validDate(date) {
 
 function validAge(date) {
     let today = new Date();
-    let dob = newDate(date);
+    let dob = new Date(date);
     let age = today.getFullYear() - dob.getFullYear();
     if (today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate < dob.getDate())) {
         age -= 1;
