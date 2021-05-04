@@ -1,17 +1,17 @@
 const connection = require("../config/mongoConnection");
 let { ObjectId } = require("mongodb");
-const users = require('../data/userData');
+const users = require("../data/userData");
 
 const main = async () => {
   const db = await connection();
   try {
     await db.collection("post").dropCollection();
     await db.collection("user").dropCollection();
-     await db.collection("comments").dropCollection();
+    await db.collection("comments").dropCollection();
   } catch (e) {}
   // Start seeding
   const postCollection = await db.collection("post");
-   const commentsCollection = await db.collection("comments");
+  const commentsCollection = await db.collection("comments");
   /* 
     POST Collection:
     _id (ObjectID)
@@ -34,14 +34,14 @@ const main = async () => {
   };
 
   const makeComments = function (id, userId, postId, comment) {
-        return {
-            _id: id,
-            userId: userId,
-            postId: postId,
-            comment: comment
-        };
+    return {
+      _id: id,
+      userId: userId,
+      postId: postId,
+      comment: comment,
     };
-  
+  };
+
   // Add userID to post likes array
   // userID must be an ObjectID
   const addLike = function (post, userID) {
@@ -125,119 +125,143 @@ const main = async () => {
 
   // tim user info
   const tim = await users.createSeedUser(
-    ObjectId('607322eb50dc91a9bc14955b'), //_id 
-    'Timothy', //firstName
-    'Wang',  //lastName
-    'timothyw0',  // username
-    'timothyw0@gmail.com', //email
-    '12/12/1994', //age
-    'passwordtim', //hashPassword
-    ['60732518372d3ae3b871f315', '6073261f162457f64eddacfb', '60732579ee3a5bd593f2771a', '60732f6f9344955ba436a1bc'], //friends
-    ['606f04246c785b72ecce993f'], // posts
+    ObjectId("607322eb50dc91a9bc14955b"), //_id
+    "Timothy", //firstName
+    "Wang", //lastName
+    "timothyw0", // username
+    "timothyw0@gmail.com", //email
+    "12/12/1994", //age
+    "passwordtim", //hashPassword
+    [
+      "60732518372d3ae3b871f315",
+      "6073261f162457f64eddacfb",
+      "60732579ee3a5bd593f2771a",
+      "60732f6f9344955ba436a1bc",
+    ], //friends
+    ["606f04246c785b72ecce993f"], // posts
     [], //recipes
     [
-      const TimComments = makeComments(
+      makeComments(
         (id = ObjectId("608f0aff669ecbe11b3d3271")),
         (userId = "608f0bd76bfe13ef5d933f75"),
         (postId = "608f0be8f28b5921f06aab9c"),
         (comment = "This beer is bitter!")
-    )
+      ),
     ], //comments
     "" //profilePicture
   );
 
   // kishan user info
   const kishan = await users.createSeedUser(
-    ObjectId('60732518372d3ae3b871f315'), //_id 
-    'Kishan', //firstName
-    'Senjaliya',  //lastName
-    'Kishans',  // username
-    'kishans@gmail.com', //email
-    '12/12/1994', //age
-    'passwordkishan', //hashPassword
-    ['607322eb50dc91a9bc14955b', '60732579ee3a5bd593f2771a', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
-    ['606f04cf30078a027490273e'], // posts
+    ObjectId("60732518372d3ae3b871f315"), //_id
+    "Kishan", //firstName
+    "Senjaliya", //lastName
+    "Kishans", // username
+    "kishans@gmail.com", //email
+    "12/12/1994", //age
+    "passwordkishan", //hashPassword
+    [
+      "607322eb50dc91a9bc14955b",
+      "60732579ee3a5bd593f2771a",
+      "6073261f162457f64eddacfb",
+      "60732f6f9344955ba436a1bc",
+    ], //friends
+    ["606f04cf30078a027490273e"], // posts
     [], //recipes
     [
-      const kishanComments = makeComments(
+      makeComments(
         (id = ObjectId("608f0c06a0e7a4c8784074b4")),
         (userId = "608f0c1ebb70b0c0bc55b941"),
         (postId = "608f0c1439981c5055b16ffd"),
         (comment = "This drink is very good!")
-    )
+      ),
     ], //comments
     "" //profilePicture
   );
 
   // billy user info
   const billy = await users.createSeedUser(
-    ObjectId('60732579ee3a5bd593f2771a'), //_id 
-    'William', //firstName
-    'Kingsberry',  //lastName
-    'wking',  // username
-    'wkingsbe@stevens.edu', //email
-    '12/12/1994', //age
-    'passwordbilly', //hashPassword
-    ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '6073261f162457f64eddacfb', '60732f6f9344955ba436a1bc'], //friends
-    ['606f054262b48cb2e8dc5af7'], // posts
+    ObjectId("60732579ee3a5bd593f2771a"), //_id
+    "William", //firstName
+    "Kingsberry", //lastName
+    "wking", // username
+    "wkingsbe@stevens.edu", //email
+    "12/12/1994", //age
+    "passwordbilly", //hashPassword
+    [
+      "607322eb50dc91a9bc14955b",
+      "60732518372d3ae3b871f315",
+      "6073261f162457f64eddacfb",
+      "60732f6f9344955ba436a1bc",
+    ], //friends
+    ["606f054262b48cb2e8dc5af7"], // posts
     [], //recipes
     [
-    const BillyComments = makeComments(
+      makeComments(
         (id = ObjectId("608f0c387ba11599eaebf2d1")),
         (userId = "608f0c3f880209e0901a7882"),
         (postId = "608f0c45f78baa5d52b71914"),
         (comment = "This wine is smooth!")
-    )
+      ),
     ], //comments
     "" //profilePicture
   );
 
   // avani user info
   const avani = await users.createSeedUser(
-    ObjectId('60732f6f9344955ba436a1bc'), //_id 
-    'Avani', //firstName
-    'Chheta',  //lastName
-    'achheta',  // username
-    'achheta@gmail.com', //email
-    '12/12/1994', //age
-    'passwordavani', //hashPassword
-    ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '60732579ee3a5bd593f2771a'], //friends
-    ['606f05f5cba5cb48b03f2abc'], // posts
+    ObjectId("60732f6f9344955ba436a1bc"), //_id
+    "Avani", //firstName
+    "Chheta", //lastName
+    "achheta", // username
+    "achheta@gmail.com", //email
+    "12/12/1994", //age
+    "passwordavani", //hashPassword
+    [
+      "607322eb50dc91a9bc14955b",
+      "60732518372d3ae3b871f315",
+      "60732579ee3a5bd593f2771a",
+    ], //friends
+    ["606f05f5cba5cb48b03f2abc"], // posts
     [], //recipes
     [
-      const avaniComments = makeComments(
+      makeComments(
         (id = ObjectId("608f0c5f3dd95377d6d24562")),
         (userId = "608f0c66b4abc31509c23398"),
         (postId = "608f0c6d69154b18b870ba3f"),
         (comment = "This is a super cool vodka!")
-    );
+      ),
     ], //comments
     "" //profilePicture
   );
 
   // pat user info
   const pat = await users.createSeedUser(
-    ObjectId('6073261f162457f64eddacfb'), //_id 
-    'Patrick', //firstName
-    'Pondo',  //lastName
-    'ppondo',  // username
-    'ppondo@stevens.edu', //email
-    '12/12/1994', //age
-    'passwordpat', //hashPassword
-    ['607322eb50dc91a9bc14955b', '60732518372d3ae3b871f315', '60732579ee3a5bd593f2771a', '60732f6f9344955ba436a1bc'], //friends
-    ['606f05bb4e7e233e61f8beb7'], // posts
+    ObjectId("6073261f162457f64eddacfb"), //_id
+    "Patrick", //firstName
+    "Pondo", //lastName
+    "ppondo", // username
+    "ppondo@stevens.edu", //email
+    "12/12/1994", //age
+    "passwordpat", //hashPassword
+    [
+      "607322eb50dc91a9bc14955b",
+      "60732518372d3ae3b871f315",
+      "60732579ee3a5bd593f2771a",
+      "60732f6f9344955ba436a1bc",
+    ], //friends
+    ["606f05bb4e7e233e61f8beb7"], // posts
     [], //recipes
     [
-      const PatrickComments = makeComments(
+      makeComments(
         (id = ObjectId("608f0c827e4ae20e08042817")),
         (userId = "608f0c882fb6122f415d2914"),
         (postId = "608f0c8f36ac861e045ec9b9"),
         (comment = "A proper gentlemens drinks!")
-    )
+      ),
     ], //comments
     "" //profilePicture
-  )
-  
+  );
+
   console.log(tim);
   console.log(kishan);
   console.log(billy);
