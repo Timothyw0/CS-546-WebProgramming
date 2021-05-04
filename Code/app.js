@@ -60,8 +60,8 @@ app.use("/signup", (req, res, next) => {
   }
 });
 
-app.use("/profile/edit/:id", (req, res, next) => {
-  if (req.session.user || req.params.id !== req.session.user._id) {
+app.use("/profile/edit", (req, res, next) => {
+  if (req.session.user) {
     return res.redirect("/feed");
   } else {
     next();
