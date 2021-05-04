@@ -87,9 +87,11 @@ router.post('/signup', async (req, res) => {
         });
     }
 
-    let userCheck = await userData.findUserByUsername(newUser.username);
-    if (!userCheck) {
-        errors.push('Username already in use.');
+    try {
+        let userCheck = await userData.findUserByUsername(newUser.username);
+        if (userCheck) throw 'Username already in use.';
+    } catch (e) {
+        errors.push(e);
         return res.status(401).render('users/signup', {
             title: 'Sign Up',
             errors: errors,
@@ -154,7 +156,7 @@ router.get('/profile/:id', async (req, res) => {
     }
     res.render('users/profile', {
         title: userFound.username,
-        user: {
+        userInfo: {
             _id: userFound._id,
             firstName: userFound.firstName,
             lastName: userFound.lastName,
@@ -168,6 +170,94 @@ router.get('/profile/:id', async (req, res) => {
             profilePicture: userFound.profilePicture
         }
     });
+});
+
+router.get('/profile/edit', async (req, res) => {
+    res.render('users/edit', {
+        title: 'Edit Profile',
+        userInfo: req.session.user
+    });
+});
+
+router.patch('/profile/edit', async (req, res) => {
+    const updateInfo = {};
+    const reqBody =  {
+        firstName: xss(req.body.firstName.trim()),
+        lastName: xss(req.body.lastName.trim()),
+        username: xss(req.body.username.toLowerCase().trim()),
+        email: xss(req.body.email.toLowerCase().trim()),
+        dateOfBirth: xss(req.body.dateOfBirth.trim()),
+    };
+
+    if(!validator.validString(reqBody.firstName)) errors.push('Invalid first name.');
+    if(!validator.validString(reqBody.lastName)) errors.push('Invalid last name.');
+    if(!validator.validString(reqBody.username)) errors.push('Invalid username.');
+    if(!validator.validEmail(reqBody.email)) errors.push('Invalid email.');
+    if(!validator.validDate(reqBody.dateOfBirth)) errors.push('Invalid Date of Birth.');
+
+    if(errors.length > 0) {
+        return res.status(401).render('users/edit', {
+            title: 'Edit Profile',
+            errors: errors,
+            userInfo: req.session.user
+        });
+    }
+
+    try {
+        const oldUser = await userData.getUserById(req.session.user._id);
+        if(reqBody.firstName && reqBody.firstName !== oldUser.firstName) {
+            updateInfo.firstName = reqBody.firstName
+        }
+
+        if(reqBody.lastName && reqBody.lastName !== oldUser.lastName) {
+            updateInfo.lastName = reqBody.lastName
+        }
+
+        if(reqBody.username && reqBody.username !== oldUser.username) {
+            updateInfo.username = reqBody.username
+            let userCheck = await userData.findUserByUsername(reqBody.username);
+            if (userCheck) throw 'Username already exists.';
+        }
+
+        if(reqBody.email && reqBody.email !== oldUser.email) {
+            updateInfo.email = reqBody.email
+        }
+
+        if(reqBody.dateOfBirth && reqBody.dateOfBirth !== oldUser.dateOfBirth) {
+            updateInfo.dateOfBirth = reqBody.dateOfBirth
+        }
+    } catch (e) {
+        errors.push(e);
+        return res.status(500).render('users/edit', {
+            title: 'Edit Profile',
+            errors: errors,
+            userInfo: req.session.user
+        });
+    }
+
+    try {
+        if(Object.keys(updateInfo).length > 0) {
+            const updatedUser = await userData.updateUser(
+                req.session.user._id, 
+                updateInfo
+            );
+
+            req.session.user.firstName = updatedUser.firstName;
+            req.session.user.lastName = updatedUser.lastName;
+            req.session.user.username = updatedUser.username;
+            req.session.user.email = updatedUser.email;
+            req.session.user.dateOfBirth = updatedUser.dateOfBirth;
+        }
+
+        return res.redirect(`/profile/${req.session.user._id}`);
+    } catch (e) {
+        errors.push(e);
+        return res.status(500).render('users/edit', {
+            title: 'Edit Profile',
+            errors: errors,
+            userInfo: req.session.user
+        });
+    }
 });
 
 router.get('/logout', async (req, res) => {
