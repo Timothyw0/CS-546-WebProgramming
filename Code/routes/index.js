@@ -1,5 +1,6 @@
 const postRoutes = require("./posts");
 const userRoutes = require("./users");
+const commentRoutes = require('./comment');
 const postData = require("../data/posts");
 
 const constructorMethod = (app) => {
@@ -12,6 +13,7 @@ const constructorMethod = (app) => {
 
   app.use("/posts", postRoutes);
   app.use("/users", userRoutes);
+  app.use("/comment", commentRoutes);
 
   app.use("*", (req, res) => {
     res.sendStatus(404);
