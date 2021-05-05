@@ -18,7 +18,7 @@ router.get('/login', async (req, res) => {
     res.render('users/login', {title: 'Log In'})
 })
 
-router.post('/login', async(res, req) => {
+router.post('/login', async(req, res) => {
     let errors = [];
     const username = xss(req.body.username.toLowerCase().trim());
     const password = xss(req.body.password.trim());
