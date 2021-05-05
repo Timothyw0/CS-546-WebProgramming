@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     if (req.session.user) {
         res.redirect('/feed');
     } else {
-        res.redirect('/login', {title: 'Log In'});
+        res.redirect('/login');
     }
 });
 
@@ -133,7 +133,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-router.get('/profile/:id', async (req, res) => {
+router.get('users/profile/:id', async (req, res) => {
     let errors = [];
     const userFound = await userData.getUserById(req.params.id)
     if(!userFound) {
@@ -172,14 +172,14 @@ router.get('/profile/:id', async (req, res) => {
     });
 });
 
-router.get('/profile/edit', async (req, res) => {
+router.get('users/profile/edit', async (req, res) => {
     res.render('users/edit', {
         title: 'Edit Profile',
         userInfo: req.session.user
     });
 });
 
-router.patch('/profile/edit', async (req, res) => {
+router.patch('users/profile/edit', async (req, res) => {
     const updateInfo = {};
     const reqBody =  {
         firstName: xss(req.body.firstName.trim()),
