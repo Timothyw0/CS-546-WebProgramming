@@ -1,4 +1,4 @@
-// const emailValidator = require('email-validator');
+const emailValidator = require('email-validator');
 const { ObjectId } = require('mongodb')
 function validString(string) {
     if(typeof string !== 'string' || !string) return false;
