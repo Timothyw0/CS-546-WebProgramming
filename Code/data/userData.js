@@ -42,7 +42,7 @@ async function createUser(firstName, lastName, username, email, dateOfBirth, pas
     if(!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
         throw 'Invalid date of birth.';
     }
-    if(!validation.validString(password)) throw 'Password must be a string';
+    if(!validation.validPassword(password)) throw 'Invalid Password';
 
     const allUsers = await getAllUsers();
     let usernameLowerCase = username.toLowerCase();
@@ -87,7 +87,7 @@ async function createSeedUser(_id, firstName, lastName, username, email, dateOfB
     if(!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
         throw 'Invalid date of birth.';
     }
-    if(!validation.validString(password)) throw 'Password must be a string';
+    if(!validation.validPassword(password)) throw 'Password must be a string';
 
     // const allUsers = await getAllUsers();
     // let usernameLowerCase = username.toLowerCase();

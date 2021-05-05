@@ -75,7 +75,7 @@ router.post('/signup', async (req, res) => {
     if(!validator.validString(newUser.firstName)) errors.push('Invalid first name.');
     if(!validator.validString(newUser.lastName)) errors.push('Invalid last name.');
     if(!validator.validString(newUser.username)) errors.push('Invalid username.');
-    if(!validator.validString(newUser.password)) errors.push('Invalid password.');
+    if(!validator.validPassword(newUser.password)) errors.push('Invalid password.');
     if(!validator.validEmail(newUser.email)) errors.push('Invalid email.');
     if(!validator.validDate(newUser.dateOfBirth)) errors.push('Invalid Date of Birth.');
 
