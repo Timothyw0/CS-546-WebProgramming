@@ -1,6 +1,8 @@
 const postRoutes = require("./posts");
 const userRoutes = require("./users");
 const postData = require("../data/posts");
+const recipesroutes = require('./recipes');
+const
 
 const constructorMethod = (app) => {
   app.use("/feed", async (req, res) => {
@@ -12,6 +14,7 @@ const constructorMethod = (app) => {
 
   app.use("/posts", postRoutes);
   app.use("/users", userRoutes);
+  app.use('/recipes', recipesroutes);
 
   app.use("*", (req, res) => {
     res.sendStatus(404);
