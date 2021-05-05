@@ -1,4 +1,4 @@
-const emailValidator = require('email-validator');
+// const emailValidator = require('email-validator');
 const { ObjectId } = require('mongodb')
 function validString(string) {
     if(typeof string !== 'string' || !string) return false;
@@ -41,10 +41,27 @@ function validId(id) {
     return true;
 }
 
+function validPassword(password) {
+    if(!validString(password)) return false;
+    if (password.length < 8) return false;
+    if (password === password.toLowerCase()) return false;
+
+    let pwSplit = password.split('');
+    let count = 0;
+    for(let char of pwSplit) {
+        let numCheck = parseInt(char);
+        if(typeof numCheck === 'number') count += 1
+    }
+
+    if (count < 1 ) return false;
+    return true
+}
+
 module.exports = {
     validString,
     validEmail,
     validDate,
     validId,
-    validAge
+    validAge,
+    validPassword
 }

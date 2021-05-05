@@ -130,7 +130,7 @@ const main = async () => {
     "timothyw0", // username
     "timothyw0@gmail.com", //email
     "12/12/1994", //age
-    "passwordtim", //hashPassword
+    "Passwordtim1", //hashPassword
     [
       "60732518372d3ae3b871f315",
       "6073261f162457f64eddacfb",
@@ -153,7 +153,7 @@ const main = async () => {
     "Kishans", // username
     "kishans@gmail.com", //email
     "12/12/1994", //age
-    "passwordkishan", //hashPassword
+    "Passwordkishan1", //hashPassword
     [
       "607322eb50dc91a9bc14955b",
       "60732579ee3a5bd593f2771a",
@@ -178,7 +178,7 @@ const main = async () => {
     "wking", // username
     "wkingsbe@stevens.edu", //email
     "12/12/1994", //age
-    "passwordbilly", //hashPassword
+    "Passwordbilly1", //hashPassword
     [
       "607322eb50dc91a9bc14955b",
       "60732518372d3ae3b871f315",
@@ -203,7 +203,7 @@ const main = async () => {
     "achheta", // username
     "achheta@gmail.com", //email
     "12/12/1994", //age
-    "passwordavani", //hashPassword
+    "Passwordavani1", //hashPassword
     [
       "607322eb50dc91a9bc14955b",
       "60732518372d3ae3b871f315",
@@ -225,7 +225,7 @@ const main = async () => {
     "ppondo", // username
     "ppondo@stevens.edu", //email
     "12/12/1994", //age
-    "passwordpat", //hashPassword
+    "Passwordpat1", //hashPassword
     [
       "607322eb50dc91a9bc14955b",
       "60732518372d3ae3b871f315",
