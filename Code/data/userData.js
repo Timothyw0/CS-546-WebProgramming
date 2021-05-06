@@ -35,9 +35,9 @@ async function getAllUsers() {
 }
 
 async function createUser(firstName, lastName, username, email, dateOfBirth, password, friends = [], posts = [], recipes = [], comments = []) {
-    if(!validation.validString(firstName)) throw 'First Name must me a string.';
-    if(!validation.validString(lastName)) throw 'Last Name must me a string.';
-    if(!validation.validString(username)) throw 'Username must me a string.';
+    if(!validation.validString(firstName)) throw 'First Name must be a string.';
+    if(!validation.validString(lastName)) throw 'Last Name must be a string.';
+    if(!validation.validString(username)) throw 'Username must be a string.';
     if(!validation.validEmail(email)) throw 'Invalid email address.';
     if(!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
         throw 'Invalid date of birth.';
