@@ -24,8 +24,8 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     const recipeData = req.body;
     try {
-        const { creator, ingredients, tasteScale, youtubeLink } = recipeData;
-        const newRecipe = await data.addRecipe(creator, ingredients, tasteScale, youtubeLink);
+        const { alcohol, ingredients,recipeUser, tasteScale, youtubeLink } = recipeData;
+        const newRecipe = await data.addRecipe(alcohol, ingredients,recipeUser, tasteScale, youtubeLink);
         if (newRecipe) {
             return res.redirect('/recipes');
         }

@@ -3,13 +3,14 @@ const mongoCollections = require('../config/mongoCollections');
 const books = mongoCollections.books;
 const exportedMethods = {
 
-    async addRecipe(creator, ingredients, tasteScale, youtubeLink) {
+    async addRecipe(alcohol, ingredients,recipeUser, tasteScale, youtubeLink) {
 
         const recipesCollections = await recipes();
 
         const newRecipes = {
-            creator: creator,
+            alcohol: alcohol,
             ingredients: ingredients,
+            recipeUser:recipeUser,
             tasteScale: tasteScale,
             youtubeLink: youtubeLink,
 
