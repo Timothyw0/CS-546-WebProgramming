@@ -5,6 +5,23 @@ const exportedMethods = {
 
     async addRecipe(alcohol, ingredients,recipeUser, tasteScale, youtubeLink) {
 
+        if (typeof alcohol !== 'string') throw 'Alcohol is not a string';
+        if (typeof ingredients !== 'string') throw 'Ingredients is not a string';
+        if (typeof recipeUser !== 'string') throw 'Recipe is not a string';
+        if (typeof tasteScale !== 'number') throw 'Taste Scale is not a number';
+        if (typeof youtubeLink !== 'string') throw 'Youtube Link is not a string';
+
+        alcohol = alcohol.trim();
+        ingredients = ingredients.trim();
+        recipeUser = recipeUser.trim();
+        youtubeLink = youtubeLink.trim();
+
+        if (alcohol.length == 0 || ingredients.length == 0 || recipeUser.length == 0 || youtubeLink.length == 0)
+        throw 'Any of the field is empty';
+
+
+
+
         const recipesCollections = await recipes();
 
         const newRecipes = {
