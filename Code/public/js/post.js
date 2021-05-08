@@ -88,7 +88,7 @@
 
     // Everything looks good so we can make the request now
     let requestConfig = {
-      method: "PUT",
+      method: "PATCH",
       url: "/posts/edit",
       contentType: "application/json",
       async: false,
@@ -126,7 +126,7 @@
       let postID = editPostDiv.find("#postID").html();
 
       let requestConfig = {
-        method: "PUT",
+        method: "DELETE",
         url: "/posts/delete",
         contentType: "application/json",
         async: false,

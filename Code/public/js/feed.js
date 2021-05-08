@@ -164,6 +164,7 @@
     // Make the request and add the posts
     $.ajax(requestConfig).then(function (responseMessage) {
       // If there are no more posts to show, replace the hyperlink with text
+      console.log(responseMessage);
       if (responseMessage.length === 0) {
         fetchMorePosts.attr("hidden", true);
         $("#noMorePosts").removeAttr("hidden");

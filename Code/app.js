@@ -44,6 +44,14 @@ app.use(
 //   }
 // });
 
+// app.use("/posts", (req, res, next) => {
+//   if (!req.session.user) {
+//     return res.redirect("/");
+//   } else {
+//     next();
+//   }
+// });
+
 app.use("/login", (req, res, next) => {
   if (req.session.user) {
     return res.redirect("/feed");
