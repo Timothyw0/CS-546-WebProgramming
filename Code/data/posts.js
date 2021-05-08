@@ -219,7 +219,8 @@ async function getFriends(uid) {
     { _id: idObj },
     { projection: { _id: 0, friends: 1 } }
   );
-  const friendList = friendObject.friends;
+  let friendList = friendObject.friends;
+  friendList.push(cleanUID);
   return friendList;
 }
 

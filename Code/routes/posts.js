@@ -54,8 +54,12 @@ router.post("/add", async (req, res) => {
     xss(reqBody.recipe),
     xss(reqBody.text)
   );
+  console.log(postSuccess);
   if (postSuccess) {
-    await userData.addPostToUser(postSuccess.creator, postID);
+    await userData.addPostToUser(
+      postSuccess.creator,
+      postSuccess._id.toString()
+    );
     res.sendStatus(200);
   }
 });
@@ -69,7 +73,6 @@ router.get("/getMorePosts", async (req, res) => {
     throw `Error: No skip posts num provided in get partial posts route`;
   }
   let intSkipNum = parseInt(skipNum);
-  console.log("in get more posts...", intSkipNum);
   if (isNaN(intSkipNum)) {
     throw `Error: Must pass in number to getMorePosts route`;
   }
