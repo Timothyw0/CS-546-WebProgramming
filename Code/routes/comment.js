@@ -1,15 +1,73 @@
 const express = require("express");
 const router = express.Router();
 const commentData = require("../data/comment");
+const validator = require('../data/validation')
 
 let { ObjectId } = require("mongodb");
 
-router.get("/:id", async function (req, res) {
+router.get('/comment',async(req, res) => {
+    res.render('posts/CommentForm')
+})
+
+
+//GET localhost:3000/comment/{id}
+router.get("/comment/:id", async function (req, res) {
+  if (!req.params.id) {
+    throw `Error: Please provide id`;
+  }
+  let parsedId = ObjectId(req.params.id);
+  let idObj;
   try {
-    const commentInfo = await commentData.getCommentsById(req.params.id);
-    res.json(commentInfo);
+    idObj = parsedId;
   } catch (e) {
     res.status(404).json({ message: "Comment is not found!" });
+  }
+  const comment_info = await commentData.getCommentsById(req.params.id);
+  res.render("partials/viewComment", {
+    title: "comments",
+    comments: comment_info,
+  });
+});
+
+
+router.post("/comment/new", async (req, res) => {
+  let errors = [];
+  let postId = xss(req.body.postId.trim());
+  let comment = xss(req.body.text.trim());
+  let userId = req.session.user._id;
+  if (!req.session.user) errors.push("Must log in to comment.");
+  if(!validator.validString(postId)) errors.push('Invalid postId.');
+  if(!validator.validString(userId)) errors.push('Invalid userId.');
+  if(!validator.validString(comment)) errors.push('Invalid comments.');
+
+
+  if (errors.length > 0) {
+    res.status(500).json({
+      success: false,
+      errors: errors,
+      message: "Errors encountered",
+    });
+  }
+
+  try {
+    const commentInfo = await commentData.getCommentsById(
+      postId,
+      userId,
+      comment
+    );
+    // Get user info
+    let { username } = await userData.findUserByUsername(username);
+    let commentLayout = {
+      name: username,
+      comment: commentInfo.comment,
+    };
+    res.render("partials/comment", { layout: null, ...commentLayout });
+  } catch (e) {
+    errors.push(e);
+    res.status(500).json({
+      success: false,
+      errors: errors,
+    });
   }
 });
 
@@ -18,7 +76,7 @@ router.get("/", async function (req, res) {
     const commentList = await commentData.getAllComments();
     res.json(commentList);
   } catch (e) {
-    res.status(500).send();
+    res.status(500).json({ error: e });
   }
 });
 
@@ -27,11 +85,11 @@ router.get("/:id", async function (res, req) {
     const commentListBypost = await commentData.getAllCommentsOfpost;
     res.json(commentListBypost);
   } catch (e) {
-    res.status(500).send();
+    res.status(500).json({ error: e });
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/insertData", async (req, res) => {
   let commentInfo = req.body;
   if (!commentInfo) {
     res.status(400).json({ error: "You must provide comment" });
@@ -68,8 +126,8 @@ router.delete("/:id", async (req, res) => {
     res.status(404).json({ error: "No Comment found" });
   }
   try {
-    const msg = await commentData.removeComment(req.params.id);
-    res.status(200).send(msg);
+    const deleteData = await commentData.removeComment(req.params.id);
+    res.status(200).json({ "reviewId": `${req.params.id}`, "deleted": true });
   } catch (e) {
     res.status(500).json({ error: e });
   }
