@@ -52,7 +52,7 @@ router.post("/comment/new", async (req, res) => {
   try {
     const commentInfo = await commentData.createComment(postId,userId,comment);
  
-    let { username } = await userData.findUserByUsername(username);
+    let { username } = await userData.findUserByUsername(userId);
     let commentLayout = {
       name: username,
       comment: commentInfo.comment,
