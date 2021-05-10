@@ -18,16 +18,10 @@ router.post('/recipe', async (req, res) => {
 
     try {
         const recipes = await searchData.getRecipeByAlc(alcToSearch);
-        if(recipes.length > 0) {
-            return res.render('search/recipes', {
-                title: `Results for ${alcohol}`,
-                recipes: recipes 
-            });
-        } else {
-            return res.status(404).render('search/404', {
-                title: 'Not Found'
-            });
-        }
+        return res.render('search/recipes', {
+            title: `Results for ${alcohol}`,
+            recipes: recipes 
+        });
     } catch (e) {
         errors.push(e);
         res.render('search/recipes', {
