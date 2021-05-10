@@ -50,18 +50,14 @@ router.post("/comment/new", async (req, res) => {
   }
 
   try {
-    const commentInfo = await commentData.getCommentsById(
-      postId,
-      userId,
-      comment
-    );
-    // Get user info
+    const commentInfo = await commentData.createComment(postId,userId,comment);
+ 
     let { username } = await userData.findUserByUsername(username);
     let commentLayout = {
       name: username,
       comment: commentInfo.comment,
     };
-    res.render("partials/comment", { layout: null, ...commentLayout });
+    res.render("partials/viewComment", { layout: null, ...commentLayout });
   } catch (e) {
     errors.push(e);
     res.status(500).json({
