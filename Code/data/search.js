@@ -5,7 +5,7 @@ const { ObjectId } = require('mongodb');
 
 async function getRecipeByAlc (alcoholName) {
     if (!validation.validString(alcoholName)) throw 'Invalid alcohol name';
-    let cleanAlc = alcoholName.trim();
+    let cleanAlc = alcoholName.trim().toLowerCase();
     const recipeCollection = await recipes();
     const recipesList = await recipeCollection.find({alcohol: cleanAlc}).toArray();
     for (let recipe of recipesList) {
