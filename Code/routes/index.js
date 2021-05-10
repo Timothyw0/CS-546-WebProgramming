@@ -13,7 +13,7 @@ const constructorMethod = (app) => {
   });
 
   app.use("/posts", postRoutes);
-  app.use("/users", userRoutes);
+  app.use("/", userRoutes);
   app.use('/recipes', recipesroutes);
 
   app.use("*", (req, res) => {
