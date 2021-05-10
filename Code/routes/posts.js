@@ -28,7 +28,7 @@ router.get("/add", async (req, res) => {
 // GET localhost:3000/posts/all
 // Return all posts in JSON format, used for checking for new posts
 router.get("/all", async (req, res) => {
-  const allPosts = await postData.getAllPosts("607322eb50dc91a9bc14955b");
+  const allPosts = await postData.getFriendPosts("607322eb50dc91a9bc14955b");
   res.json(allPosts);
 });
 
