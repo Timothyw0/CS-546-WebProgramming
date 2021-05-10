@@ -1,6 +1,6 @@
 /* Add a black background color to the top navigation */
 .topnav {
-  background-color: lightslategray;
+  background-color: #282828;
   overflow: hidden;
   padding-left: 10px;
   padding-top: 5px;
@@ -58,7 +58,7 @@
 }
 
 body {
-  background: #f1f1f1;
+  background: #f5f5f5;
 }
 
 /* Create two unequal columns that floats next to each other */

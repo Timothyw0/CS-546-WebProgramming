@@ -137,7 +137,7 @@ async function getAllPosts(id) {
   return postList;
 }
 
-// Get partial posts function
+// Get partial posts function, only returns those in your friend's list
 // Input: User ID, N - number to skip
 // Output: List of 5 posts skipping N number of posts
 async function getPartialPosts(id, n) {
@@ -152,10 +152,12 @@ async function getPartialPosts(id, n) {
   if (typeof n !== "number") {
     throw "Error: n is not a number in getPartialPosts";
   }
+  // Get friend list
+  const friends = await getFriends(id);
   // Everything looks good, we can move on
   const postCollection = await posts();
   const postList = await postCollection
-    .find({})
+    .find({ creator: { $in: friends } })
     .sort({ date: -1, _id: 1 })
     .limit(3)
     .skip(n * 3)
@@ -196,6 +198,30 @@ async function getPartialPosts(id, n) {
     postList[i].comments = postComments;
   }
   return postList;
+}
+
+// Get friend's list function
+// Input: String of user ID
+// Output: Array of friend's list
+async function getFriends(uid) {
+  const userCollection = await users();
+  // Error check uid
+  let cleanUID = checkStr(uid);
+  // Try to convert uid into Object ID
+  let idObj;
+  try {
+    idObj = ObjectId(cleanUID);
+  } catch (e) {
+    throw e;
+  }
+  // Find the user's friend list
+  const friendObject = await userCollection.findOne(
+    { _id: idObj },
+    { projection: { _id: 0, friends: 1 } }
+  );
+  let friendList = friendObject.friends;
+  friendList.push(cleanUID);
+  return friendList;
 }
 
 // Get all posts based on your friends

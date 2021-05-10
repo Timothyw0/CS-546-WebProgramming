@@ -36,14 +36,14 @@ async function getAllUsers() {
 }
 
 async function createUser(firstName, lastName, username, email, dateOfBirth, password, friends = [], posts = [], recipes = [], comments = []) {
-    if(!validation.validString(firstName)) throw 'First Name must me a string.';
-    if(!validation.validString(lastName)) throw 'Last Name must me a string.';
-    if(!validation.validString(username)) throw 'Username must me a string.';
+    if(!validation.validString(firstName)) throw 'First Name must be a string.';
+    if(!validation.validString(lastName)) throw 'Last Name must be a string.';
+    if(!validation.validString(username)) throw 'Username must be a string.';
     if(!validation.validEmail(email)) throw 'Invalid email address.';
     if(!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
         throw 'Invalid date of birth.';
     }
-    if(!validation.validString(password)) throw 'Password must be a string';
+    if(!validation.validPassword(password)) throw 'Invalid Password';
 
     const allUsers = await getAllUsers();
     let usernameLowerCase = username.toLowerCase();
@@ -88,7 +88,7 @@ async function createSeedUser(_id, firstName, lastName, username, email, dateOfB
     if(!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
         throw 'Invalid date of birth.';
     }
-    if(!validation.validString(password)) throw 'Password must be a string';
+    if(!validation.validPassword(password)) throw 'Password must be a string';
 
     // const allUsers = await getAllUsers();
     // let usernameLowerCase = username.toLowerCase();
@@ -131,7 +131,7 @@ async function findUserByUsername(username) {
 
     const userCollection = await user();
     const userFound = await userCollection.findOne({ username: username })
-    if(userFound === null) throw 'User not found.';
+    if(userFound === null) return false;
 
     userFound._id = userFound._id.toString();
     return userFound;
@@ -230,6 +230,51 @@ async function addCommentToUser(userId, commentId) {
     return await getUserById(userId);
 }
 
+async function updateUser(userId, updatedUser) {
+    const userCollection = await user();
+    const userToBeUpdated = await getUserById(userId);
+    let updateObj = {};
+    if (!userToBeUpdated) throw 'No User Found'
+    if(!validation.validString(updatedUser.firstName)) throw 'Invalid First Name';
+    if(!validation.validString(updatedUser.lastName)) throw 'Invalid Last Name.';
+    if(!validation.validString(updatedUser.username)) throw 'Invalid Username.';
+    if(!validation.validEmail(updatedUser.email)) throw 'Invalid email address.';
+    if(!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
+        throw 'Invalid date of birth.';
+    }
+
+    if(updatedUser.firstName && updatedUser.firstName !== userToBeUpdated.firstName) {
+        updateObj.firstName = updatedUser.firstName;
+    }
+
+    if(updatedUser.lastName && updatedUser.lastName !== userToBeUpdated.lastName) {
+        updateObj.lastName = updatedUser.lastName;
+    }
+
+    if(updatedUser.username && updatedUser.username !== userToBeUpdated.username) {
+        updateObj.username = updatedUser.username;
+    }
+
+    if(updatedUser.email && updatedUser.email !== userToBeUpdated.email) {
+        updateObj.email = updatedUser.email;
+    }
+
+    if(updatedUser.dateOfBirth && updatedUser.dateOfBirth !== userToBeUpdated.dateOfBirth) {
+        updateObj.dateOfBirth = updatedUser.dateOfBirth;
+    }
+
+    const userInfo = await userCollection.updateOne(
+        { _id: ObjectId(userId) },
+        { $set: updateObj }
+    );
+
+    if (!userInfo.matchedCount && !userInfo.modifiedCount) {
+        throw 'Could not update user';
+    }
+
+    return await getUserById(userId);
+}
+
 module.exports = {
     getUserById,
     getAllUsers,
@@ -239,5 +284,6 @@ module.exports = {
     addFriendToUser,
     addPostToUser,
     addRecipeToUser,
-    addCommentToUser
+    addCommentToUser,
+    updateUser
 }

@@ -1,5 +1,6 @@
 const postRoutes = require("./posts");
 const userRoutes = require("./users");
+const commentRoutes = require('./comment');
 const postData = require("../data/posts");
 const recipesroutes = require('./recipes');
 const

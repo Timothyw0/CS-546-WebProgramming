@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const xss = require("xss");
 const postData = require("../data/posts");
+const userData = require("../data/userData");
 let { ObjectId } = require("mongodb");
 
 /*
@@ -53,7 +54,12 @@ router.post("/add", async (req, res) => {
     xss(reqBody.recipe),
     xss(reqBody.text)
   );
+  console.log(postSuccess);
   if (postSuccess) {
+    await userData.addPostToUser(
+      postSuccess.creator,
+      postSuccess._id.toString()
+    );
     res.sendStatus(200);
   }
 });
@@ -203,9 +209,9 @@ router.get("/edit/:id", async (req, res) => {
   res.render("posts/editPost", { postInfo: postInfo });
 });
 
-// PUT localhost:3000/posts/edit/
+// PATCH localhost:3000/posts/edit/
 // User clicked just filled out edit post form with new text
-router.put("/edit", async (req, res) => {
+router.patch("/edit", async (req, res) => {
   let reqBody = req.body;
   // Error check the text and recipe input
   if (reqBody.text.trim().length === 0) {
@@ -252,9 +258,9 @@ router.put("/edit", async (req, res) => {
   }
 });
 
-// PUT localhost:3000/posts/delete
+// DELETE localhost:3000/posts/delete
 // User just confirmed to delete the post
-router.put("/delete", async (req, res) => {
+router.delete("/delete", async (req, res) => {
   let reqBody = req.body;
   // Error check id
   let cleanID = checkStr(reqBody.postID);

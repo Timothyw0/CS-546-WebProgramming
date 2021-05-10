@@ -1,0 +1,34 @@
+<div class="comment">
+    <img class="comment-img"src="public/images/comments.png" alt="">
+    <ul id="comments"
+        class="comments">
+    </ul>
+
+    <h2> Add Comments.....</h2>
+    <form id="comment_form">
+        <div class="form-group">
+            <input hidden="hidden" name="postId" value={{postInfo._id}}>
+            <label for="message-text" class="control-label"></label>
+            <textarea
+                name="comment"
+                class="form-control"
+                rows="4"
+                cols="50"
+                id="message-text"
+                placeholder="Say something about this post..."
+            ></textarea>
+        </div>
+        <div class="footer">
+            <button
+                id="addComment"
+                type="submit"
+                class="btn"
+            >Post Comment</button>
+            <button
+                id="closeComment"
+                type="button"
+                class="btn btn-secondary"
+            >Cancel</button>
+        </div>
+    </form>
+</div>
