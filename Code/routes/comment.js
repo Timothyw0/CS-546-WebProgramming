@@ -6,7 +6,7 @@ const validator = require('../data/validation')
 let { ObjectId } = require("mongodb");
 
 router.get('/comment',async(req, res) => {
-    res.render('posts/CommentForm')
+    res.render('posts/commentForm')
 })
 
 
