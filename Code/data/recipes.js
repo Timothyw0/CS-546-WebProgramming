@@ -1,44 +1,49 @@
 const { recipes } = require('../config/mongoCollections');
 const mongoCollections = require('../config/mongoCollections');
-const books = mongoCollections.books;
 const exportedMethods = {
 
-    async addRecipe(alcohol, ingredients,recipeUser, tasteScale, youtubeLink) {
+    async addRecipe(UserId,recipeName, alcohol, ingredients, recipeBody, tasteScale, youtubeLink) {
 
-        if (typeof alcohol !== 'string') throw 'Alcohol is not a string';
-        if (typeof ingredients !== 'string') throw 'Ingredients is not a string';
-        if (typeof recipeUser !== 'string') throw 'Recipe is not a string';
-        if (typeof tasteScale !== 'number') throw 'Taste Scale is not a number';
-        if (typeof youtubeLink !== 'string') throw 'Youtube Link is not a string';
+        try {
+            if (typeof recipeName !== 'string') throw 'Recipe Name is not a string';
+            if (typeof alcohol !== 'string') throw 'Alcohol is not a string';
+            if (typeof ingredients !== 'string') throw 'Ingredients is not a string';
+            if (typeof recipeBody !== 'string') throw 'Recipe is not a string';
+            if (typeof tasteScale !== "string") throw 'Taste Scale is not a number';
+            if (typeof youtubeLink !== 'string') throw 'Youtube Link is not a string';
 
-        alcohol = alcohol.trim();
-        ingredients = ingredients.trim();
-        recipeUser = recipeUser.trim();
-        youtubeLink = youtubeLink.trim();
+            recipeName = recipeName.trim();
+            alcohol = alcohol.trim();
+            ingredients = ingredients.trim();
+            recipeBody = recipeBody.trim();
+            youtubeLink = youtubeLink.trim();
 
-        if (alcohol.length == 0 || ingredients.length == 0 || recipeUser.length == 0 || youtubeLink.length == 0)
-        throw 'Any of the field is empty';
+            if (recipeName.length == 0 || alcohol.length == 0 || ingredients.length == 0 || recipeBody.length == 0)
+                throw 'Any of the field is empty';
 
+            const recipesCollections = await recipes();
 
+            const newRecipes = {
+                UserId:UserId,
+                recipeName: recipeName,
+                alcohol: alcohol,
+                ingredients: ingredients,
+                recipeBody: recipeBody,
+                tasteScale: tasteScale,
+                youtubeLink: youtubeLink,
 
+            };
 
-        const recipesCollections = await recipes();
+            const newInsertInformation = await recipesCollections.insertOne(newRecipes);
+            if (newInsertInformation.insertedCount === 0) throw 'Could not add recipes';
 
-        const newRecipes = {
-            alcohol: alcohol,
-            ingredients: ingredients,
-            recipeUser:recipeUser,
-            tasteScale: tasteScale,
-            youtubeLink: youtubeLink,
-
-        };
-
-        const newInsertInformation = await recipesCollections.insertOne(newRecipes);
-        if (newInsertInformation.insertedCount === 0) throw 'Could not add recipes';
-
-        var temp = newInsertInformation.insertedId;
-        const recipe = await this.getRecipeById(temp);
-        return recipe;
+            var temp = newInsertInformation.insertedId;
+            const recipe = await this.getRecipeById(temp);
+            return recipe;
+        }
+        catch (e) {
+            res.status(500).json({ error: e });
+        }
     },
 
     async getRecipeById(id) {
@@ -47,7 +52,7 @@ const exportedMethods = {
         let parsedId = ObjectId(id);
         const recipe = await recipesCollections.findOne({ _id: parsedId });
         recipe._id = recipe._id.toString();
-        if (!recipe) throw 'book not found';
+        if (!recipe) throw 'Recipe not found';
         return recipe;
     },
 
@@ -86,7 +91,7 @@ const exportedMethods = {
         return await this.getRecipeById(id);
     },
 
-    
+
 }
 
 module.exports = exportedMethods;

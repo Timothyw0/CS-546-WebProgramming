@@ -2,6 +2,7 @@ const connection = require("../config/mongoConnection");
 let { ObjectId } = require("mongodb");
 const users = require("../data/userData");
 const comment = require('../data/comment');
+const  recipes  = require("../data/recipes");
 
 const main = async () => {
   const db = await connection();
@@ -145,6 +146,9 @@ const main = async () => {
 
   const timComment = await comment.createComment("607322eb50dc91a9bc14955b", "606f054262b48cb2e8dc5af7", "nice") //tim comment
   const addedTim = await users.addCommentToUser('607322eb50dc91a9bc14955b', timComment._id.toString());
+  const timRecipe= await recipes.addRecipe("607322eb50dc91a9bc14955b","Timothy recipe","whiskey","lemon,soda","steps for recipes","3","XYZLINK");
+  const addRecipetoTim=await users.addRecipeToUser("607322eb50dc91a9bc14955b",timRecipe._id.toString());
+
   // kishan user info
   const kishan = await users.createSeedUser(
     ObjectId("60732518372d3ae3b871f315"), //_id
@@ -168,6 +172,8 @@ const main = async () => {
 
   const kishanComment = await comment.createComment("60732518372d3ae3b871f315", "606f054262b48cb2e8dc5af7", "very cool!") //tim comment
   const addedKishan = await users.addCommentToUser('60732518372d3ae3b871f315', kishanComment._id.toString());
+  const kishanRecipe= await recipes.addRecipe("60732518372d3ae3b871f315","Kishan recipe","beer","soda","steps for recipes","2","XYZLINK");
+  const addRecipetoKishan=await users.addRecipeToUser("60732518372d3ae3b871f315",kishanRecipe._id.toString());
   
 
   // billy user info
@@ -193,6 +199,8 @@ const main = async () => {
 
   const billyComment = await comment.createComment("60732579ee3a5bd593f2771a", "606f04cf30078a027490273e", "sounds delicious!") //tim comment
   const addedBilly = await users.addCommentToUser('60732579ee3a5bd593f2771a', billyComment._id.toString());
+  const billyRecipe= await recipes.addRecipe("60732579ee3a5bd593f2771a","Billy recipe","vodka","olives","steps for recipes","6","XYZLINK");
+  const addRecipetoBilly=await users.addRecipeToUser("60732579ee3a5bd593f2771a",billyRecipe._id.toString());
   
   
   // avani user info
@@ -216,6 +224,8 @@ const main = async () => {
   );
   const avaniComment = await comment.createComment("60732f6f9344955ba436a1bc", "606f05bb4e7e233e61f8beb7", "looks super good.") //avani comment
   const addedAvani = await users.addCommentToUser('60732f6f9344955ba436a1bc', avaniComment._id.toString());
+  const avaniRecipe= await recipes.addRecipe("60732f6f9344955ba436a1bc","Avani recipe","rum","orange","steps for recipes","4","XYZLINK");
+  const addRecipetoAvani=await users.addRecipeToUser("60732f6f9344955ba436a1bc",avaniRecipe._id.toString());
   
   // pat user info
   const pat = await users.createSeedUser(
@@ -239,6 +249,8 @@ const main = async () => {
   );
   const patComment = await comment.createComment("6073261f162457f64eddacfb", "606f05f5cba5cb48b03f2abc", "wooahh") //avani comment
   const addedPat = await users.addCommentToUser('6073261f162457f64eddacfb', patComment._id.toString());
+  const patRecipe= await recipes.addRecipe("6073261f162457f64eddacfb","Pat recipe","gin","pineapple,soda","steps for recipes","6","XYZLINK");
+  const addRecipetoPat=await users.addRecipeToUser("6073261f162457f64eddacfb",patRecipe._id.toString());
   
   console.log(tim);
   console.log(kishan);
