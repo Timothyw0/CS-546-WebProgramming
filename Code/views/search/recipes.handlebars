@@ -3,27 +3,27 @@
     <p class="search-info">Enter your a spirit and we will show you the recipes for that spirit that have been created on our platform!</p>
     <form method="POST" action="/search/recipe" id="search-form">
         <label for="alcohol">Alcohol Name:</label>
-        <input id="alcohol" name="alcohol" type="text">
+        <input id="alcohol" name="alcohol" type="text" value={{searchTerm}}>
         <input id="search-submit" type="submit">
-        {{#if errors}} 
         <div id="errors">
-                {{#each errors}}
+        {{#if errors}} 
+            {{#each errors}}
                 <p class="error-item">{{this}}</p>
-                {{/each}}
-        </div>
+            {{/each}}
         {{/if}}
+        </div>
     </form>
     {{#if recipes}} 
     <div id="result-list">
         {{#each recipes}}
             <div class="result-list-item">
-                <p>Recipe Name: {{this.recipeName}}</p>
-                <p>Alcohol: {{this.alcohol}}</p>
-                <p>Ingredients: {{this.ingredients}}</p>
-                <p>Instructions: {{this.recipe}}</p>
-                <p>Taste Scale: {{this.tasteScale}}</p>
+                <p class="list-item-info">Alcohol: {{this.alcohol}}</p>
+                <p class="list-item-info">Recipe Name: {{this.recipeName}}</p>
+                <p class="list-item-info">Ingredients: {{this.ingredients}}</p>
+                <p class="list-item-info">Instructions: {{this.recipe}}</p>
+                <p class="list-item-info">Taste Scale: {{this.tasteScale}}</p>
                 {{#if this.youtubeLink}}
-                    <p>Youtube Link: {{this.youtubeLink}}</p>
+                    <a class="list-item-link" href="{{this.youtubeLink}}">Youtube Link</a>
                 {{/if}} 
             </div>
         {{/each}}

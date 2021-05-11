@@ -4,12 +4,11 @@
     const errors = $('#errors');
 
     form.submit(function(event) {
-        if ($('error')) $('error').remove();
-        if (errors) errors.remove();
+        if (errors) errors.empty();
         console.log(alcohol[0].value);
         if(!alcohol[0].value || alcohol[0].value.trim().length < 1) {
             event.preventDefault();
-            form.append('<p class=error >Invalid Search Term</p>')
+            errors.append('<p class=error-item >Invalid Search Term</p>')
             return;
         } 
     });
