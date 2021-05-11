@@ -11,8 +11,10 @@
         <label>Recipe (Optional)
             <br />
             <select id="addPostRecipe" class="form-control">
-                <option value="none">None</option>
-                <option value="asdf">asdf</option>
+                <option value="None">None</option>
+                {{#each allRecipes}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
             </select>
         </label>
         <br />

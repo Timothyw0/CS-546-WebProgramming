@@ -3,6 +3,7 @@ const router = express.Router();
 const xss = require("xss");
 const postData = require("../data/posts");
 const userData = require("../data/userData");
+const recipeData = require("../data/recipes");
 let { ObjectId } = require("mongodb");
 
 /*
@@ -22,13 +23,19 @@ function checkStr(str, param) {
 // GET localhost:3000/posts/add
 // Renders an HTML page with a form to add a new post using AJAX
 router.get("/add", async (req, res) => {
-  res.render("posts/addPost");
+  // Get all recipes and use that to render the select
+  const recipes = await recipeData.getAllRecipes();
+  let recipeNames = [];
+  for (let i = 0; i < recipes.length; i++) {
+    recipeNames.push(recipes[i].name);
+  }
+  res.render("posts/addPost", { allRecipes: recipeNames });
 });
 
 // GET localhost:3000/posts/all
 // Return all posts in JSON format, used for checking for new posts
 router.get("/all", async (req, res) => {
-  const allPosts = await postData.getFriendPosts("607322eb50dc91a9bc14955b");
+  const allPosts = await postData.getFriendPosts(req.session.user._id);
   res.json(allPosts);
 });
 
@@ -37,6 +44,7 @@ router.get("/all", async (req, res) => {
 router.post("/add", async (req, res) => {
   let reqBody = req.body;
   // Error check the text and recipe input
+  console.log(reqBody);
   if (reqBody.text.trim().length === 0) {
     throw `Error: No text provided to add new post`;
   }
@@ -48,9 +56,8 @@ router.post("/add", async (req, res) => {
     reqBody.recipe = "";
   }
   // Everything looks good, let's call the db function
-  // TODO: User creator ID needs to be inputted
   const postSuccess = await postData.addPost(
-    "607322eb50dc91a9bc14955b",
+    req.session.user._id,
     xss(reqBody.recipe),
     xss(reqBody.text)
   );
@@ -76,10 +83,7 @@ router.get("/getMorePosts", async (req, res) => {
   if (isNaN(intSkipNum)) {
     throw `Error: Must pass in number to getMorePosts route`;
   }
-  let data = await postData.getPartialPosts(
-    "607322eb50dc91a9bc14955b",
-    intSkipNum
-  );
+  let data = await postData.getPartialPosts(req.session.user._id, intSkipNum);
   res.json(data);
 });
 
@@ -102,7 +106,7 @@ router.get("/:id", async (req, res) => {
   }
   res.render("posts/viewPost", {
     // TODO: Add user session ID here
-    data: await postData.getPostById(req.params.id, "607322eb50dc91a9bc14955b"),
+    data: await postData.getPostById(req.params.id, req.session._id),
   });
 });
 
@@ -111,7 +115,7 @@ router.get("/:id", async (req, res) => {
 router.post("/like", async (req, res) => {
   let reqBody = req.body;
   let postID = reqBody.id;
-  let userID = reqBody.userID;
+  let userID = req.session.user._id;
   // Error check the body
   if (!postID) {
     throw `Error: No post ID provided in like post route`;
@@ -130,7 +134,7 @@ router.post("/like", async (req, res) => {
     res.sendStatus(404);
   }
   // Error check userID
-  let cleanID2 = checkStr(reqBody.userID);
+  let cleanID2 = checkStr(userID);
   // Try to convert uid into Object ID
   let idObj2;
   try {
@@ -148,7 +152,7 @@ router.post("/like", async (req, res) => {
 router.post("/unlike", async (req, res) => {
   let reqBody = req.body;
   let postID = reqBody.id;
-  let userID = reqBody.userID;
+  let userID = req.session.user._id;
   // Error check the body
   if (!postID) {
     throw `Error: No post ID provided in like post route`;
@@ -167,7 +171,7 @@ router.post("/unlike", async (req, res) => {
     res.sendStatus(404);
   }
   // Error check userID
-  let cleanID2 = checkStr(reqBody.userID);
+  let cleanID2 = checkStr(userID);
   // Try to convert uid into Object ID
   let idObj2;
   try {
@@ -200,7 +204,7 @@ router.get("/edit/:id", async (req, res) => {
   // TODO: Pass in user session ID
   const postInfo = await postData.getPostById(
     req.params.id,
-    "607322eb50dc91a9bc14955b"
+    req.session.user._id
   );
   if (!postInfo.canEdit) {
     res.sendStatus(403);
@@ -238,7 +242,7 @@ router.patch("/edit", async (req, res) => {
   // TODO: Pass in user session ID
   let oldPost = await postData.getPostById(
     reqBody.postID,
-    "607322eb50dc91a9bc14955b"
+    req.session.user._id
   );
   if (!oldPost.canEdit) {
     res.sendStatus(403);
@@ -276,7 +280,7 @@ router.delete("/delete", async (req, res) => {
   // TODO: Pass in user session ID
   let oldPost = await postData.getPostById(
     reqBody.postID,
-    "607322eb50dc91a9bc14955b"
+    req.session.user._id
   );
   if (!oldPost.canEdit) {
     res.sendStatus(403);

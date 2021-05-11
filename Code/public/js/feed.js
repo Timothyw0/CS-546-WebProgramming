@@ -22,6 +22,8 @@
     <!-- if recipe block -->
     {{#if recipe}}
     <p>{{ recipe }}</p>
+    <iframe width="420" height="315" src="https://www.youtube.com/embed/tgbNymZ7vqY">
+    </iframe>
     {{/if}}
     <!-- end if block -->
     <br />
@@ -94,7 +96,6 @@
           async: false,
           data: JSON.stringify({
             id: postID,
-            userID: "607322eb50dc91a9bc14955b",
           }),
         };
 
@@ -120,7 +121,6 @@
           async: false,
           data: JSON.stringify({
             id: postID,
-            userID: "607322eb50dc91a9bc14955b",
           }),
         };
 
