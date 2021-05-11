@@ -48,7 +48,7 @@ const main = async () => {
   };
 
   const listOfPosts = [];
-
+  const listOfComments = [];
   // Tim's post with recipe
   const timPost = makePost(
     (id = ObjectId("606f04246c785b72ecce993f")),
@@ -144,6 +144,7 @@ const main = async () => {
   );
 
   const timComment = await comment.createComment("607322eb50dc91a9bc14955b", "606f054262b48cb2e8dc5af7", "nice") //tim comment
+  listOfComments.push(timComment);
   const addedTim = await users.addCommentToUser('607322eb50dc91a9bc14955b', timComment._id.toString());
   // kishan user info
   const kishan = await users.createSeedUser(
@@ -166,7 +167,8 @@ const main = async () => {
     "" //profilePicture
   );
 
-  const kishanComment = await comment.createComment("60732518372d3ae3b871f315", "606f054262b48cb2e8dc5af7", "very cool!") //tim comment
+  const kishanComment = await comment.createComment("60732518372d3ae3b871f315", "606f054262b48cb2e8dc5af7", "very cool!") //kishan comment
+  listOfComments.push(kishanComment);
   const addedKishan = await users.addCommentToUser('60732518372d3ae3b871f315', kishanComment._id.toString());
   
 
@@ -191,7 +193,8 @@ const main = async () => {
     "" //profilePicture
   );
 
-  const billyComment = await comment.createComment("60732579ee3a5bd593f2771a", "606f04cf30078a027490273e", "sounds delicious!") //tim comment
+  const billyComment = await comment.createComment("60732579ee3a5bd593f2771a", "606f04cf30078a027490273e", "sounds delicious!") //billy comment
+  listOfComments.push(billyComment);
   const addedBilly = await users.addCommentToUser('60732579ee3a5bd593f2771a', billyComment._id.toString());
   
   
@@ -215,6 +218,7 @@ const main = async () => {
     "" //profilePicture
   );
   const avaniComment = await comment.createComment("60732f6f9344955ba436a1bc", "606f05bb4e7e233e61f8beb7", "looks super good.") //avani comment
+  listOfComments.push(avaniComment)
   const addedAvani = await users.addCommentToUser('60732f6f9344955ba436a1bc', avaniComment._id.toString());
   
   // pat user info
@@ -237,8 +241,10 @@ const main = async () => {
     [], //comments
     "" //profilePicture
   );
-  const patComment = await comment.createComment("6073261f162457f64eddacfb", "606f05f5cba5cb48b03f2abc", "wooahh") //avani comment
+  const patComment = await comment.createComment("6073261f162457f64eddacfb", "606f05f5cba5cb48b03f2abc", "wooahh") //patrick comment
+  listOfComments.push(patComment)
   const addedPat = await users.addCommentToUser('6073261f162457f64eddacfb', patComment._id.toString());
+  console.log(listOfComments)
   
   console.log(tim);
   console.log(kishan);
