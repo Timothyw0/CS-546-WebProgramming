@@ -136,7 +136,7 @@ const main = async () => {
       "6073261f162457f64eddacfb",
       "60732579ee3a5bd593f2771a",
       "60732f6f9344955ba436a1bc",
-    ], //friends
+    ], //following
     ["606f04246c785b72ecce993f"], // posts
     [], //recipes
     [], //comments
@@ -159,7 +159,7 @@ const main = async () => {
       "60732579ee3a5bd593f2771a",
       "6073261f162457f64eddacfb",
       "60732f6f9344955ba436a1bc",
-    ], //friends
+    ], //following
     ["606f04cf30078a027490273e"], // posts
     [], //recipes
     [], //comments
@@ -184,7 +184,7 @@ const main = async () => {
       "60732518372d3ae3b871f315",
       "6073261f162457f64eddacfb",
       "60732f6f9344955ba436a1bc",
-    ], //friends
+    ], //following
     ["606f054262b48cb2e8dc5af7"], // posts
     [], //recipes
     [], //comments
@@ -208,7 +208,7 @@ const main = async () => {
       "607322eb50dc91a9bc14955b",
       "60732518372d3ae3b871f315",
       "60732579ee3a5bd593f2771a",
-    ], //friends
+    ], //following
     ["606f05f5cba5cb48b03f2abc"], // posts
     [], //recipes
     [], //comments
@@ -231,7 +231,7 @@ const main = async () => {
       "60732518372d3ae3b871f315",
       "60732579ee3a5bd593f2771a",
       "60732f6f9344955ba436a1bc",
-    ], //friends
+    ], //following
     ["606f05bb4e7e233e61f8beb7"], // posts
     [], //recipes
     [], //comments

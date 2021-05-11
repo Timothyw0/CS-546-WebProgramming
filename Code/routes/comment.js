@@ -33,7 +33,7 @@ router.get("/comment/:id", async function (req, res) {
 router.post("/comment/new", async (req, res) => {
   let errors = [];
   let postId = xss(req.body.postId.trim());
-  let comment = xss(req.body.text.trim());
+  let comment = xss(req.body.comment.trim());
   let userId = req.session.user._id;
   if (!req.session.user) errors.push("Must log in to comment.");
   if(!validator.validString(postId)) errors.push('Invalid postId.');

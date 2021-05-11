@@ -1,0 +1,35 @@
+<div class="search-container">
+    <h1 class="search-title">Search by Alcohol</h1>
+    <p class="search-info">Enter your a spirit and we will show you the recipes for that spirit that have been created on our platform!</p>
+    <form method="POST" action="/search/recipe" id="search-form">
+        <label for="alcohol">Alcohol Name:</label>
+        <input id="alcohol" name="alcohol" type="text" value={{searchTerm}}>
+        <input class="btn btn-primary btn-sm mb-1" id="search-submit" type="submit">
+        <div id="errors">
+        {{#if errors}} 
+            {{#each errors}}
+                <p class="error-item">{{this}}</p>
+            {{/each}}
+        {{/if}}
+        </div>
+    </form>
+    {{#if recipes}} 
+    <div id="result-list">
+        {{#each recipes}}
+            <div class="result-list-item">
+                <p class="list-item-info">Alcohol: {{this.alcohol}}</p>
+                <p class="list-item-info">Recipe Name: {{this.recipeName}}</p>
+                <p class="list-item-info">Ingredients: {{this.ingredients}}</p>
+                <p class="list-item-info">Instructions: {{this.recipe}}</p>
+                <p class="list-item-info">Taste Scale: {{this.tasteScale}}</p>
+                {{#if this.youtubeLink}}
+                    <a class="list-item-link" href="{{this.youtubeLink}}">Youtube Link</a>
+                {{/if}} 
+            </div>
+        {{/each}}
+    </div>
+    {{/if}}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <script src="/public/js/searchRecipe.js"></script>
+</div>

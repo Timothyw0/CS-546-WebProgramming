@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const user = mongoCollections.user;
 const post = require('../data/posts');
 const comment = require('../data/comment');
+const recipesData = require('../data/recipes')
 // const recipe = require('../data/recipe');
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
@@ -34,7 +35,7 @@ async function getAllUsers() {
     return allUsers;
 }
 
-async function createUser(firstName, lastName, username, email, dateOfBirth, password, friends = [], posts = [], recipes = [], comments = []) {
+async function createUser(firstName, lastName, username, email, dateOfBirth, password, following = [], posts = [], recipes = [], comments = []) {
     if(!validation.validString(firstName)) throw 'First Name must be a string.';
     if(!validation.validString(lastName)) throw 'Last Name must be a string.';
     if(!validation.validString(username)) throw 'Username must be a string.';
@@ -64,7 +65,7 @@ async function createUser(firstName, lastName, username, email, dateOfBirth, pas
         email: email,
         dateOfBirth: dateOfBirth,
         hashedPassword: hashedPassword,
-        friends: friends,
+        following: following,
         posts: posts,
         recipes: recipes,
         comments: comments,
@@ -79,7 +80,7 @@ async function createUser(firstName, lastName, username, email, dateOfBirth, pas
     return addedUser;
 }
 
-async function createSeedUser(_id, firstName, lastName, username, email, dateOfBirth, password, friends = [], posts = [], recipes = [], comments = []) {
+async function createSeedUser(_id, firstName, lastName, username, email, dateOfBirth, password, following = [], posts = [], recipes = [], comments = []) {
     if(!validation.validString(firstName)) throw 'First Name must me a string.';
     if(!validation.validString(lastName)) throw 'Last Name must me a string.';
     if(!validation.validString(username)) throw 'Username must me a string.';
@@ -110,7 +111,7 @@ async function createSeedUser(_id, firstName, lastName, username, email, dateOfB
         email: email,
         dateOfBirth: dateOfBirth,
         hashedPassword: hashedPassword,
-        friends: friends,
+        following: following,
         posts: posts,
         recipes: recipes,
         comments: comments,
@@ -136,22 +137,22 @@ async function findUserByUsername(username) {
     return userFound;
 }
 
-async function addFriendToUser(userId, friendId) {
-    if (!validation.validId(userId) || !validation.validId(friendId)) throw 'invalid user id';
+async function addFollowingToUser(userId, followId) {
+    if (!validation.validId(userId) || !validation.validId(followId)) throw 'invalid user id';
 
     const currentUser = await getUserById(userId);
-    const friendUser = await getUserById(friendId);
+    const followUser = await getUserById(followId);
 
     if(currentUser === null) throw 'User not found';
-    if(friendUser === null) throw 'User not found';
+    if(followUser === null) throw 'User not found';
 
-    for (let userFriend of currentUser.friends) {
-        if(friendId === userFriend) throw 'Already friends with this user.';
+    for (let userFollow of currentUser.following) {
+        if(followId === userFollow) throw 'Already following with this user.';
     }
 
     const userCollection = await user();
-    const updatedUser = userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { friends: friendId } });
-    if(updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0) throw 'Friend could not be added.';
+    const updatedUser = userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { following: followId } });
+    if(updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0) throw 'Could not follow user.';
 
     return await getUserById(userId);
 }
@@ -184,10 +185,17 @@ async function addRecipeToUser(userId, recipeId) {
 
     const currentUser = await getUserById(userId);
     //const recipeToAdd = await getRecipeById(recipeId);
+    //userID needs to be added in recipe collection (comment by kishan)
+    const recipeToAdd = await recipesData.getRecipeById(recipeId);
+
 
     if(currentUser === null) throw 'User not found';
     //if(recipeToAdd === null) throw 'Recipe not found';
     //if(recipeToAdd.userId !== userId) throw 'Recipe not created by this user';
+    if(recipeToAdd === null) throw 'Recipe not found';
+    if(recipeToAdd.userId !== userId) throw 'Recipe not created by this user';
+
+
 
     for (let userRecipe of currentUser.recipes) {
         if(recipeId === userRecipe) throw 'This recipe is already included';
@@ -273,7 +281,7 @@ module.exports = {
     createUser,
     createSeedUser,
     findUserByUsername,
-    addFriendToUser,
+    addFollowingToUser,
     addPostToUser,
     addRecipeToUser,
     addCommentToUser,
