@@ -86,8 +86,8 @@ router.post('/signup', async (req, res) => {
         });
     }
 
+    const userCheck = await userData.findUserByUsername(newUser.username);
     try {
-        let userCheck = await userData.findUserByUsername(newUser.username);
         if (userCheck) throw 'Username already in use.';
     } catch (e) {
         errors.push(e);
