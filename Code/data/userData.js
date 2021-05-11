@@ -2,7 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const user = mongoCollections.user;
 const post = require('../data/posts');
 const comment = require('../data/comment');
-const recipes=require('../data/recipes')
+const recipesData = require('../data/recipes')
 // const recipe = require('../data/recipe');
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
@@ -186,7 +186,7 @@ async function addRecipeToUser(userId, recipeId) {
     const currentUser = await getUserById(userId);
     //const recipeToAdd = await getRecipeById(recipeId);
     //userID needs to be added in recipe collection (comment by kishan)
-    const recipeToAdd = await recipes.getRecipeById(recipeId);
+    const recipeToAdd = await recipesData.getRecipeById(recipeId);
 
 
     if(currentUser === null) throw 'User not found';
