@@ -189,6 +189,56 @@ form {
   margin-bottom: 15px;
 }
 
+/* comment_form styling */
+
+.comment {
+  display: flex;
+  height: 95vh;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Inter';
+}
+
+.comment-img {
+  position: fixed;
+  opacity: 0.1;
+  right: -20px;
+  top: -34px;
+  width: 290px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background: #45a049;
+  border-radius: 4px;
+  color: white;
+  border: 1px solid #347737;
+}
+
+.btn-secondary {
+  background-color: lightgray;
+  color: black;
+  margin-left: 7px;
+}
+
+textarea {
+  width: 500px;
+  height: 150px;
+  margin: 0;
+  border: 1px solid #CCC;
+  border-radius: 10px;
+  font-size: 13px;
+  font-family: monospace;
+  resize: vertical;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.footer {
+  text-align: right;
+}
+
 /* Comment div styling */
 .commentDiv {
   background-color: #f1f1f1;

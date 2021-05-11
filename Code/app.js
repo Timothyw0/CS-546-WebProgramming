@@ -36,21 +36,21 @@ app.use(
   })
 );
 
-// app.use("/feed", (req, res, next) => {
-//   if (!req.session.user) {
-//     return res.redirect("/");
-//   } else {
-//     next();
-//   }
-// });
+app.use("/feed", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
 
-// app.use("/posts", (req, res, next) => {
-//   if (!req.session.user) {
-//     return res.redirect("/");
-//   } else {
-//     next();
-//   }
-// });
+app.use("/posts", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
 
 app.use("/login", (req, res, next) => {
   if (req.session.user) {
