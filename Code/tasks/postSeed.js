@@ -246,6 +246,7 @@ const main = async () => {
   const addedPat = await users.addCommentToUser('6073261f162457f64eddacfb', patComment._id.toString());
   console.log(listOfComments)
   
+  
   console.log(tim);
   console.log(kishan);
   console.log(billy);
