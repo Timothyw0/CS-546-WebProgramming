@@ -1,7 +1,7 @@
 <div class="post" id="singlePost">
-    <a href="/feed">
+    <a href="/users/profile/{{data.creator}}">
         <h1>
-            {{data.username}} - TODO attach hyperlinks to profile
+            {{data.username}}
         </h1>
     </a>
     <!-- if canEdit block -->
@@ -64,3 +64,4 @@
     <!-- Hidden postID in order to make AJAX requests -->
     <p id="postID" hidden>{{ data._id }}</p>
 </div>
+<script src="/public/js/feed.js"></script>

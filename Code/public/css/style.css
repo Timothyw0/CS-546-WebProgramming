@@ -5,6 +5,10 @@
   padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 /* Style the links inside the navigation bar */
@@ -34,6 +38,13 @@
 .topnav a:hover {
   background-color: #ddd;
   color: black;
+}
+
+/* Add some margins to the welcome message */
+.welcomeUser {
+  margin-left: 50px;
+  margin-top: 20px;
+  padding-top: 50px;
 }
 
 /* Post css */
@@ -197,7 +208,7 @@ form {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  font-family: 'Inter';
+  font-family: "Inter";
 }
 
 .comment-img {
@@ -226,7 +237,7 @@ textarea {
   width: 500px;
   height: 150px;
   margin: 0;
-  border: 1px solid #CCC;
+  border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 13px;
   font-family: monospace;

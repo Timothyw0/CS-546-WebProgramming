@@ -27,7 +27,7 @@ router.get("/add", async (req, res) => {
   const recipes = await recipeData.getAllRecipes();
   let recipeNames = [];
   for (let i = 0; i < recipes.length; i++) {
-    recipeNames.push(recipes[i].name);
+    recipeNames.push([recipes[i].recipeName, recipes[i]._id]);
   }
   res.render("posts/addPost", { allRecipes: recipeNames });
 });
@@ -44,7 +44,6 @@ router.get("/all", async (req, res) => {
 router.post("/add", async (req, res) => {
   let reqBody = req.body;
   // Error check the text and recipe input
-  console.log(reqBody);
   if (reqBody.text.trim().length === 0) {
     throw `Error: No text provided to add new post`;
   }
@@ -105,8 +104,7 @@ router.get("/:id", async (req, res) => {
     res.sendStatus(404);
   }
   res.render("posts/viewPost", {
-    // TODO: Add user session ID here
-    data: await postData.getPostById(req.params.id, req.session._id),
+    data: await postData.getPostById(req.params.id, req.session.user._id),
   });
 });
 
@@ -210,7 +208,13 @@ router.get("/edit/:id", async (req, res) => {
     res.sendStatus(403);
   }
   // Everything is good, we can render the edit page
-  res.render("posts/editPost", { postInfo: postInfo });
+  // Get all recipes and use that to render the select
+  const recipes = await recipeData.getAllRecipes();
+  let recipeNames = [];
+  for (let i = 0; i < recipes.length; i++) {
+    recipeNames.push([recipes[i].recipeName, recipes[i]._id]);
+  }
+  res.render("posts/editPost", { postInfo: postInfo, allRecipes: recipeNames });
 });
 
 // PATCH localhost:3000/posts/edit/

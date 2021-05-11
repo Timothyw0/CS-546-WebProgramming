@@ -8,8 +8,8 @@ const session = require("express-session");
 const constructorMethod = (app) => {
   app.use("/feed", async (req, res) => {
     res.render("feed/index", {
-      // TODO: Need to add in user ID here
       allPosts: await postData.getPartialPosts(req.session.user._id, 0),
+      welcomeUsername: req.session.user.username,
     });
   });
 

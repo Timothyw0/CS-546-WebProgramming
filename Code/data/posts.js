@@ -1,6 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.post;
 const users = mongoCollections.user;
+const recipeData = require("./recipes");
 const commentData = require("./comment");
 let { ObjectId } = require("mongodb");
 
@@ -74,24 +75,15 @@ async function getName(id) {
   return isUser.username;
 }
 
-// Check recipe function: should be ObjectID and in post collection
+// Check recipe function: should be ObjectID and in recipe collection
 // Input: String
 // Output: Trimmed ObjectID
-// TODO
 async function isRecipe(id) {
-  //const recipeCollection = await recipes();
-  // Error check the post id
-  //   let cleanRecipe = checkStr(id);
-  //   try {
-  //     cleanRecipe = ObjectId(cleanRecipe);
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  //   const recipeList = await recipeCollection.findOne({ _id: cleanRecipe });
-  //   if (!recipeList) {
-  //     throw `Error, ${id} is not a recipe in HTML`;
-  //   }
-  //   return cleanRecipe.toString();
+  const recipe = await recipeData.getRecipeById(id.trim());
+  if (!recipe) {
+    throw `Error, ${id} is not a recipe in HTML`;
+  }
+  return id.trim();
 }
 
 /*
@@ -121,7 +113,8 @@ async function getAllPosts(id) {
       let likeName = await getName(likeID);
       likeList += `${likeName}, `;
       // If I already liked set the flag to true
-      if (likeName === "timothyw0") {
+      let myName = await getName(cleanID);
+      if (likeName === myName) {
         iLiked = true;
       }
     }
@@ -175,7 +168,8 @@ async function getPartialPosts(id, n) {
       let likeName = await getName(likeID);
       likeList += `${likeName}, `;
       // If I already liked set the flag to true
-      if (likeName === "timothyw0") {
+      let myName = await getName(cleanID);
+      if (likeName === myName) {
         iLiked = true;
       }
     }
@@ -256,7 +250,8 @@ async function getFriendPosts(uid) {
       let likeName = await getName(likeID);
       likeList += `${likeName}, `;
       // If I already liked set the flag to true
-      if (likeName === "timothyw0") {
+      let myName = await getName(cleanUID);
+      if (likeName === myName) {
         iLiked = true;
       }
     }
@@ -336,7 +331,8 @@ async function getPostById(id, userID) {
     let likeName = await getName(likeID);
     likeList += `${likeName}, `;
     // If I already liked set the flag to true
-    if (likeName === "timothyw0") {
+    let myName = await getName(cleanUser);
+    if (likeName === myName) {
       iLiked = true;
     }
   }
@@ -363,19 +359,17 @@ async function getPostById(id, userID) {
 // Output: Newly created post
 async function addPost(creator, recipe = "", text) {
   const postCollection = await posts();
-  // TODO
-  // const recipeCollection = await recipes();
 
   // Error check creator string, should be ObjectId and it should be a user in user collection
   let cleanCreator = await isUser(creator);
   // Error check recipe
   let cleanRecipe;
   if (recipe.length > 0) {
-    // TODO
-    // let cleanRecipe = isRecipe(recipe)
+    cleanRecipe = await isRecipe(recipe);
   } else {
     cleanRecipe = "";
   }
+
   // Error check text
   let cleanText = checkStr(text);
   // Everything passed, let's add the new post
@@ -415,9 +409,14 @@ async function updatePost(postID, updatedPost) {
     newPost.creator = cleanCreator;
   }
 
-  // Error check the recipe
-  // TODO
-  // let cleanRecipe = isRecipe(recipe)
+  // Error check recipe
+  let cleanRecipe;
+  if (updatedPost.recipe.length > 0) {
+    cleanRecipe = await isRecipe(updatedPost.recipe);
+  } else {
+    cleanRecipe = "";
+  }
+  newPost.recipe = cleanRecipe;
 
   // Check text field
   if (updatedPost.text) {
@@ -430,7 +429,7 @@ async function updatePost(postID, updatedPost) {
     }
     newPost.text = cleanText;
   }
-
+  console.log(newPost);
   // Everything looks good, let's update
   const updateStatus = await postCollection.updateOne(
     { _id: ObjectId(cleanPost) },
