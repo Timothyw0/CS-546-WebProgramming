@@ -4,7 +4,7 @@
     <form method="POST" action="/search/recipe" id="search-form">
         <label for="alcohol">Alcohol Name:</label>
         <input id="alcohol" name="alcohol" type="text" value={{searchTerm}}>
-        <input id="search-submit" type="submit">
+        <input class="btn btn-primary btn-sm mb-1" id="search-submit" type="submit">
         <div id="errors">
         {{#if errors}} 
             {{#each errors}}

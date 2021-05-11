@@ -4,7 +4,7 @@ const xss = require("xss");
 const userData = require("../data/userData");
 const postData = require("../data/posts");
 const bcrypt = require('bcrypt');
-const validator = require('../data/validation')
+const validator = require('../data/validation');
 
 router.get('/', async (req, res) => {
     if (req.session.user) {
@@ -41,7 +41,7 @@ router.post('/login', async(req, res) => {
             username: userFound.username,
             email: userFound.email,
             dateOfBirth: userFound.dateOfBirth,
-            friends: userFound.friends,
+            following: userFound.following,
             posts: userFound.posts,
             recipes: userFound.recipes,
             comments: userFound.comments,
@@ -116,7 +116,7 @@ router.post('/signup', async (req, res) => {
             username: addedUser.username,
             email: addedUser.email,
             dateOfBirth: addedUser.dateOfBirth,
-            friends: addedUser.friends,
+            following: addedUser.following,
             posts: addedUser.posts,
             recipes: addedUser.recipes,
             comments: addedUser.comments,
@@ -154,6 +154,13 @@ router.get('users/profile/:id', async (req, res) => {
             errors: errors
         });
     }
+
+    let isFollowing;
+    if(req.session.user.following.includes(req.params.id)) {
+        isFollowing = true;
+    } else {
+        isFollowing = false;
+    }
     res.render('users/profile', {
         title: userFound.username,
         userInfo: {
@@ -163,11 +170,12 @@ router.get('users/profile/:id', async (req, res) => {
             username: userFound.username,
             email: userFound.email,
             dateOfBirth: userFound.dateOfBirth,
-            friends: userFound.friends,
+            following: userFound.following,
             posts: userPosts,
             recipes: userFound.recipes,
             comments: userFound.comments,
-            profilePicture: userFound.profilePicture
+            profilePicture: userFound.profilePicture,
+            isFollowing: isFollowing
         }
     });
 });
@@ -180,6 +188,7 @@ router.get('users/profile/edit', async (req, res) => {
 });
 
 router.patch('users/profile/edit', async (req, res) => {
+    const errors = [];
     const updateInfo = {};
     const reqBody =  {
         firstName: xss(req.body.firstName.trim()),
@@ -257,6 +266,16 @@ router.patch('users/profile/edit', async (req, res) => {
             errors: errors,
             userInfo: req.session.user
         });
+    }
+});
+
+router.post('users/follow/:id', async (req, res) => {
+    try {
+        const updated = await userData.addFollowingToUser(req.session.user._id, req.params.id)
+        req.session.user.following = updated.following;
+        res.redirect('/feed')
+    } catch(e) {
+        return res.redirect(`users/profile/${req.params.id}`);
     }
 });
 
