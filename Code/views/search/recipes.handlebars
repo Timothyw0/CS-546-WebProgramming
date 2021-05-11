@@ -1,0 +1,35 @@
+<div class="search-container">
+    <h1 class="search-title">Search by Alcohol</h1>
+    <p class="search-info">Enter your a spirit and we will show you the recipes for that spirit that have been created on our platform!</p>
+    <form method="POST" action="/search/recipe" id="search-form">
+        <label for="alcohol">Alcohol Name:</label>
+        <input id="alcohol" name="alcohol" type="text">
+        <input id="search-submit" type="submit">
+        {{#if errors}} 
+        <div id="errors">
+                {{#each errors}}
+                <p class="error-item">{{this}}</p>
+                {{/each}}
+        </div>
+        {{/if}}
+    </form>
+    {{#if recipes}} 
+    <div id="result-list">
+        {{#each recipes}}
+            <div class="result-list-item">
+                <p>Recipe Name: {{this.recipeName}}</p>
+                <p>Alcohol: {{this.alcohol}}</p>
+                <p>Ingredients: {{this.ingredients}}</p>
+                <p>Instructions: {{this.recipe}}</p>
+                <p>Taste Scale: {{this.tasteScale}}</p>
+                {{#if this.youtubeLink}}
+                    <p>Youtube Link: {{this.youtubeLink}}</p>
+                {{/if}} 
+            </div>
+        {{/each}}
+    </div>
+    {{/if}}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <script src="/public/js/searchRecipe.js"></script>
+</div>

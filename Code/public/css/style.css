@@ -208,3 +208,24 @@ form {
 .commentText {
   margin-top: -20px;
 }
+
+/* 
+
+Here is css for recipe search page 
+
+*/
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.error-item {
+  color: red;
+}
+
+.error {
+  color: red;
+}
+
