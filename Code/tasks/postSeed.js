@@ -244,7 +244,8 @@ const main = async () => {
   const patComment = await comment.createComment("6073261f162457f64eddacfb", "606f05f5cba5cb48b03f2abc", "wooahh") //patrick comment
   listOfComments.push(patComment)
   const addedPat = await users.addCommentToUser('6073261f162457f64eddacfb', patComment._id.toString());
-  console.log(listOfComments)
+  
+  console.log(listOfComments);
   
   
   console.log(tim);
