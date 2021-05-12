@@ -233,7 +233,7 @@ const main = async () => {
     "nice"
   ); //tim comment
   listOfComments.push(timComment);
-  const addedTim = await users.addCommentToUser('607322eb50dc91a9bc14955b', timComment._id.toString());
+ 
 
   const kishanComment = await makeComments(
     ObjectId("609b31570389485c03d4ab8b"),
@@ -242,7 +242,7 @@ const main = async () => {
     "very cool!"
   ); //kishan comment
   listOfComments.push(kishanComment);
-  const addedKishan = await users.addCommentToUser('60732518372d3ae3b871f315', kishanComment._id.toString());
+ 
 
   const patComment = await makeComments(
     ObjectId("609b31570389485c03d4ab8c"),
@@ -251,7 +251,7 @@ const main = async () => {
     "wooahh"
   ); //patrick comment
   listOfComments.push(patComment);
-  const addedPat = await users.addCommentToUser('6073261f162457f64eddacfb', patComment._id.toString());
+  
 
   const avaniComment = await makeComments(
     ObjectId("609b31570389485c03d4ab8d"),
@@ -260,7 +260,7 @@ const main = async () => {
     "looks super good."
   ); //avani comment
   listOfComments.push(avaniComment);
-  const addedAvani = await users.addCommentToUser('60732f6f9344955ba436a1bc', avaniComment._id.toString());
+ 
 
   const billyComment = await makeComments(
     ObjectId("609b31570389485c03d4ab8e"),
@@ -269,9 +269,14 @@ const main = async () => {
     "sounds delicious!"
   ); //billy comment
   listOfComments.push(billyComment);
-  const addedBilly = await users.addCommentToUser('60732579ee3a5bd593f2771a', billyComment._id.toString());
+ 
 
   await commentsCollection.insertMany(listOfComments);
+   const addedTim = await users.addCommentToUser('607322eb50dc91a9bc14955b', timComment._id.toString());
+   const addedKishan = await users.addCommentToUser('60732518372d3ae3b871f315', kishanComment._id.toString());
+   const addedPat = await users.addCommentToUser('6073261f162457f64eddacfb', patComment._id.toString());
+   const addedAvani = await users.addCommentToUser('60732f6f9344955ba436a1bc', avaniComment._id.toString());
+   const addedBilly = await users.addCommentToUser('60732579ee3a5bd593f2771a', billyComment._id.toString());
   console.log(listOfComments);
 
   console.log(tim);
