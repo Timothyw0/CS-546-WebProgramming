@@ -223,7 +223,7 @@ async function addRecipeToUser(userId, recipeId) {
   //if(recipeToAdd === null) throw 'Recipe not found';
   //if(recipeToAdd.userId !== userId) throw 'Recipe not created by this user';
   if (recipeToAdd === null) throw "Recipe not found";
-  if (recipeToAdd.userId !== userId) throw "Recipe not created by this user";
+  if (recipeToAdd.UserId !== userId) throw "Recipe not created by this user";
 
   for (let userRecipe of currentUser.recipes) {
     if (recipeId === userRecipe) throw "This recipe is already included";

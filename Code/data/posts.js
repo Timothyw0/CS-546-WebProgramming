@@ -190,6 +190,10 @@ async function getPartialPosts(id, n) {
       postComments[i].username = await getName(postComments[i].userId);
     }
     postList[i].comments = postComments;
+    // If there is a recipe, attach the recipe object
+    if (postList[i].recipe.length > 0) {
+      postList[i].recipe = await recipeData.getRecipeById(postList[i].recipe);
+    }
   }
   return postList;
 }
@@ -351,6 +355,10 @@ async function getPostById(id, userID) {
     postComments[i].username = await getName(postComments[i].userId);
   }
   reqPost.comments = postComments;
+  // If there is a recipe, attach the recipe object
+  if (reqPost.recipe.length > 0) {
+    reqPost.recipe = await recipeData.getRecipeById(reqPost.recipe);
+  }
   return reqPost;
 }
 
