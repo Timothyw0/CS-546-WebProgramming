@@ -14,7 +14,7 @@
     <h2>{{ data.date }}</h2>
     <!-- if recipe block -->
     {{#if data.recipe}}
-    <a href="">
+    <a href="/recipes/{{data.recipe._id}}">
         <p>{{ data.recipe.recipeName }}</p>
     </a>
     {{#if data.recipe.youtubeLink}}
@@ -45,7 +45,7 @@
     </a>
     {{/if}}
     <!-- end if block -->
-    <a href="" class="postInteraction">
+    <a href="/addcomment/{{data._id}}" class="postInteraction">
         Comment
     </a>
     <a href="/feed" class="postInteraction">

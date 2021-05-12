@@ -8,7 +8,7 @@
     <h2>{{ date }}</h2>
     <!-- if recipe block -->
     {{#if recipe}}
-    <a href="">
+    <a href="/recipes/{{recipe._id}}">
         <p>{{ recipe.recipeName }}</p>
     </a>
     {{#if recipe.youtubeLink}}
