@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <title>{{title}}</title>
-    <link rel="stylesheet" href="/public/main.css">
-    <h1>Welcome to HTML: How to Mix Liquor!</h1>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  {{!--
+  <link rel="stylesheet" href="/public/main.css"> --}}
+  <h1>Welcome to HTML: How to Mix Liquor!</h1>
 </head>
+
 <body>
-    <p1>Welcome to my webpage!</p1>
-    <form class = "number-form" method = "post" action = "/login">
-        <div class="form-group">
-            <label for="username">Enter username Here!</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
-        </div>
-        <div class="form-group1">
-         <div class="form-group1">
-            <label for="password">Enter password here!</label>
-            <input type="text" class="form-control" id="password" name="password" placeholder="Password">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+  <p1>Welcome to my webpage!</p1>
+  <form class="number-form" method="post" action="/login">
+    <div class="form-group">
+      <label for="username">Enter username Here!</label>
+      <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+    </div>
+    <div class="form-group1">
+      <div class="form-group1">
+        <label for="password">Enter password here!</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
       <div class="form-group">
         <div class="alert alert-success">
           
           <ul id = "results">
-            <li class = "errormessage">{{error}}</li>
+            <li class = "errormessage">{{errors}}</li>
           </ul>
         </div>
       </div>
-    </form>
-    <footer>HTML: How to Mix Liquor, Created Spring 2021</footer>
+  </form>
+  <footer>HTML: How to Mix Liquor, Created Spring 2021</footer>
 </body>
+
 </html>

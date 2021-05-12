@@ -61,6 +61,7 @@ async function createComment(userId, postId, comment) {
   return await this.getCommentsById(insertInfo.insertedId.toString());
 }
 
+
 async function removeComment(id) {
   const commentsCollection = await comments();
   if (!id) throw "Please provide id";

@@ -217,9 +217,9 @@ async function getFriends(uid) {
   // Find the user's friend list
   const friendObject = await userCollection.findOne(
     { _id: idObj },
-    { projection: { _id: 0, friends: 1 } }
+    { projection: { _id: 0, following: 1 } }
   );
-  let friendList = friendObject.friends;
+  let friendList = friendObject.following;
   friendList.push(cleanUID);
   return friendList;
 }
@@ -229,7 +229,6 @@ async function getFriends(uid) {
 // Output: List of posts that were created by the user's friends
 async function getFriendPosts(uid) {
   const postCollection = await posts();
-  const userCollection = await users();
   // Error check uid
   let cleanUID = checkStr(uid);
   // Try to convert uid into Object ID
@@ -239,23 +238,47 @@ async function getFriendPosts(uid) {
   } catch (e) {
     throw e;
   }
-  // Find the user's friend list
-  const friendObject = await userCollection.findOne(
-    { _id: idObj },
-    { projection: { _id: 0, friends: 1 } }
-  );
-  const friendList = friendObject.friends;
-  // Now that we have user's friends, get all posts
-  const postList = await getAllPosts(cleanUID);
-  // Iterate through the postList and only return posts that were created by a friend
-  let friendPosts = [];
-  for (i = 0; i < postList.length; i++) {
-    let currPost = postList[i];
-    if (friendList.includes(currPost.creator)) {
-      friendPosts.push(currPost);
+  // Get friend list
+  const friends = await getFriends(cleanUID);
+  // Everything looks good, we can move on
+  const postList = await postCollection
+    .find({ creator: { $in: friends } })
+    .sort({ date: -1, _id: 1 })
+    .toArray();
+  // Go through the postList and get more details
+  for (let i = 0; i < postList.length; i++) {
+    // Get the username and usernames of people who liked
+    let iLiked = false;
+    let likeList = "";
+    postList[i].username = await getName(postList[i].creator);
+    for (let j = 0; j < postList[i].likes.length; j++) {
+      let likeID = postList[i].likes[j];
+      let likeName = await getName(likeID);
+      likeList += `${likeName}, `;
+      // If I already liked set the flag to true
+      if (likeName === "timothyw0") {
+        iLiked = true;
+      }
     }
+    postList[i].liked = iLiked;
+    if (likeList.length !== 0) {
+      postList[i].likeList = likeList.slice(0, -2);
+    }
+    // If creator is userID, then set canEdit to true
+    if (postList[i].creator === cleanUID) {
+      postList[i].canEdit = true;
+    }
+    // Get the comments and attach them
+    let postComments = await commentData.getAllCommentsOfpost(
+      postList[i]._id.toString()
+    );
+    // Get the username of each commentor
+    for (let i = 0; i < postComments.length; i++) {
+      postComments[i].username = await getName(postComments[i].userId);
+    }
+    postList[i].comments = postComments;
   }
-  return friendPosts;
+  return postList;
 }
 
 // Get post by user ID function
