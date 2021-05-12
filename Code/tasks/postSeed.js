@@ -1,7 +1,7 @@
 const connection = require("../config/mongoConnection");
 let { ObjectId } = require("mongodb");
 const users = require("../data/userData");
-const comment = require('../data/comment');
+
 
 const main = async () => {
   const db = await connection();
@@ -143,7 +143,6 @@ const main = async () => {
     "" //profilePicture
   );
 
-  
   // kishan user info
   const kishan = await users.createSeedUser(
     ObjectId("60732518372d3ae3b871f315"), //_id
@@ -164,9 +163,6 @@ const main = async () => {
     [], //comments
     "" //profilePicture
   );
-
-  
-  
 
   // billy user info
   const billy = await users.createSeedUser(
@@ -189,8 +185,6 @@ const main = async () => {
     "" //profilePicture
   );
 
-  
-  
   // avani user info
   const avani = await users.createSeedUser(
     ObjectId("60732f6f9344955ba436a1bc"), //_id
@@ -210,8 +204,7 @@ const main = async () => {
     [], //comments
     "" //profilePicture
   );
-  
-  
+
   // pat user info
   const pat = await users.createSeedUser(
     ObjectId("6073261f162457f64eddacfb"), //_id
@@ -233,31 +226,54 @@ const main = async () => {
     "" //profilePicture
   );
 
-  const timComment = await comment.createComment("607322eb50dc91a9bc14955b", "606f054262b48cb2e8dc5af7", "nice") //tim comment
+  const timComment = await makeComments(
+    ObjectId("609b31570389485c03d4ab8a"),
+    "607322eb50dc91a9bc14955b",
+    "606f04246c785b72ecce993f",
+    "nice"
+  ); //tim comment
   listOfComments.push(timComment);
   const addedTim = await users.addCommentToUser('607322eb50dc91a9bc14955b', timComment._id.toString());
 
-  const kishanComment = await comment.createComment("60732518372d3ae3b871f315", "606f054262b48cb2e8dc5af7", "very cool!") //kishan comment
+  const kishanComment = await makeComments(
+    ObjectId("609b31570389485c03d4ab8b"),
+    "60732518372d3ae3b871f315",
+    "606f04cf30078a027490273e",
+    "very cool!"
+  ); //kishan comment
   listOfComments.push(kishanComment);
   const addedKishan = await users.addCommentToUser('60732518372d3ae3b871f315', kishanComment._id.toString());
 
-  const patComment = await comment.createComment("6073261f162457f64eddacfb", "606f05f5cba5cb48b03f2abc", "wooahh") //patrick comment
-  listOfComments.push(patComment)
+  const patComment = await makeComments(
+    ObjectId("609b31570389485c03d4ab8c"),
+    "6073261f162457f64eddacfb",
+    "606f05bb4e7e233e61f8beb7",
+    "wooahh"
+  ); //patrick comment
+  listOfComments.push(patComment);
   const addedPat = await users.addCommentToUser('6073261f162457f64eddacfb', patComment._id.toString());
 
-  const avaniComment = await comment.createComment("60732f6f9344955ba436a1bc", "606f05bb4e7e233e61f8beb7", "looks super good.") //avani comment
-  listOfComments.push(avaniComment)
+  const avaniComment = await makeComments(
+    ObjectId("609b31570389485c03d4ab8d"),
+    "60732f6f9344955ba436a1bc",
+    "606f05f5cba5cb48b03f2abc",
+    "looks super good."
+  ); //avani comment
+  listOfComments.push(avaniComment);
   const addedAvani = await users.addCommentToUser('60732f6f9344955ba436a1bc', avaniComment._id.toString());
 
-  const billyComment = await comment.createComment("60732579ee3a5bd593f2771a", "606f04cf30078a027490273e", "sounds delicious!") //billy comment
+  const billyComment = await makeComments(
+    ObjectId("609b31570389485c03d4ab8e"),
+    "60732579ee3a5bd593f2771a",
+    "606f054262b48cb2e8dc5af7",
+    "sounds delicious!"
+  ); //billy comment
   listOfComments.push(billyComment);
   const addedBilly = await users.addCommentToUser('60732579ee3a5bd593f2771a', billyComment._id.toString());
-  
-  
+
   await commentsCollection.insertMany(listOfComments);
   console.log(listOfComments);
-  
-  
+
   console.log(tim);
   console.log(kishan);
   console.log(billy);
