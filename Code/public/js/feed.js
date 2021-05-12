@@ -52,7 +52,7 @@
     </a>
     {{/if}}
     <!-- end if block -->
-    <a href="/addcomment/{{_id}}" class="postInteraction">
+    <a href="/comment/addcomment/{{_id}}" class="postInteraction">
         Comment
     </a>
     <a href="/posts/{{ _id }}" class="postInteraction">
