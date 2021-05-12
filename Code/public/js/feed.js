@@ -21,7 +21,7 @@
     <h2>{{ date }}</h2>
     <!-- if recipe block -->
     {{#if recipe}}
-    <a href="">
+    <a href="/recipes/{{recipe._id}}">
         <p>{{ recipe.recipeName }}</p>
     </a>
     {{#if recipe.youtubeLink}}
@@ -52,7 +52,7 @@
     </a>
     {{/if}}
     <!-- end if block -->
-    <a href="" class="postInteraction">
+    <a href="/addcomment/{{_id}}" class="postInteraction">
         Comment
     </a>
     <a href="/posts/{{ _id }}" class="postInteraction">
@@ -208,6 +208,10 @@
         }
         localStorage["seenIDs"] = allIDs;
       }
+      // If it's the 10th iteration, stop fetching to save memory
+      if (iteration >= 10) {
+        return;
+      }
       // Go through responseMessage and append any new messages in the div, we can compare using localStorage ids we have already seen
       let seenIDArr = localStorage["seenIDs"].split(",");
       for (let i = responseMessage.length - 1; i >= 0; i--) {
@@ -216,7 +220,7 @@
         if (!seenIDArr.includes(postID)) {
           let newPost = compiledPost(responseMessage[i]);
           postColumn.prepend(newPost);
-          localStorage["seenPosts"] += `,${responseMessage[i]._id}`;
+          localStorage["seenIDs"] += `,${responseMessage[i]._id}`;
           // Bind links again
           postColumn.children().each(function (index, element) {
             bindEventsToLikeButton($(element));
