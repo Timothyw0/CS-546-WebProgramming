@@ -202,7 +202,6 @@ form {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  font-family: "Inter";
 }
 
 .individualComment:hover .comment-delete-icon, .individualComment.hover .comment-delete-icon { display: block; }
@@ -244,7 +243,6 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 13px;
-  font-family: monospace;
   resize: vertical;
   padding: 15px;
   margin-bottom: 15px;
