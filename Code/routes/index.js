@@ -2,14 +2,14 @@ const postRoutes = require("./posts");
 const userRoutes = require("./users");
 const commentRoutes = require("./comment");
 const postData = require("../data/posts");
-const recipesRoutes = require('./recipes');
-const searchRoutes = require('./search');
+const recipesroutes = require("./recipes");
+const session = require("express-session");
 
 const constructorMethod = (app) => {
   app.use("/feed", async (req, res) => {
     res.render("feed/index", {
-      // TODO: Need to add in user ID here
-      allPosts: await postData.getPartialPosts("607322eb50dc91a9bc14955b", 0),
+      allPosts: await postData.getPartialPosts(req.session.user._id, 0),
+      welcomeUsername: req.session.user.username,
     });
   });
 

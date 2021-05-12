@@ -4,13 +4,11 @@
   let addPostForm = $("#addPostForm");
   let addPostText = $("#addPostText");
   let addPostRecipe = $("#addPostRecipe");
-  let inputRecipe = addPostRecipe.val();
 
   let editPostDiv = $("#editPostDiv");
   let editPostForm = $("#editPostForm");
   let editPostText = $("#editPostText");
   let editPostRecipe = $("#editPostRecipe");
-  let inputEditRecipe = editPostRecipe.val();
 
   let deletePostForm = $("#deletePostForm");
 
@@ -20,6 +18,7 @@
   // On submit event listener for adding new post
   addPostForm.submit(function (event) {
     event.preventDefault();
+    let inputRecipe = addPostRecipe.find("option:selected").val();
 
     // Hide the errorDiv and clear it
     errorDiv.attr("hidden", true);
@@ -65,6 +64,7 @@
   // On submit event listener for editing post
   editPostForm.submit(function (event) {
     event.preventDefault();
+    let inputEditRecipe = editPostRecipe.find("option:selected").val();
 
     // Hide the errorDiv and clear it
     errorDiv.attr("hidden", true);

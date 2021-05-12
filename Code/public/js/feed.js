@@ -6,10 +6,10 @@
 
   // Handlebars template set up
   let postTemplate = `<div class="post">
-    <a href="/feed">
-        <h1 id="postHyperlink">
-            {{username}} - TODO attach hyperlinks to profile
-        </h1>
+    <a href="/users/profile/{{creator}}">
+     <h1 id="postHyperlink">
+        {{username}}
+     </h1>
     </a>
     <!-- if canEdit block -->
     {{#if canEdit}}
@@ -21,7 +21,13 @@
     <h2>{{ date }}</h2>
     <!-- if recipe block -->
     {{#if recipe}}
-    <p>{{ recipe }}</p>
+    <a href="">
+        <p>{{ recipe.recipeName }}</p>
+    </a>
+    {{#if recipe.youtubeLink}}
+    <iframe width="420" height="315" src="{{recipe.youtubeLink}}">
+    </iframe>
+    {{/if}}
     {{/if}}
     <!-- end if block -->
     <br />
@@ -84,7 +90,6 @@
       let likeText = post.find("#likePost").html().trim();
       let postID = post.find("#postID").html();
       // Everything looks good so we can make the request now
-      // TODO: userID needs to be configured
       // User liked
       if (likeText === "Like") {
         let requestConfig = {
@@ -94,7 +99,6 @@
           async: false,
           data: JSON.stringify({
             id: postID,
-            userID: "607322eb50dc91a9bc14955b",
           }),
         };
 
@@ -120,7 +124,6 @@
           async: false,
           data: JSON.stringify({
             id: postID,
-            userID: "607322eb50dc91a9bc14955b",
           }),
         };
 

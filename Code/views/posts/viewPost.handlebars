@@ -1,7 +1,7 @@
 <div class="post" id="singlePost">
-    <a href="/feed">
+    <a href="/users/profile/{{data.creator}}">
         <h1>
-            {{data.username}} - TODO attach hyperlinks to profile
+            {{data.username}}
         </h1>
     </a>
     <!-- if canEdit block -->
@@ -14,7 +14,13 @@
     <h2>{{ data.date }}</h2>
     <!-- if recipe block -->
     {{#if data.recipe}}
-    <p>{{ data.recipe }}</p>
+    <a href="">
+        <p>{{ data.recipe.recipeName }}</p>
+    </a>
+    {{#if data.recipe.youtubeLink}}
+    <iframe width="420" height="315" src="{{data.recipe.youtubeLink}}">
+    </iframe>
+    {{/if}}
     {{/if}}
     <!-- end if block -->
     <br />
@@ -62,3 +68,4 @@
     <!-- Hidden postID in order to make AJAX requests -->
     <p id="postID" hidden>{{ data._id }}</p>
 </div>
+<script src="/public/js/feed.js"></script>

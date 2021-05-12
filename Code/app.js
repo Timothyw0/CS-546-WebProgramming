@@ -20,6 +20,14 @@ const handlebarsInstance = exphbs.create({
   partialsDir: ["views/partials/"],
 });
 
+Handlebars.registerHelper("checklength", function (v1, v2, options) {
+  "use strict";
+  if (v1.length > v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
 app.use("/public", static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
