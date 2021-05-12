@@ -1,5 +1,5 @@
 <div class="comment">
-    <img class="comment-img"src="public/images/comments.png" alt="">
+    <img class="comment-img"src="/public/images/comments.png" alt="">
     <ul id="comments"
         class="comments">
     </ul>
@@ -7,7 +7,8 @@
     <h2> Add Comments.....</h2>
     <form id="comment_form">
         <div class="form-group">
-            <input hidden="hidden" name="postId" value={{postInfo._id}}>
+            <input hidden="hidden" id="postId" name="postId" value={{postId}}>
+            <input hidden="hidden" id="userId" name="userId" value={{userId}}>
             <label for="message-text" class="control-label"></label>
             <textarea
                 name="comment"
@@ -30,5 +31,6 @@
                 class="btn btn-secondary"
             >Cancel</button>
         </div>
+        <div id="successDiv" hidden></div>
     </form>
 </div>

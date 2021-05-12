@@ -45,7 +45,7 @@
     </a>
     {{/if}}
     <!-- end if block -->
-    <a href="/addcomment/{{_id}}" class="postInteraction">
+    <a href="/comment/addcomment/{{_id}}" class="postInteraction">
         Comment
     </a>
     <a href="/posts/{{ _id }}" class="postInteraction">
@@ -57,6 +57,9 @@
         <!-- iterate through the comments -->
         {{#each comments}}
         <div class="individualComment">
+            <a class="btn-del comment-delete-icon" data-id="{{_id}}">
+                <img src="/public/images/trash.svg" alt="delete-comment">
+            </a>
             <p class="commentUser">{{username}}</p>
             <p class="commentText">{{comment}}</p>
         </div>

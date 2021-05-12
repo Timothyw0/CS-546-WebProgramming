@@ -198,11 +198,21 @@ form {
 
 .comment {
   display: flex;
-  height: 95vh;
+  height: 85vh;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   font-family: "Inter";
+}
+
+.individualComment:hover .comment-delete-icon, .individualComment.hover .comment-delete-icon { display: block; }
+.comment-delete-icon {
+  display: none;
+  width: 20px;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
 }
 
 .comment-img {
@@ -253,15 +263,21 @@ textarea {
 }
 
 .individualComment {
-  margin-bottom: -10px;
+  position: relative;
+  transition: 200ms all;
+  padding: 5px 20px;
+  border-radius: 7px;
 }
-
+.individualComment:hover {
+  background-color: gainsboro;
+}
 .commentUser {
   font-weight: bold;
 }
 
 .commentText {
   margin-top: -20px;
+  margin-bottom: 0;
 }
 
 /* 

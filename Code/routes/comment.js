@@ -29,6 +29,13 @@ router.get("/comment/:id", async function (req, res) {
   });
 });
 
+router.get("/addcomment/:id", async function (req, res) {
+  res.render("posts/commentForm", {
+    title: "comments",
+    postId: req.params.id,
+    userId: req.session.user._id
+  });
+});
 
 router.post("/comment/new", async (req, res) => {
   let errors = [];
