@@ -130,7 +130,7 @@ router.delete("/:id", async (req, res) => {
   }
   try {
     const deleteData = await commentData.removeComment(req.params.id);
-    res.status(200).json({ "reviewId": `${req.params.id}`, "deleted": true });
+    res.status(200).json({ "commentId": `${req.params.id}`, "deleted": true });
   } catch (e) {
     res.status(500).json({ error: e });
   }
