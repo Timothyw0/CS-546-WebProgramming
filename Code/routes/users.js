@@ -276,7 +276,7 @@ router.post('users/follow/:id', async (req, res) => {
     try {
         const updated = await userData.addFollowingToUser(req.session.user._id, req.params.id)
         req.session.user.following = updated.following;
-        res.redirect('/feed')
+        res.redirect(`users/profile/${req.params.id}`)
     } catch(e) {
         return res.redirect(`users/profile/${req.params.id}`);
     }
