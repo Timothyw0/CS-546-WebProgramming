@@ -7,8 +7,8 @@ router.get('/', async (req, res) => {
     res.render('recipes/index');
 });
 
-router.get('/insertDetails', async (req, res) => {
-    res.render('recipes/insertDetails');
+router.get('/addRecipe', async (req, res) => {
+    res.render('recipes/addRecipe');
 });
 
 router.get('/:id', async (req, res) => {
@@ -24,35 +24,41 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     const recipeData = req.body;
 
+    if (!recipeData.recipeName) {
+        res.status(400).json({ error: 'You must provide recipe Name ' });
+        return;
+    }
     if (!recipeData.alcohol) {
-        res.status(400).json({ error: 'You must provide Alcohol title' });
+        res.status(400).json({ error: 'You must provide Alcohol ' });
         return;
     }
     if (!recipeData.ingredients) {
-        res.status(400).json({ error: 'You must provide Ingredients title' });
+        res.status(400).json({ error: 'You must provide Ingredients ' });
+        return;
+    }
+    if (!recipeData.recipeBody) {
+        res.status(400).json({ error: 'You must provide Recipe ' });
         return;
     }
     if (!recipeData.tasteScale) {
-        res.status(400).json({ error: 'You must provide Taste Scale title' });
+        res.status(400).json({ error: 'You must provide Taste Scale ' });
         return;
     }
-    if (!recipeData.recipeUser) {
-        res.status(400).json({ error: 'You must provide Recipe title' });
-        return;
-    }
+   
     if (!recipeData.youtubeLink) {
-        res.status(400).json({ error: 'You must provide Youtube Link title' });
+        res.status(400).json({ error: 'You must provide Youtube Link ' });
         return;
     }
 
     try {
-        const { alcohol, ingredients, tasteScale,recipeUser, youtubeLink } = recipeData;
-        const newRecipe = await data.addRecipe(alcohol, ingredients,recipeUser, tasteScale, youtubeLink);
+        const UserID=req.session.user._id;
+        const { recipeName, alcohol, ingredients, recipeBody, tasteScale, youtubeLink } = recipeData;
+        const newRecipe = await data.addRecipe(UserID,recipeName, alcohol, ingredients, recipeBody, tasteScale, youtubeLink);
         if (newRecipe) {
-            return res.redirect('/recipes');
+            return res.redirect('/posts/add');
         }
     } catch (e) {
-        res.status(500).json({ error: e });
+        res.status(400).json({ error: e });
     }
 });
 
