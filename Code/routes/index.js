@@ -15,8 +15,9 @@ const constructorMethod = (app) => {
 
   app.use("/posts", postRoutes);
   app.use("/", userRoutes);
-  app.use("/recipes", recipesroutes);
+  app.use("/recipes", recipesRoutes);
   app.use("/comment", commentRoutes);
+  app.use("/search", searchRoutes);
 
   app.use("*", (req, res) => {
     res.sendStatus(404);

@@ -3,6 +3,7 @@ const user = mongoCollections.user;
 const post = require("../data/posts");
 const comment = require("../data/comment");
 const recipes = require("../data/recipes");
+
 // const recipe = require('../data/recipe');
 const bcrypt = require("bcrypt");
 const saltRounds = 16;
@@ -34,118 +35,96 @@ async function getAllUsers() {
   return allUsers;
 }
 
-async function createUser(
-  firstName,
-  lastName,
-  username,
-  email,
-  dateOfBirth,
-  password,
-  friends = [],
-  posts = [],
-  recipes = [],
-  comments = []
-) {
-  if (!validation.validString(firstName)) throw "First Name must be a string.";
-  if (!validation.validString(lastName)) throw "Last Name must be a string.";
-  if (!validation.validString(username)) throw "Username must be a string.";
-  if (!validation.validEmail(email)) throw "Invalid email address.";
-  if (!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
-    throw "Invalid date of birth.";
-  }
-  if (!validation.validPassword(password)) throw "Invalid Password";
 
-  const allUsers = await getAllUsers();
-  let usernameLowerCase = username.toLowerCase();
-  let emailLowerCase = email.toLowerCase();
-  for (let singleUser of allUsers) {
-    if (usernameLowerCase == singleUser.username) {
-      throw `User with username: ${username} already exists.`;
-    } else if (emailLowerCase == singleUser.email) {
-      throw `User with email: ${email} already exists.`;
+async function createUser(firstName, lastName, username, email, dateOfBirth, password, following = [], posts = [], recipes = [], comments = []) {
+    if(!validation.validString(firstName)) throw 'First Name must be a string.';
+    if(!validation.validString(lastName)) throw 'Last Name must be a string.';
+    if(!validation.validString(username)) throw 'Username must be a string.';
+    if(!validation.validEmail(email)) throw 'Invalid email address.';
+    if(!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
+        throw 'Invalid date of birth.';
     }
-  }
+    if(!validation.validPassword(password)) throw 'Invalid Password';
 
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const allUsers = await getAllUsers();
+    let usernameLowerCase = username.toLowerCase();
+    let emailLowerCase = email.toLowerCase();
+    for( let singleUser of allUsers) {
+        if(usernameLowerCase == singleUser.username) {
+            throw `User with username: ${username} already exists.`
+        } else if (emailLowerCase == singleUser.email) {
+            throw `User with email: ${email} already exists.`
+        }
+    }
 
-  let newUser = {
-    firstName: firstName,
-    lastName: lastName,
-    username: username,
-    email: email,
-    dateOfBirth: dateOfBirth,
-    hashedPassword: hashedPassword,
-    friends: friends,
-    posts: posts,
-    recipes: recipes,
-    comments: comments,
-    profilePicture: "",
-  };
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  const userCollection = await user();
-  const insertInfo = await userCollection.insertOne(newUser);
-  if (insertInfo.insertedCount === 0) throw "Could not add new user.";
+    let newUser = {
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        email: email,
+        dateOfBirth: dateOfBirth,
+        hashedPassword: hashedPassword,
+        following: following,
+        posts: posts,
+        recipes: recipes,
+        comments: comments,
+        profilePicture: ""
+    };
 
-  const addedUser = await getUserById(insertInfo.insertedId.toString());
-  return addedUser;
+    const userCollection = await user();
+    const insertInfo = await userCollection.insertOne(newUser);
+    if (insertInfo.insertedCount === 0) throw 'Could not add new user.';
+
+    const addedUser = await getUserById(insertInfo.insertedId.toString());
+    return addedUser;
 }
 
-async function createSeedUser(
-  _id,
-  firstName,
-  lastName,
-  username,
-  email,
-  dateOfBirth,
-  password,
-  friends = [],
-  posts = [],
-  recipes = [],
-  comments = []
-) {
-  if (!validation.validString(firstName)) throw "First Name must me a string.";
-  if (!validation.validString(lastName)) throw "Last Name must me a string.";
-  if (!validation.validString(username)) throw "Username must me a string.";
-  if (!validation.validEmail(email)) throw "Invalid email address.";
-  if (!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
-    throw "Invalid date of birth.";
-  }
-  if (!validation.validPassword(password)) throw "Password must be a string";
+async function createSeedUser(_id, firstName, lastName, username, email, dateOfBirth, password, following = [], posts = [], recipes = [], comments = []) {
+    if(!validation.validString(firstName)) throw 'First Name must me a string.';
+    if(!validation.validString(lastName)) throw 'Last Name must me a string.';
+    if(!validation.validString(username)) throw 'Username must me a string.';
+    if(!validation.validEmail(email)) throw 'Invalid email address.';
+    if(!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
+        throw 'Invalid date of birth.';
+    }
+    if(!validation.validPassword(password)) throw 'Password must be a string';
 
-  // const allUsers = await getAllUsers();
-  // let usernameLowerCase = username.toLowerCase();
-  // let emailLowerCase = email.toLowerCase();
-  // for( let singleUser of allUsers) {
-  //     if(usernameLowerCase == singleUser.username) {
-  //         throw `User with username: ${username} already exists.`
-  //     } else if (emailLowerCase == singleUser.email) {
-  //         throw `User with email: ${email} already exists.`
-  //     }
-  // }
+    // const allUsers = await getAllUsers();
+    // let usernameLowerCase = username.toLowerCase();
+    // let emailLowerCase = email.toLowerCase();
+    // for( let singleUser of allUsers) {
+    //     if(usernameLowerCase == singleUser.username) {
+    //         throw `User with username: ${username} already exists.`
+    //     } else if (emailLowerCase == singleUser.email) {
+    //         throw `User with email: ${email} already exists.`
+    //     }
+    // }
 
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  let newUser = {
-    _id: _id,
-    firstName: firstName,
-    lastName: lastName,
-    username: username,
-    email: email,
-    dateOfBirth: dateOfBirth,
-    hashedPassword: hashedPassword,
-    friends: friends,
-    posts: posts,
-    recipes: recipes,
-    comments: comments,
-    profilePicture: "",
-  };
+    let newUser = {
+        _id: _id,
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        email: email,
+        dateOfBirth: dateOfBirth,
+        hashedPassword: hashedPassword,
+        following: following,
+        posts: posts,
+        recipes: recipes,
+        comments: comments,
+        profilePicture: ""
+    };
 
-  const userCollection = await user();
-  const insertInfo = await userCollection.insertOne(newUser);
-  if (insertInfo.insertedCount === 0) throw "Could not add new user.";
+    const userCollection = await user();
+    const insertInfo = await userCollection.insertOne(newUser);
+    if (insertInfo.insertedCount === 0) throw 'Could not add new user.';
 
-  const addedUser = await getUserById(insertInfo.insertedId.toString());
-  return addedUser;
+    const addedUser = await getUserById(insertInfo.insertedId.toString());
+    return addedUser;
 }
 
 async function findUserByUsername(username) {
@@ -159,27 +138,23 @@ async function findUserByUsername(username) {
   return userFound;
 }
 
-async function addFriendToUser(userId, friendId) {
-  if (!validation.validId(userId) || !validation.validId(friendId))
-    throw "invalid user id";
 
-  const currentUser = await getUserById(userId);
-  const friendUser = await getUserById(friendId);
+async function addFollowingToUser(userId, followId) {
+    if (!validation.validId(userId) || !validation.validId(followId)) throw 'invalid user id';
 
-  if (currentUser === null) throw "User not found";
-  if (friendUser === null) throw "User not found";
+    const currentUser = await getUserById(userId);
+    const followUser = await getUserById(followId);
 
-  for (let userFriend of currentUser.friends) {
-    if (friendId === userFriend) throw "Already friends with this user.";
-  }
+    if(currentUser === null) throw 'User not found';
+    if(followUser === null) throw 'User not found';
 
-  const userCollection = await user();
-  const updatedUser = userCollection.updateOne(
-    { _id: ObjectId(userId) },
-    { $push: { friends: friendId } }
-  );
-  if (updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0)
-    throw "Friend could not be added.";
+    for (let userFollow of currentUser.following) {
+        if(followId === userFollow) throw 'Already following with this user.';
+    }
+
+    const userCollection = await user();
+    const updatedUser = userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { following: followId } });
+    if(updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0) throw 'Could not follow user.';
 
   return await getUserById(userId);
 }
@@ -195,9 +170,11 @@ async function addPostToUser(userId, postId) {
   if (postToAdd === null) throw "Post not found";
   if (postToAdd.creator !== userId) throw "Post not created by this user";
 
-  for (let userPost of currentUser.posts) {
-    if (postId === userPost) throw "This post is already included";
-  }
+
+    const currentUser = await getUserById(userId);
+    //const recipeToAdd = await getRecipeById(recipeId);
+    //userID needs to be added in recipe collection (comment by kishan)
+    const recipeToAdd = await recipesData.getRecipeById(recipeId);
 
   const userCollection = await user();
   const updatedUser = userCollection.updateOne(
@@ -325,14 +302,15 @@ async function updateUser(userId, updatedUser) {
 }
 
 module.exports = {
-  getUserById,
-  getAllUsers,
-  createUser,
-  createSeedUser,
-  findUserByUsername,
-  addFriendToUser,
-  addPostToUser,
-  addRecipeToUser,
-  addCommentToUser,
-  updateUser,
-};
+
+    getUserById,
+    getAllUsers,
+    createUser,
+    createSeedUser,
+    findUserByUsername,
+    addFollowingToUser,
+    addPostToUser,
+    addRecipeToUser,
+    addCommentToUser,
+    updateUser
+}

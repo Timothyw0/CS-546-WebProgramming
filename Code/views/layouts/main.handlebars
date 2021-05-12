@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="utf-8">
+    {{#if title}}
+    <title>{{title}}</title>
+    {{else}}
     <title>HTML</title>
+    {{/if}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/public/css/style.css" />
@@ -19,8 +23,8 @@
             <img src="/public/images/cocktail.png" class="logo" alt="HTML Cocktail Logo" />
             <a href="/feed">Home</a>
             <a href="/posts/add">Add Post</a>
-            <a href="/feed">Add Recipe</a>
-            <a href="/feed">Search Recipes</a>
+            <a href="/recipes/addRecipe">Add Recipe</a>
+            <a href="/search/recipe">Search Recipes</a>
             <a href="/feed">Search Users</a>
             <a href="/logout" class="logout">Logout</a>
             <a href="/feed" class="myprofile">My Profile</a>

@@ -1,0 +1,28 @@
+<header>
+    <h1>Enter Recipe</h1>
+</header>
+
+    <form action="/recipes" method="POST" class="form">
+
+        <label for="recipeName">Recipe Name:</label>
+        <input type="text" name="recipeName" placeholder="Enter Recipe Name" id="recipeName" required><br>
+
+        <label for="Alcohol">Alcohol:</label>
+        <input type="text" name="alcohol" placeholder="Enter Alcohol" id="Alcohol" required><br>
+        <label for="Ingredients">Ingredients:</label>
+        <input type="text" name="ingredients" placeholder="Enter Ingredients" id="Ingredients" required><br>
+
+        <label for="Recipe">Recipe:</label>
+        <textarea id="Recipe" name="recipeBody" rows="3" cols="25" placeholder="Enter Recipe" required></textarea>
+        <br>
+        <label for="Taste Scale">Taste Scale:</label>
+        <input type="number" name="tasteScale" placeholder="Enter Taste Scale" id="Taste Scale" required><br>
+        <label for="youtubeLink">Youtube Link (optional):</label>
+        <input type="text" name="youtubeLink" placeholder="Enter Youtube Link" id="youtubeLink"><br>  
+        
+        <button type="submit" class="button">Submit!</button>
+    </form>
+
+    {{#if err}}
+        <p class="error-message">Invalid information</p>
+    {{/if}}

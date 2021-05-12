@@ -215,9 +215,9 @@ async function getFriends(uid) {
   // Find the user's friend list
   const friendObject = await userCollection.findOne(
     { _id: idObj },
-    { projection: { _id: 0, friends: 1 } }
+    { projection: { _id: 0, following: 1 } }
   );
-  let friendList = friendObject.friends;
+  let friendList = friendObject.following;
   friendList.push(cleanUID);
   return friendList;
 }
