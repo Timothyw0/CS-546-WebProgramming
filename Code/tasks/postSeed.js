@@ -4,7 +4,6 @@ const users = require("../data/userData");
 const comment = require("../data/comment");
 const recipes = require("../data/recipes");
 
-
 const main = async () => {
   const db = await connection();
   try {
@@ -49,6 +48,8 @@ const main = async () => {
     post.likes.push(userID);
   };
 
+  const listOfComments = [];
+
   // users seeding
 
   // tim user info
@@ -72,12 +73,28 @@ const main = async () => {
     "" //profilePicture
   );
 
-
-  const timComment = await comment.createComment("607322eb50dc91a9bc14955b", "606f054262b48cb2e8dc5af7", "nice") //tim comment
-  const addedTim = await users.addCommentToUser('607322eb50dc91a9bc14955b', timComment._id.toString());
-  const timRecipe= await recipes.addRecipe("607322eb50dc91a9bc14955b","Timothy recipe","whiskey","lemon,soda","steps for recipes","3","XYZLINK");
-  const addRecipetoTim=await users.addRecipeToUser("607322eb50dc91a9bc14955b",timRecipe._id.toString());
-
+  const timComment = await comment.createComment(
+    "607322eb50dc91a9bc14955b",
+    "606f054262b48cb2e8dc5af7",
+    "nice"
+  ); //tim comment
+  const addedTim = await users.addCommentToUser(
+    "607322eb50dc91a9bc14955b",
+    timComment._id.toString()
+  );
+  const timRecipe = await recipes.addRecipe(
+    "607322eb50dc91a9bc14955b",
+    "Whiskey Sour",
+    "whiskey",
+    "whiskey, bitters, egg white, lemon",
+    "Add 1 shot of whiskey with half a lemon and egg white, then shake for 30 sec. Serve over ice with a dash of a few bitters.",
+    "3",
+    "https://www.youtube.com/embed/WLUqBrih0fU"
+  );
+  const addRecipetoTim = await users.addRecipeToUser(
+    "607322eb50dc91a9bc14955b",
+    timRecipe._id.toString()
+  );
   // kishan user info
   const kishan = await users.createSeedUser(
     ObjectId("60732518372d3ae3b871f315"), //_id
@@ -99,13 +116,29 @@ const main = async () => {
     "" //profilePicture
   );
 
+  const kishanComment = await comment.createComment(
+    "60732518372d3ae3b871f315",
+    "606f054262b48cb2e8dc5af7",
+    "very cool!"
+  ); //tim comment
+  const addedKishan = await users.addCommentToUser(
+    "60732518372d3ae3b871f315",
+    kishanComment._id.toString()
+  );
+  const kishanRecipe = await recipes.addRecipe(
+    "60732518372d3ae3b871f315",
+    "Kishan recipe",
+    "beer",
+    "soda",
+    "steps for recipes",
+    "2",
+    ""
+  );
+  const addRecipetoKishan = await users.addRecipeToUser(
+    "60732518372d3ae3b871f315",
+    kishanRecipe._id.toString()
+  );
 
-
-  const kishanComment = await comment.createComment("60732518372d3ae3b871f315", "606f054262b48cb2e8dc5af7", "very cool!") //tim comment
-  const addedKishan = await users.addCommentToUser('60732518372d3ae3b871f315', kishanComment._id.toString());
-  const kishanRecipe= await recipes.addRecipe("60732518372d3ae3b871f315","Kishan recipe","beer","soda","steps for recipes","2","XYZLINK");
-  const addRecipetoKishan=await users.addRecipeToUser("60732518372d3ae3b871f315",kishanRecipe._id.toString());
-  
   // billy user info
   const billy = await users.createSeedUser(
     ObjectId("60732579ee3a5bd593f2771a"), //_id
@@ -127,12 +160,29 @@ const main = async () => {
     "" //profilePicture
   );
 
-  
-  const billyComment = await comment.createComment("60732579ee3a5bd593f2771a", "606f04cf30078a027490273e", "sounds delicious!") //tim comment
-  const addedBilly = await users.addCommentToUser('60732579ee3a5bd593f2771a', billyComment._id.toString());
-  const billyRecipe= await recipes.addRecipe("60732579ee3a5bd593f2771a","Billy recipe","vodka","olives","steps for recipes","6","XYZLINK");
-  const addRecipetoBilly=await users.addRecipeToUser("60732579ee3a5bd593f2771a",billyRecipe._id.toString());
-  
+  const billyComment = await comment.createComment(
+    "60732579ee3a5bd593f2771a",
+    "606f04cf30078a027490273e",
+    "sounds delicious!"
+  ); //tim comment
+  const addedBilly = await users.addCommentToUser(
+    "60732579ee3a5bd593f2771a",
+    billyComment._id.toString()
+  );
+  const billyRecipe = await recipes.addRecipe(
+    "60732579ee3a5bd593f2771a",
+    "Billy recipe",
+    "vodka",
+    "olives",
+    "steps for recipes",
+    "6",
+    ""
+  );
+  const addRecipetoBilly = await users.addRecipeToUser(
+    "60732579ee3a5bd593f2771a",
+    billyRecipe._id.toString()
+  );
+
   // avani user info
   const avani = await users.createSeedUser(
     ObjectId("60732f6f9344955ba436a1bc"), //_id
@@ -153,11 +203,28 @@ const main = async () => {
     "" //profilePicture
   );
 
-
-  const avaniComment = await comment.createComment("60732f6f9344955ba436a1bc", "606f05bb4e7e233e61f8beb7", "looks super good.") //avani comment
-  const addedAvani = await users.addCommentToUser('60732f6f9344955ba436a1bc', avaniComment._id.toString());
-  const avaniRecipe= await recipes.addRecipe("60732f6f9344955ba436a1bc","Avani recipe","rum","orange","steps for recipes","4","XYZLINK");
-  const addRecipetoAvani=await users.addRecipeToUser("60732f6f9344955ba436a1bc",avaniRecipe._id.toString());
+  const avaniComment = await comment.createComment(
+    "60732f6f9344955ba436a1bc",
+    "606f05bb4e7e233e61f8beb7",
+    "looks super good."
+  ); //avani comment
+  const addedAvani = await users.addCommentToUser(
+    "60732f6f9344955ba436a1bc",
+    avaniComment._id.toString()
+  );
+  const avaniRecipe = await recipes.addRecipe(
+    "60732f6f9344955ba436a1bc",
+    "Avani recipe",
+    "rum",
+    "orange",
+    "steps for recipes",
+    "4",
+    ""
+  );
+  const addRecipetoAvani = await users.addRecipeToUser(
+    "60732f6f9344955ba436a1bc",
+    avaniRecipe._id.toString()
+  );
 
   // pat user info
   const pat = await users.createSeedUser(
@@ -180,77 +247,91 @@ const main = async () => {
     "" //profilePicture
   );
 
-
-  const patComment = await comment.createComment("6073261f162457f64eddacfb", "606f05f5cba5cb48b03f2abc", "wooahh") //avani comment
-  const addedPat = await users.addCommentToUser('6073261f162457f64eddacfb', patComment._id.toString());
-  const patRecipe= await recipes.addRecipe("6073261f162457f64eddacfb","Pat recipe","gin","pineapple,soda","steps for recipes","6","XYZLINK");
-  const addRecipetoPat=await users.addRecipeToUser("6073261f162457f64eddacfb",patRecipe._id.toString());
-  
-
-  const timComment = await makeComments(
-    ObjectId("609b31570389485c03d4ab8a"),
-    "607322eb50dc91a9bc14955b",
-    "606f04246c785b72ecce993f",
-    "nice"
-  ); //tim comment
-  listOfComments.push(timComment);
-
-  const kishanComment = await makeComments(
-    ObjectId("609b31570389485c03d4ab8b"),
-    "60732518372d3ae3b871f315",
-    "606f04cf30078a027490273e",
-    "very cool!"
-  ); //kishan comment
-  listOfComments.push(kishanComment);
-
-  const patComment = await makeComments(
-    ObjectId("609b31570389485c03d4ab8c"),
+  const patComment = await comment.createComment(
     "6073261f162457f64eddacfb",
-    "606f05bb4e7e233e61f8beb7",
-    "wooahh"
-  ); //patrick comment
-  listOfComments.push(patComment);
-
-  const avaniComment = await makeComments(
-    ObjectId("609b31570389485c03d4ab8d"),
-    "60732f6f9344955ba436a1bc",
     "606f05f5cba5cb48b03f2abc",
-    "looks super good."
+    "wooahh"
   ); //avani comment
-  listOfComments.push(avaniComment);
-
-  const billyComment = await makeComments(
-    ObjectId("609b31570389485c03d4ab8e"),
-    "60732579ee3a5bd593f2771a",
-    "606f054262b48cb2e8dc5af7",
-    "sounds delicious!"
-  ); //billy comment
-  listOfComments.push(billyComment);
-
-  await commentsCollection.insertMany(listOfComments);
-  const addedTim = await users.addCommentToUser(
-    "607322eb50dc91a9bc14955b",
-    timComment._id.toString()
-  );
-  const addedKishan = await users.addCommentToUser(
-    "60732518372d3ae3b871f315",
-    kishanComment._id.toString()
-  );
   const addedPat = await users.addCommentToUser(
     "6073261f162457f64eddacfb",
     patComment._id.toString()
   );
-
-  const addedAvani = await users.addCommentToUser(
-    "60732f6f9344955ba436a1bc",
-    avaniComment._id.toString()
+  const patRecipe = await recipes.addRecipe(
+    "6073261f162457f64eddacfb",
+    "Pat recipe",
+    "gin",
+    "pineapple,soda",
+    "steps for recipes",
+    "6",
+    ""
   );
-  const addedBilly = await users.addCommentToUser(
-    "60732579ee3a5bd593f2771a",
-    billyComment._id.toString()
+  const addRecipetoPat = await users.addRecipeToUser(
+    "6073261f162457f64eddacfb",
+    patRecipe._id.toString()
   );
-  console.log(listOfComments);
 
+  // const timComment = await makeComments(
+  //   ObjectId("609b31570389485c03d4ab8a"),
+  //   "607322eb50dc91a9bc14955b",
+  //   "606f04246c785b72ecce993f",
+  //   "nice"
+  // ); //tim comment
+  // listOfComments.push(timComment);
+
+  // const kishanComment = await makeComments(
+  //   ObjectId("609b31570389485c03d4ab8b"),
+  //   "60732518372d3ae3b871f315",
+  //   "606f04cf30078a027490273e",
+  //   "very cool!"
+  // ); //kishan comment
+  // listOfComments.push(kishanComment);
+
+  // const patComment = await makeComments(
+  //   ObjectId("609b31570389485c03d4ab8c"),
+  //   "6073261f162457f64eddacfb",
+  //   "606f05bb4e7e233e61f8beb7",
+  //   "wooahh"
+  // ); //patrick comment
+  // listOfComments.push(patComment);
+
+  // const avaniComment = await makeComments(
+  //   ObjectId("609b31570389485c03d4ab8d"),
+  //   "60732f6f9344955ba436a1bc",
+  //   "606f05f5cba5cb48b03f2abc",
+  //   "looks super good."
+  // ); //avani comment
+  // listOfComments.push(avaniComment);
+
+  // const billyComment = await makeComments(
+  //   ObjectId("609b31570389485c03d4ab8e"),
+  //   "60732579ee3a5bd593f2771a",
+  //   "606f054262b48cb2e8dc5af7",
+  //   "sounds delicious!"
+  // ); //billy comment
+  // listOfComments.push(billyComment);
+
+  // await commentsCollection.insertMany(listOfComments);
+  // const addedTim = await users.addCommentToUser(
+  //   "607322eb50dc91a9bc14955b",
+  //   timComment._id.toString()
+  // );
+  // const addedKishan = await users.addCommentToUser(
+  //   "60732518372d3ae3b871f315",
+  //   kishanComment._id.toString()
+  // );
+  // const addedPat = await users.addCommentToUser(
+  //   "6073261f162457f64eddacfb",
+  //   patComment._id.toString()
+  // );
+  // const addedAvani = await users.addCommentToUser(
+  //   "60732f6f9344955ba436a1bc",
+  //   avaniComment._id.toString()
+  // );
+  // const addedBilly = await users.addCommentToUser(
+  //   "60732579ee3a5bd593f2771a",
+  //   billyComment._id.toString()
+  // );
+  // console.log(listOfComments);
 
   console.log(tim);
   console.log(kishan);
@@ -259,7 +340,6 @@ const main = async () => {
   console.log(pat);
 
   const listOfPosts = [];
-
   // Tim's post with recipe
   const timPost = makePost(
     (id = ObjectId("606f04246c785b72ecce993f")),
@@ -290,7 +370,7 @@ const main = async () => {
   const billyPost = makePost(
     (id = ObjectId("606f054262b48cb2e8dc5af7")),
     (creator = "60732579ee3a5bd593f2771a"),
-    (recipe = "TODO: Billy's Recipe"),
+    (recipe = billyRecipe._id.toString()),
     (text =
       "Check out this new recipe I made with gin! It's perfect for a nice sunny day like today!")
   );
@@ -317,7 +397,7 @@ const main = async () => {
   const avaniPost = makePost(
     (id = ObjectId("606f05f5cba5cb48b03f2abc")),
     (creator = "60732f6f9344955ba436a1bc"),
-    (recipe = "TODO: Avani's recipe"),
+    (recipe = avaniRecipe._id.toString()),
     (text =
       "I ordered this drink by accident at the bar one time and have been in love with it ever since. Check it out and let me know what you all think!")
   );

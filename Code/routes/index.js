@@ -2,7 +2,8 @@ const postRoutes = require("./posts");
 const userRoutes = require("./users");
 const commentRoutes = require("./comment");
 const postData = require("../data/posts");
-const recipesroutes = require("./recipes");
+const recipesRoutes = require("./recipes");
+const searchRoutes = require("./search");
 const session = require("express-session");
 
 const constructorMethod = (app) => {
