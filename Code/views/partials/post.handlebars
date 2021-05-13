@@ -57,9 +57,11 @@
         <!-- iterate through the comments -->
         {{#each comments}}
         <div class="individualComment">
-            <a class="btn-del comment-delete-icon" data-id="{{_id}}">
-                <img src="/public/images/trash.svg" alt="delete-comment">
-            </a>
+            {{#if isCommentOwner}}
+                <a class="btn-del comment-delete-icon" data-id="{{_id}}">
+                    <img src="/public/images/trash.svg" alt="delete-comment">
+                </a>
+            {{/if}}
             <p class="commentUser">{{username}}</p>
             <p class="commentText">{{comment}}</p>
         </div>
