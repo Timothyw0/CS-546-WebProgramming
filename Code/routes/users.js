@@ -5,6 +5,8 @@ const userData = require("../data/userData");
 const postData = require("../data/posts");
 const bcrypt = require("bcrypt");
 const validator = require("../data/validation");
+const multer = require('multer');
+const path = require('path');
 
 router.get("/", async (req, res) => {
   if (req.session.user) {
@@ -132,7 +134,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-router.get('users/profile/:id', async (req, res) => {
+router.get('/users/profile/:id', async (req, res) => {
     let errors = [];
     const userFound = await userData.getUserById(req.params.id)
     if(!userFound) {
@@ -160,6 +162,10 @@ router.get('users/profile/:id', async (req, res) => {
     } else {
         isFollowing = false;
     }
+
+    if (userFound.profilePicture !== "") {
+      userFound.profilePicture = userFound.profilePicture.image.buffer
+    }
     res.render('users/profile', {
         title: userFound.username,
         userInfo: {
@@ -179,14 +185,14 @@ router.get('users/profile/:id', async (req, res) => {
     });
 });
 
-router.get("users/profile/edit", async (req, res) => {
+router.get("/users/profile/edit", async (req, res) => {
   res.render("users/edit", {
     title: "Edit Profile",
     userInfo: req.session.user,
   });
 });
 
-router.patch("users/profile/edit", async (req, res) => {
+router.patch("/users/profile/edit", async (req, res) => {
   const updateInfo = {};
   const reqBody = {
     firstName: xss(req.body.firstName.trim()),
@@ -272,7 +278,7 @@ router.patch("users/profile/edit", async (req, res) => {
 });
 
 
-router.post('users/follow/:id', async (req, res) => {
+router.post('/users/follow/:id', async (req, res) => {
     try {
         const updated = await userData.addFollowingToUser(req.session.user._id, req.params.id)
         req.session.user.following = updated.following;
@@ -280,6 +286,39 @@ router.post('users/follow/:id', async (req, res) => {
     } catch(e) {
         return res.redirect(`users/profile/${req.params.id}`);
     }
+});
+
+var fs = require('fs');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
+ 
+var upload = multer({ storage: storage })
+
+router.post('/users/upload/picture', upload.single('picture'), async (req, res) => {
+  try {
+    console.log(req.file);
+    var profilePic = fs.readFileSync(req.file.path)
+    var encodedProfilePic = profilePic.toString('base64');
+    var picToAdd = {
+      contentType: req.file.mimetype,
+      image: Buffer.from(encodedProfilePic, 'base64')
+    }
+    const updatedWithPic = await userData.addProfilePhotoToUser(req.session.user._id, picToAdd);
+    req.session.user = updatedWithPic;
+    res.redirect(`users/profile/${updatedWithPic._id}`);
+  } catch (error) {
+    res.status(404).render('users/profile', {
+      title: req.session.user.username,
+      userInfo: req.session.user,
+      error: error
+    });
+  }
 });
 
 router.get('/logout', async (req, res) => {
