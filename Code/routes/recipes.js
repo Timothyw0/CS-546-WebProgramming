@@ -46,10 +46,10 @@ router.post('/', async (req, res) => {
         return;
     }
    
-    if (!recipeData.youtubeLink) {
-        res.status(400).json({ error: 'You must provide Youtube Link ' });
-        return;
-    }
+    // if (!recipeData.youtubeLink) {
+    //     res.status(400).json({ error: 'You must provide Youtube Link ' });
+    //     return;
+    // }
 
     try {
         const UserID=req.session.user._id;
