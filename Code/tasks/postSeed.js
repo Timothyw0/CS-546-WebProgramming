@@ -100,7 +100,7 @@ const main = async () => {
     ObjectId("60732518372d3ae3b871f315"), //_id
     "Kishan", //firstName
     "Senjaliya", //lastName
-    "Kishans", // username
+    "kishans", // username
     "kishans@gmail.com", //email
     "12/12/1994", //age
     "Passwordkishan1", //hashPassword
