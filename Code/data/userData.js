@@ -56,17 +56,6 @@ async function createUser(
   }
   if (!validation.validPassword(password)) throw "Invalid Password";
 
-  const allUsers = await getAllUsers();
-  let usernameLowerCase = username.toLowerCase();
-  let emailLowerCase = email.toLowerCase();
-  for (let singleUser of allUsers) {
-    if (usernameLowerCase == singleUser.username) {
-      throw `User with username: ${username} already exists.`;
-    } else if (emailLowerCase == singleUser.email) {
-      throw `User with email: ${email} already exists.`;
-    }
-  }
-
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   let newUser = {
