@@ -13,6 +13,7 @@
     if (typeof usernameText !== "string" || usernameText.trim().length === 0) {
       results.append("<li>You must enter a login!</li>");
       errorGroup.removeAttr("hidden");
+      username.focus();
       return;
     }
     //firstName.focus();
@@ -20,6 +21,7 @@
     if (typeof passwordText !== "string" || passwordText.trim().length === 0) {
       results.append("<li>You must enter a password!</li>");
       errorGroup.removeAttr("hidden");
+      password.focus();
       return;
     }
     let requestConfig = {
@@ -33,6 +35,14 @@
       }),
       success: function () {
         $(location).attr("href", "/feed");
+      },
+      error: function () {
+        results.append("<li>Incorrect username/password!</li>");
+        username.val("");
+        password.val("");
+        username.focus();
+        errorGroup.removeAttr("hidden");
+        return;
       },
     };
     $.ajax(requestConfig).then(function (responseMessage) {});
