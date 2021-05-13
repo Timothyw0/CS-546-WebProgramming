@@ -11,7 +11,7 @@
     results.empty();
     let usernameText = username.val();
     if (typeof usernameText !== "string" || usernameText.trim().length === 0) {
-      results.append("<li>You must enter a login!</li>");
+      results.append('<li class="error-text">You must enter a username!</li>');
       errorGroup.removeAttr("hidden");
       username.focus();
       return;
@@ -19,7 +19,7 @@
     //firstName.focus();
     let passwordText = password.val();
     if (typeof passwordText !== "string" || passwordText.trim().length === 0) {
-      results.append("<li>You must enter a password!</li>");
+      results.append('<li class="error-text">You must enter a password!</li>');
       errorGroup.removeAttr("hidden");
       password.focus();
       return;
@@ -37,7 +37,9 @@
         $(location).attr("href", "/feed");
       },
       error: function () {
-        results.append("<li>Incorrect username/password!</li>");
+        results.append(
+          '<li class="error-text">Incorrect username/password!</li>'
+        );
         username.val("");
         password.val("");
         username.focus();
