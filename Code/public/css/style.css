@@ -153,15 +153,11 @@ footer {
 }
 
 /* Edit post page CSS */
-.edit-post h1,
+.edit-post h1:not(.postHyperlink),
 label,
 select,
 form {
   text-align: center;
-}
-
-#postHyperlink {
-  text-align: left;
 }
 
 .edit-post h2 {
@@ -204,7 +200,10 @@ form {
   align-items: center;
 }
 
-.individualComment:hover .comment-delete-icon, .individualComment.hover .comment-delete-icon { display: block; }
+.individualComment:hover .comment-delete-icon,
+.individualComment.hover .comment-delete-icon {
+  display: block;
+}
 .comment-delete-icon {
   display: none;
   width: 20px;
@@ -301,4 +300,3 @@ Here is css for recipe search page
 .recipe-box {
   width: 300px;
 }
-

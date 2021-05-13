@@ -7,7 +7,7 @@
   // Handlebars template set up
   let postTemplate = `<div class="post">
     <a href="/users/profile/{{creator}}">
-     <h1 id="postHyperlink">
+     <h1 class="postHyperlink">
         {{username}}
      </h1>
     </a>
@@ -33,21 +33,21 @@
     <br />
     <p>{{ text }}</p>
     <!-- if likeList block -->
-    <div id="likeDiv">
+    <div class="likeDiv">
         {{#if likeList}}
         <p>
-            <em id="likeList">{{ likeList }} like this post</em>
+            <em class="likeList">{{ likeList }} like this post</em>
         </p>
         {{/if}}
     </div>
     <!-- end if block -->
     <!-- if liked block -->
     {{#if liked}}
-    <a href="" id="likePost" class="postInteraction">
+    <a href="" class="postInteraction likePost">
         Unlike
     </a>
     {{else}}
-    <a href="" id="likePost" class="postInteraction">
+    <a href="" class="postInteraction likePost">
         Like
     </a>
     {{/if}}
@@ -64,6 +64,11 @@
         <!-- iterate through the comments -->
         {{#each comments}}
         <div class="individualComment">
+        {{#if isCommentOwner}}
+         <a class="btn-del comment-delete-icon" data-id="{{_id}}">
+            <img src="/public/images/trash.svg" alt="delete-comment">
+          </a>
+        {{/if}}
             <p class="commentUser">{{username}}</p>
             <p class="commentText">{{comment}}</p>
         </div>
@@ -73,7 +78,7 @@
 
     <!-- end if block -->
     <!-- Hidden postID in order to make AJAX requests -->
-    <p id="postID" hidden>{{_id}}</p>
+    <p class="postID" hidden>{{_id}}</p>
 </div>`;
   // After making the call we have to use the template
   let compiledPost = Handlebars.compile(postTemplate);
@@ -83,12 +88,12 @@
 
   // User clicked like on a post, we need to send a request to posts endpoint
   function bindEventsToLikeButton(post) {
-    post.find("#likePost").on("click", function (event) {
+    post.find(".likePost").on("click", function (event) {
       event.preventDefault();
-      let likedUsers = post.find("#likeList");
-      let likeDiv = post.find("#likeDiv");
-      let likeText = post.find("#likePost").html().trim();
-      let postID = post.find("#postID").html();
+      let likedUsers = post.find(".likeList");
+      let likeDiv = post.find(".likeDiv");
+      let likeText = post.find(".likePost").html().trim();
+      let postID = post.find(".postID").html();
       // Everything looks good so we can make the request now
       // User liked
       if (likeText === "Like") {
@@ -112,7 +117,7 @@
             $(likedUsers).text(newLikes);
           }
           // After making request, change the text to unlike
-          $(post.find("#likePost")).text("Unlike");
+          $(post.find(".likePost")).text("Unlike");
         });
       }
       // User clicked unlike
@@ -137,9 +142,30 @@
             $(likedUsers).text(newLikes);
           }
           // After making request, change the text to like
-          $(post.find("#likePost")).text("Like");
+          $(post.find(".likePost")).text("Like");
         });
       }
+    });
+  }
+
+  // Function to bind to delete comment buttons, need to bind when user gets more posts
+  function initializeDeleteClick() {
+    $(".btn-del").on("click", function (event) {
+      event.preventDefault();
+      var button = $(this);
+      var commentId = button.data("id");
+
+      var requestConfig = {
+        method: "DELETE",
+        url: "/comment/" + commentId,
+        contentType: "application/json",
+        data: JSON.stringify({
+          id: commentId,
+        }),
+      };
+      $.ajax(requestConfig).then(function (responseMessage) {
+        $(location).attr("href", "/feed");
+      });
     });
   }
 
@@ -183,6 +209,8 @@
     postColumn.children().each(function (index, element) {
       bindEventsToLikeButton($(element));
     });
+    // Bind delete comment links
+    initializeDeleteClick();
   });
 
   // Timeout listener to check if there are any new posts, if there are, add it to the post Div using template

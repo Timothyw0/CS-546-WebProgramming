@@ -1,6 +1,6 @@
 <div class="post">
     <a href="/users/profile/{{creator}}">
-        <h1 id="postHyperlink">
+        <h1 class="postHyperlink">
             {{username}}
         </h1>
     </a>
@@ -26,21 +26,21 @@
     <br />
     <p>{{ text }}</p>
     <!-- if likeList block -->
-    <div id="likeDiv">
+    <div class="likeDiv">
         {{#if likeList}}
         <p>
-            <em id="likeList">{{ likeList }} like this post</em>
+            <em class="likeList">{{ likeList }} like this post</em>
         </p>
         {{/if}}
     </div>
     <!-- end if block -->
     <!-- if liked block -->
     {{#if liked}}
-    <a href="" id="likePost" class="postInteraction">
+    <a href="" class="postInteraction likePost">
         Unlike
     </a>
     {{else}}
-    <a href="" id="likePost" class="postInteraction">
+    <a href="" class="postInteraction likePost">
         Like
     </a>
     {{/if}}
@@ -71,5 +71,5 @@
 
     <!-- end if block -->
     <!-- Hidden postID in order to make AJAX requests -->
-    <p id="postID" hidden>{{_id}}</p>
+    <p class="postID" hidden>{{_id}}</p>
 </div>
