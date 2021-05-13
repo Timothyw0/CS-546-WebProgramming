@@ -5,6 +5,7 @@ const static = express.static(__dirname + "/public");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
 const Handlebars = require("handlebars");
+var fs = require('fs');
 
 const handlebarsInstance = exphbs.create({
   defaultLayout: "main",
@@ -35,9 +36,17 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
+
+
+
 app.use(async (req, res, next) => {
   var timestamp = new Date().toUTCString()
-  console.log(`[${timestamp}] ${req.method} ${req.originalUrl}`);
+  //console.log(`[${timestamp}] ${req.method} ${req.originalUrl}`);
+  
+  fs.appendFile('./log.txt',
+  `[${timestamp}] ${req.method} ${req.originalUrl} \r\n`
+  , () => {
+  })
   next();
 });
 
