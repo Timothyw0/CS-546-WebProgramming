@@ -359,7 +359,7 @@ async function getPostById(id, userID) {
   // Get the username of each commentor
   for (let i = 0; i < postComments.length; i++) {
     postComments[i].username = await getName(postComments[i].userId);
-    postComment[i].isCommentOwner = postComments[i].userId === userID;
+    postComments[i].isCommentOwner = postComments[i].userId === userID;
   }
   reqPost.comments = postComments;
   // If there is a recipe, attach the recipe object
