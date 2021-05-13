@@ -16,7 +16,7 @@ router.get('/:id', async (req, res) => {
         req.params.id = req.params.id.trim();
         const recipe = await data.getRecipeById(req.params.id);
         res.render('recipes/showDetails', { title: "Show Found", result: recipe });
-        //res.json(recipe);
+        
     } catch (e) {
         res.status(404).json({ error: 'Recipe not found' });
     }

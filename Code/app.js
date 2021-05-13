@@ -35,6 +35,12 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
+app.use(async (req, res, next) => {
+  var timestamp = new Date().toUTCString()
+  console.log(`[${timestamp}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 app.use(
   session({
     name: "AuthCookie",
