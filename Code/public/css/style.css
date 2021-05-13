@@ -50,6 +50,11 @@
   margin-top: 20px;
 }
 
+.myDiv h1{
+  font-size: 30px;
+  color: yellow;
+  }
+
 .post h1 {
   font-size: 25px;
 }
