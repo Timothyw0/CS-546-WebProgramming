@@ -65,12 +65,15 @@ router.get("/signup", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   let errors = [];
+  let dateOfBirthConvert = xss(req.body.dateOfBirth.trim());
+  let parts = dateOfBirthConvert.split("-");
+  dateOfBirthConvert = `${parts[1]}/${parts[2]}/${parts[0]}`;
   let newUser = {
     firstName: xss(req.body.firstName.trim()),
     lastName: xss(req.body.lastName.trim()),
     username: xss(req.body.username.toLowerCase().trim()),
     email: xss(req.body.email.toLowerCase().trim()),
-    dateOfBirth: xss(req.body.dateOfBirth.trim()),
+    dateOfBirth: dateOfBirthConvert,
     password: xss(req.body.password.trim()),
   };
   console.log("NEW USER: ");
@@ -87,33 +90,32 @@ router.post("/signup", async (req, res) => {
   if (!validator.validEmail(newUser.email)) errors.push("Invalid email.");
   if (!validator.validDate(newUser.dateOfBirth))
     errors.push("Invalid Date of Birth.");
+  if (!validator.validAge(newUser.dateOfBirth)) errors.push("Invalid Age.");
 
   console.log("HERE WE GO.Z");
-  if (errors.length > 0) {
-    console.log(errors);
-    return res.status(401).render("users/signup", {
-      title: "Sign Up",
-      errors: errors,
-      signupInfo: newUser,
-    });
-  }
 
   const userCheck = await userData.findUserByUsername(newUser.username);
   try {
     if (userCheck) throw "Username already in use.";
   } catch (e) {
     errors.push(e);
-    return res.status(401).render("users/signup", {
-      title: "Sign Up",
-      errors: errors,
-      signupInfo: newUser,
-    });
+    // return res.status(401).render("users/signup", {
+    //   title: "Sign Up",
+    //   errors: errors,
+    //   signupInfo: newUser,
+    // });
   }
+
+  if (errors.length > 0) {
+    console.log(errors);
+    return res.status(401).json({ errors: errors });
+  }
+
   try {
     const addedUser = await userData.createUser(
       newUser.firstName,
       newUser.lastName,
-      newUser.lastName,
+      newUser.username,
       newUser.email,
       newUser.dateOfBirth,
       newUser.password
