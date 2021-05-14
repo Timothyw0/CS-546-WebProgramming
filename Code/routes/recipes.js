@@ -3,14 +3,12 @@ const router = express.Router();
 const data = require("../data/recipes");
 const xss = require("xss");
 
-router.get("/", async (req, res) => {
-  res.render("recipes/index");
-});
-
+//ADD RECIPES WILL RENDER RECIPE FORM HANDLEBAR
 router.get("/addRecipe", async (req, res) => {
   res.render("recipes/addRecipe");
 });
 
+//DISPLAY RECIPE BY ID
 router.get("/:id", async (req, res) => {
   try {
     req.params.id = req.params.id.trim();
@@ -21,6 +19,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//POST METHOD FROM RECIPE FORM TO INSERT DATA INTO DATABASE
 router.post("/", async (req, res) => {
   const recipeData = req.body;
 
@@ -77,69 +76,69 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
-  if (!req.params.id) {
-    req.params.id = req.params.id.trim();
-    res.status(400).json({ error: "You must insert ID to delete" });
-    return;
-  }
-  try {
-    await data.getRecipeById(req.params.id);
-  } catch (e) {
-    res.status(404).json({ error: "Recipe not found" });
-    return;
-  }
-  try {
-    const deletedRecipe = await data.removeRecipe(req.params.id);
-    res.json(deletedRecipe);
-  } catch (e) {
-    res.status(500).json({ error: e });
-  }
-});
+// router.delete("/:id", async (req, res) => {
+//   if (!req.params.id) {
+//     req.params.id = req.params.id.trim();
+//     res.status(400).json({ error: "You must insert ID to delete" });
+//     return;
+//   }
+//   try {
+//     await data.getRecipeById(req.params.id);
+//   } catch (e) {
+//     res.status(404).json({ error: "Recipe not found" });
+//     return;
+//   }
+//   try {
+//     const deletedRecipe = await data.removeRecipe(req.params.id);
+//     res.json(deletedRecipe);
+//   } catch (e) {
+//     res.status(500).json({ error: e });
+//   }
+// });
 
-router.patch("/:id", async (req, res) => {
-  const requestBody = req.body;
-  req.params.id = req.params.id.trim();
-  let updatedObject = {};
-  try {
-    const oldRecipe = await data.getRecipeById(req.params.id);
-    if (requestBody.creator && requestBody.creator !== oldRecipe.creator)
-      updatedObject.creator = requestBody.creator;
-    if (
-      requestBody.ingredients &&
-      requestBody.ingredients !== oldRecipe.ingredients
-    )
-      updatedObject.ingredients = requestBody.ingredients;
-    if (
-      requestBody.tasteScale &&
-      requestBody.tasteScale !== oldRecipe.tasteScale
-    )
-      updatedObject.tasteScale = requestBody.tasteScale;
-    if (
-      requestBody.youtubeLink &&
-      requestBody.youtubeLink !== oldRecipe.youtubeLink
-    )
-      updatedObject.youtubeLink = requestBody.youtubeLink;
-  } catch (e) {
-    res.status(404).json({ error: "Recipe not found" });
-    return;
-  }
-  if (Object.keys(updatedObject).length != 0) {
-    try {
-      const updatedRecipe = await data.patchUpdateRecipe(
-        req.params.id,
-        updatedObject
-      );
-      res.json(updatedRecipe);
-    } catch (e) {
-      res.status(500).json({ error: e });
-    }
-  } else {
-    res.status(400).json({
-      error:
-        "No fields have been changed from their inital values, so no update has occurred",
-    });
-  }
-});
+// router.patch("/:id", async (req, res) => {
+//   const requestBody = req.body;
+//   req.params.id = req.params.id.trim();
+//   let updatedObject = {};
+//   try {
+//     const oldRecipe = await data.getRecipeById(req.params.id);
+//     if (requestBody.creator && requestBody.creator !== oldRecipe.creator)
+//       updatedObject.creator = requestBody.creator;
+//     if (
+//       requestBody.ingredients &&
+//       requestBody.ingredients !== oldRecipe.ingredients
+//     )
+//       updatedObject.ingredients = requestBody.ingredients;
+//     if (
+//       requestBody.tasteScale &&
+//       requestBody.tasteScale !== oldRecipe.tasteScale
+//     )
+//       updatedObject.tasteScale = requestBody.tasteScale;
+//     if (
+//       requestBody.youtubeLink &&
+//       requestBody.youtubeLink !== oldRecipe.youtubeLink
+//     )
+//       updatedObject.youtubeLink = requestBody.youtubeLink;
+//   } catch (e) {
+//     res.status(404).json({ error: "Recipe not found" });
+//     return;
+//   }
+//   if (Object.keys(updatedObject).length != 0) {
+//     try {
+//       const updatedRecipe = await data.patchUpdateRecipe(
+//         req.params.id,
+//         updatedObject
+//       );
+//       res.json(updatedRecipe);
+//     } catch (e) {
+//       res.status(500).json({ error: e });
+//     }
+//   } else {
+//     res.status(400).json({
+//       error:
+//         "No fields have been changed from their inital values, so no update has occurred",
+//     });
+//   }
+// });
 
 module.exports = router;

@@ -1,6 +1,8 @@
 const { recipes } = require("../config/mongoCollections");
 const mongoCollections = require("../config/mongoCollections");
 const exportedMethods = {
+  
+  //ADD RECIPE TO DATABASE
   async addRecipe(
     UserId,
     recipeName,
@@ -11,6 +13,18 @@ const exportedMethods = {
     youtubeLink
   ) {
     try {
+
+      //WILL NOT ADD DUPLICATE RECIPES
+      var temp=await this.getAllRecipes()
+      for(let i=0;i<temp.length;i++)
+      {
+        if(recipeName==temp[i].recipeName)
+        {
+          throw 'Recipe Name already exists';
+        }
+      }
+
+
       if (typeof recipeName !== "string") throw "Recipe Name is not a string";
       if (typeof alcohol !== "string") throw "Alcohol is not a string";
       if (typeof ingredients !== "string") throw "Ingredients is not a string";
@@ -58,6 +72,7 @@ const exportedMethods = {
     }
   },
 
+  //GET RECIPE BY ID
   async getRecipeById(id) {
     const recipesCollections = await recipes();
     let { ObjectId } = require("mongodb");
@@ -68,6 +83,7 @@ const exportedMethods = {
     return recipe;
   },
 
+  //GET LIST OF ALL RECIPES
   async getAllRecipes() {
     const recipesCollections = await recipes();
     const Recipeslist = await recipesCollections.find().toArray();
@@ -77,34 +93,34 @@ const exportedMethods = {
     return Recipeslist;
   },
 
-  async removeRecipe(id) {
-    const recipesCollections = await recipes();
-    let { ObjectId } = require("mongodb");
-    let parsedId = ObjectId(id);
-    const deletionInfo = await recipesCollections.deleteOne({ _id: parsedId });
-    if (deletionInfo.deletedCount === 0) {
-      throw `Could not delete Recipe with id of ${id}`;
-    }
-    var obj = {
-      RecipeId: parsedId,
-      deleted: true,
-    };
-    return obj;
-  },
+  // async removeRecipe(id) {
+  //   const recipesCollections = await recipes();
+  //   let { ObjectId } = require("mongodb");
+  //   let parsedId = ObjectId(id);
+  //   const deletionInfo = await recipesCollections.deleteOne({ _id: parsedId });
+  //   if (deletionInfo.deletedCount === 0) {
+  //     throw `Could not delete Recipe with id of ${id}`;
+  //   }
+  //   var obj = {
+  //     RecipeId: parsedId,
+  //     deleted: true,
+  //   };
+  //   return obj;
+  // },
 
-  async patchUpdateRecipe(id, updatedObject) {
-    const recipesCollections = await recipes();
+  // async patchUpdateRecipe(id, updatedObject) {
+  //   const recipesCollections = await recipes();
 
-    let { ObjectId } = require("mongodb");
-    let parsedId = ObjectId(id);
+  //   let { ObjectId } = require("mongodb");
+  //   let parsedId = ObjectId(id);
 
-    await recipesCollections.updateOne(
-      { _id: parsedId },
-      { $set: updatedObject }
-    );
+  //   await recipesCollections.updateOne(
+  //     { _id: parsedId },
+  //     { $set: updatedObject }
+  //   );
 
-    return await this.getRecipeById(id);
-  },
+  //   return await this.getRecipeById(id);
+  // },
 };
 
 module.exports = exportedMethods;
