@@ -3,6 +3,7 @@ const router = express.Router();
 const xss = require("xss");
 const userData = require("../data/userData");
 const postData = require("../data/posts");
+const recipeData = require("../data/recipes");
 const bcrypt = require("bcrypt");
 const validator = require("../data/validation");
 // const multer = require('multer');
@@ -62,136 +63,150 @@ router.get("/signup", async (req, res) => {
   res.render("users/signup", { title: "Sign Up" });
 });
 
-router.post('/signup', async (req, res) => {
-    let errors = [];
-    let newUser = {
-        firstName: xss(req.body.firstName.trim()),
-        lastName: xss(req.body.lastName.trim()),
-        username: xss(req.body.username.toLowerCase().trim()),
-        email: xss(req.body.email.toLowerCase().trim()),
-        dateOfBirth: xss(req.body.dateOfBirth.trim()),
-        password: xss(req.body.password.trim())
-    }
-    console.log("NEW USER: ")
-    console.log(newUser);
-    
+router.post("/signup", async (req, res) => {
+  let errors = [];
+  let newUser = {
+    firstName: xss(req.body.firstName.trim()),
+    lastName: xss(req.body.lastName.trim()),
+    username: xss(req.body.username.toLowerCase().trim()),
+    email: xss(req.body.email.toLowerCase().trim()),
+    dateOfBirth: xss(req.body.dateOfBirth.trim()),
+    password: xss(req.body.password.trim()),
+  };
+  console.log("NEW USER: ");
+  console.log(newUser);
 
-    if(!validator.validString(newUser.firstName)) errors.push('Invalid first name.');
-    if(!validator.validString(newUser.lastName)) errors.push('Invalid last name.');
-    if(!validator.validString(newUser.username)) errors.push('Invalid username.');
-    if(!validator.validPassword(newUser.password)) errors.push('Invalid password.');
-    if(!validator.validEmail(newUser.email)) errors.push('Invalid email.');
-    if(!validator.validDate(newUser.dateOfBirth)) errors.push('Invalid Date of Birth.');
+  if (!validator.validString(newUser.firstName))
+    errors.push("Invalid first name.");
+  if (!validator.validString(newUser.lastName))
+    errors.push("Invalid last name.");
+  if (!validator.validString(newUser.username))
+    errors.push("Invalid username.");
+  if (!validator.validPassword(newUser.password))
+    errors.push("Invalid password.");
+  if (!validator.validEmail(newUser.email)) errors.push("Invalid email.");
+  if (!validator.validDate(newUser.dateOfBirth))
+    errors.push("Invalid Date of Birth.");
 
-    console.log("HERE WE GO.Z")
-    if(errors.length > 0) {
-      console.log(errors)
-        return res.status(401).render('users/signup', {
-            title: 'Sign Up',
-            errors: errors,
-            signupInfo: newUser
-        });
-    }
-
-    const userCheck = await userData.findUserByUsername(newUser.username);
-    try {
-        if (userCheck) throw 'Username already in use.';
-    } catch (e) {
-        errors.push(e);
-        return res.status(401).render('users/signup', {
-            title: 'Sign Up',
-            errors: errors,
-            signupInfo: newUser
-        });
-    }
-    try {
-        const addedUser = await userData.createUser(
-            newUser.firstName,
-            newUser.lastName,
-            newUser.lastName,
-            newUser.email,
-            newUser.dateOfBirth,
-            newUser.password
-        );
-
-        req.session.user = {
-            _id: addedUser._id,
-            firstName: addedUser.firstName,
-            lastName: addedUser.lastName,
-            username: addedUser.username,
-            email: addedUser.email,
-            dateOfBirth: addedUser.dateOfBirth,
-            following: addedUser.following,
-            posts: addedUser.posts,
-            recipes: addedUser.recipes,
-            comments: addedUser.comments,
-            profilePicture: addedUser.profilePicture
-        };
-        console.log(req.session.user)
-        res.redirect('/feed');
-    } catch(e) {
-        errors.push(e);
-        res.status(403).render('users/signup', {
-            title: signUp,
-            userInfo: newUser,
-            errors: errors
-        });
-    }
-});
-
-router.get('/users/profile/:id', async (req, res) => {
-    let errors = [];
-    const userFound = await userData.getUserById(req.params.id)
-    if(!userFound) {
-        errors.push('User not found');
-        // maybe we make a 404 page to render when something is not found
-        return res.status(404).render('users/not-found', {
-            title: 'Not Found',
-            errors: errors
-        });
-    }
-
-    const userPosts = await postData.getPostByUser(userFound._id);
-    if(!userPosts) {
-        errors.push('User posts not found');
-        // maybe we make a 404 page to render when something is not found
-        return res.status(404).render('users/not-found', {
-            title: 'Not Found',
-            errors: errors
-        });
-    }
-
-    let isFollowing;
-    console.log(req.session.user)
-    if(req.session.user.following.includes(req.params.id)) {
-        isFollowing = true;
-    } else {
-        isFollowing = false;
-    }
-
-    // if (userFound.profilePicture !== "") {
-    //   userFound.profilePicture = userFound.profilePicture.image.buffer
-    // }
-
-    res.render('users/profile', {
-        title: userFound.username,
-        userInfo: {
-            _id: userFound._id,
-            firstName: userFound.firstName,
-            lastName: userFound.lastName,
-            username: userFound.username,
-            email: userFound.email,
-            dateOfBirth: userFound.dateOfBirth,
-            following: userFound.following,
-            posts: userPosts,
-            recipes: userFound.recipes,
-            comments: userFound.comments,
-            profilePicture: userFound.profilePicture,
-            isFollowing: isFollowing
-        }
+  console.log("HERE WE GO.Z");
+  if (errors.length > 0) {
+    console.log(errors);
+    return res.status(401).render("users/signup", {
+      title: "Sign Up",
+      errors: errors,
+      signupInfo: newUser,
     });
+  }
+
+  const userCheck = await userData.findUserByUsername(newUser.username);
+  try {
+    if (userCheck) throw "Username already in use.";
+  } catch (e) {
+    errors.push(e);
+    return res.status(401).render("users/signup", {
+      title: "Sign Up",
+      errors: errors,
+      signupInfo: newUser,
+    });
+  }
+  try {
+    const addedUser = await userData.createUser(
+      newUser.firstName,
+      newUser.lastName,
+      newUser.lastName,
+      newUser.email,
+      newUser.dateOfBirth,
+      newUser.password
+    );
+
+    req.session.user = {
+      _id: addedUser._id,
+      firstName: addedUser.firstName,
+      lastName: addedUser.lastName,
+      username: addedUser.username,
+      email: addedUser.email,
+      dateOfBirth: addedUser.dateOfBirth,
+      following: addedUser.following,
+      posts: addedUser.posts,
+      recipes: addedUser.recipes,
+      comments: addedUser.comments,
+      profilePicture: addedUser.profilePicture,
+    };
+    console.log(req.session.user);
+    res.redirect("/feed");
+  } catch (e) {
+    errors.push(e);
+    res.status(403).render("users/signup", {
+      title: signUp,
+      userInfo: newUser,
+      errors: errors,
+    });
+  }
 });
 
+router.get("/users/profile/:id", async (req, res) => {
+  let errors = [];
+  const userFound = await userData.getUserById(req.params.id);
+  if (!userFound) {
+    errors.push("User not found");
+    // maybe we make a 404 page to render when something is not found
+    return res.status(404).render("users/not-found", {
+      title: "Not Found",
+      errors: errors,
+    });
+  }
+
+  const userPosts = await postData.getPostByUser(
+    userFound._id,
+    req.session.user._id
+  );
+  if (!userPosts) {
+    errors.push("User posts not found");
+    // maybe we make a 404 page to render when something is not found
+    return res.status(404).render("users/not-found", {
+      title: "Not Found",
+      errors: errors,
+    });
+  }
+
+  let isFollowing;
+  console.log(req.session.user);
+  if (req.session.user.following.includes(req.params.id)) {
+    isFollowing = true;
+  } else {
+    isFollowing = false;
+  }
+
+  // if (userFound.profilePicture !== "") {
+  //   userFound.profilePicture = userFound.profilePicture.image.buffer
+  // }
+
+  // Get each recipe name
+  let recipeInfo = [];
+  for (let i = 0; i < userFound.recipes.length; i++) {
+    const currRecipe = userFound.recipes[i];
+    const recipeGet = await recipeData.getRecipeById(currRecipe);
+    recipeInfo.push([currRecipe, recipeGet.recipeName]);
+  }
+
+  res.render("users/profile", {
+    title: userFound.username,
+    userInfo: {
+      _id: userFound._id,
+      firstName: userFound.firstName,
+      lastName: userFound.lastName,
+      username: userFound.username,
+      email: userFound.email,
+      dateOfBirth: userFound.dateOfBirth,
+      following: userFound.following,
+      posts: userPosts,
+      recipes: recipeInfo,
+      comments: userFound.comments,
+      profilePicture: userFound.profilePicture,
+      isFollowing: isFollowing,
+    },
+  });
+});
 
 router.get("/edit/profile/:id", async (req, res) => {
   res.render("users/edit", {
@@ -286,15 +301,17 @@ router.post("/edit/profile/:id", async (req, res) => {
   }
 });
 
-
-router.post('/users/follow/:id', async (req, res) => {
-    try {
-        const updated = await userData.addFollowingToUser(req.session.user._id, req.params.id)
-        req.session.user.following = updated.following;
-        res.redirect(`users/profile/${req.params.id}`)
-    } catch(e) {
-        return res.redirect(`users/profile/${req.params.id}`);
-    }
+router.post("/users/follow/:id", async (req, res) => {
+  try {
+    const updated = await userData.addFollowingToUser(
+      req.session.user._id,
+      req.params.id
+    );
+    req.session.user.following = updated.following;
+    res.redirect(`users/profile/${req.params.id}`);
+  } catch (e) {
+    return res.redirect(`users/profile/${req.params.id}`);
+  }
 });
 
 /*
@@ -332,9 +349,9 @@ router.post('/users/upload/picture', upload.single('picture'), async (req, res) 
 });
 */
 
-router.get('/logout', async (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
+router.get("/logout", async (req, res) => {
+  req.session.destroy();
+  res.redirect("/");
 });
 
 module.exports = router;

@@ -12,12 +12,24 @@
     <div>Name: {{userInfo.firstName}} {{userInfo.lastName}}</div>
     <div>Favorite Cocktail: </div>
     <div>Birthday: {{userInfo.dateOfBirth}}</div>
-    <div>Uploaded Posts:{{userInfo.posts}}</div>
-    <div>Uploaded Recipes: {{userInfo.recipes}}</div>
+    <div>Uploaded Posts:</div>
+    <div id="postColumn">    
+        {{#each userInfo.posts}} {{> post}} {{/each}}
+    </div>
+    <div>Uploaded Recipes:</div>
+    <div>
+        {{#each userInfo.recipes}} 
+            <a href="/recipes/{{this.[0]}}">
+                <p>{{ this.[1] }}</p>
+            </a>
+        {{/each}}
+    </div>
 
     
     <footer><a href="/edit/profile/{{userInfo._id}}">Edit</a>{{!-- <button type="submit" id = "editProfile" class="btn btn-default" action = "/edit/profile/{{userInfo._id}}" value = "Edit Profile">Edit Profile</button> --}}
         <div>HTML: How to Mix Liquor, Created Spring 2021</div></footer>
+
+        <script src="/public/js/feed.js"></script>
     
 </body>
 </html>

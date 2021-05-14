@@ -287,9 +287,9 @@ async function getFriendPosts(uid) {
 }
 
 // Get post by user ID function
-// Input: userID
+// Input: userID, reqID
 // Output: List of all posts by inputted user
-async function getPostByUser(userID) {
+async function getPostByUser(userID, reqID) {
   // Error check uid
   let cleanUID = await isUser(userID);
   // Get all posts and only return posts by userID
@@ -299,7 +299,7 @@ async function getPostByUser(userID) {
   for (let i = 0; i < postList.length; i++) {
     let currPost = postList[i];
     if (currPost.creator === cleanUID) {
-      userPosts.push(currPost);
+      userPosts.push(await this.getPostById(currPost._id.toString(), reqID));
     }
   }
   return userPosts;

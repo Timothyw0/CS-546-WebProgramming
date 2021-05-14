@@ -26,21 +26,21 @@
     <br />
     <p>{{ data.text }}</p>
     <!-- if likeList block -->
-    <div id="likeDiv">
+    <div class="likeDiv">
         {{#if data.likeList}}
         <p>
-            <em id="likeList">{{ data.likeList }} like this post</em>
+            <em class="likeList">{{ data.likeList }} like this post</em>
         </p>
         {{/if}}
     </div>
     <!-- end if block -->
     <!-- if liked block -->
     {{#if data.liked}}
-    <a href="" id="likePost" class="postInteraction">
+    <a href="" class="postInteraction likePost">
         Unlike
     </a>
     {{else}}
-    <a href="" id="likePost" class="postInteraction">
+    <a href="" class="postInteraction likePost">
         Like
     </a>
     {{/if}}
@@ -71,6 +71,6 @@
 
     <!-- end if block -->
     <!-- Hidden postID in order to make AJAX requests -->
-    <p id="postID" hidden>{{ data._id }}</p>
+    <p class="postID" hidden>{{ data._id }}</p>
 </div>
 <script src="/public/js/feed.js"></script>
