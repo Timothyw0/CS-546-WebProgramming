@@ -66,13 +66,26 @@ router.post('/user', async (req, res) => {
     try {
         const userFound = await userData.findUserByUsername(usernameToSearch);
         const userID = userFound._id;
+        console.log("USER ID: ")
         console.log(userID)
-        res.redirect(`/users/profile/${userID}`);
+        if (userID)
+        {
+            res.redirect(`/users/profile/${userID}`);
+        }
+        else
+        {
+            errors.push("User Profile Not Found")
+            return res.render('search/user', {
+                title: 'User Search',
+                searchTerm: req.body.searchUsername,
+                errors: errors 
+            });
+        }
     } catch (e) {
-        errors.push(e);
+        errors.push("No User Found");
         return res.status(404).render('search/user', {
-            title: `Results for ${req.body.alcohol}`,
-            searchTerm: req.body.alcohol,
+            title: 'User Search',
+            searchTerm: req.body.searchUsername,
             errors: errors 
         });
     }
