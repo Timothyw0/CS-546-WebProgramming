@@ -163,9 +163,9 @@ router.get('/users/profile/:id', async (req, res) => {
         isFollowing = false;
     }
 
-    if (userFound.profilePicture !== "") {
-      userFound.profilePicture = userFound.profilePicture.image.buffer
-    }
+    // if (userFound.profilePicture !== "") {
+    //   userFound.profilePicture = userFound.profilePicture.image.buffer
+    // }
     res.render('users/profile', {
         title: userFound.username,
         userInfo: {
