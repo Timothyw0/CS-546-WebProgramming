@@ -62,8 +62,8 @@
 }
 
 .myDiv h1 {
-  font-size: 30px;
-  color: yellow;
+  font-size: 25px;
+  color: green;
 }
 
 .post h1 {
@@ -170,15 +170,21 @@ footer {
 
 /* Edit post page CSS */
 .edit-post h1:not(.postHyperlink),
-label,
+label, 
 select,
 form {
+  
   text-align: center;
 }
 
 .edit-post h2 {
   padding-top: 20px;
   padding-bottom: 50px;
+}
+
+.login-page {
+  padding-top: 100px;
+  font-weight: bold;
 }
 
 .edit-post label {
@@ -316,3 +322,4 @@ Here is css for recipe search page
 .recipe-box {
   width: 300px;
 }
+
