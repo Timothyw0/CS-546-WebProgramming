@@ -9,14 +9,14 @@
 </head>
 <body>
     <p1>Sign up your Account Now</p1>
-    <form id = "signup-form" method = "post" action = "/signup">
+    <form id = "signup-form" action = "/signup" method = "POST">
         <div class="form-group-firstname">
             <label for="firstnameSignUp">Enter Your First Name Here</label>
-            <input type="text" class="form-control" id="firstNameSignUp" name="firstname" placeholder="First Name">
+            <input type="text" class="form-control" id="firstNameSignUp" name="firstName" placeholder="First Name">
         </div>
         <div class="form-group-lastnameSignUp">
             <label for="lastname">Enter Your Last Name here!</label>
-            <input type="text" class="form-control" id="lastNameSignUp" name="lastname" placeholder="Last Name">
+            <input type="text" class="form-control" id="lastNameSignUp" name="lastName" placeholder="Last Name">
         </div>
         <div class="form-group-username">
             <label for="usernameSignUp">Enter Your Username Here</label>
@@ -32,9 +32,9 @@
         </div>
         <div class="form-group-birthday">
             <label for="dateOfBirthSignUp">Enter Your Birthday Here</label>
-            <input type="date" class="form-control" id="dateOfBirthSignUp" name="birthday" placeholder="Birthday">
+            <input type="date" class="form-control" id="dateOfBirthSignUp" name="dateOfBirth" placeholder="Birthday">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <input type="submit" class="btn btn-default" value = "Submit">
       <div class="form-group">
         <div class="alert alert-success">
           
