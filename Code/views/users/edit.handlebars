@@ -30,6 +30,17 @@
             <input type="text" class="form-control" value = {{userInfo.dateOfBirth}} id="dateOfBirthEdit" name="dateOfBirth" placeholder="mm/dd/yyyy">
 
         </div>
+        {{#if userInfo.favoriteCocktail}}
+        <div class="form-group-cocktail">
+            <label for="cocktail">Favorite Cocktail</label>
+            <input type="text" class="form-control" value={{userInfo.favoriteCocktail}} id="cocktailEdit" name="cocktail" placeholder="Favorite Cocktail">
+        </div>
+        {{else}}
+        <div class="form-group-cocktail">
+            <label for="cocktail">Favorite Cocktail</label>
+            <input type="text" class="form-control" value="" id="cocktailEdit" name="cocktail" placeholder="Favorite Cocktail">
+        </div>
+        {{/if}}
         <input type="submit" id = "submitEdit" class="btn btn-default"></button>
       <div class="form-group">
         <div class="alert alert-success">

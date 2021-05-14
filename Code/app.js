@@ -84,6 +84,14 @@ app.use("/users", (req, res, next) => {
   }
 });
 
+app.use("/edit", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
+
 // When user logs out, clear the My Profile tab in navbar
 app.use("/logout", (req, res, next) => {
   app.locals.loggedIn = false;
