@@ -1,5 +1,6 @@
 //const emailValidator = require('email-validator');
 (function ($) {
+    console.log(5)
     let firstName = $("#firstNameSignUp");
     let lastName = $("#lastNameSignUp");
     let username = $("#usernameSignUp");
@@ -7,14 +8,14 @@
     let email = $("#emailSignUp");
     let dateOfBirth = $("#dateOfBirthSignUp");
     let signUpForm = $("#signup-form");
-    let results = $("#errors-signups");
+    let results = $("#results");
     let signUpButton = $("#submitSignUp")
     
 
     signUpForm.submit(function(event){
-        event.preventDefault();
+        //event.preventDefault();
+        console.log('Test BK')
         let firstNameText = firstName.val();
-        console.log(firstNameText)
         if (typeof firstNameText !== 'string' || firstNameText.trim().length === 0)
         {
             results.append("<li>You must enter text in your firstName bar!</li>");
@@ -50,12 +51,14 @@
             results.append("<li>You must enter text in your e-mail bar!</li>");
         }
         let dateOfBirthText = dateOfBirth.val();
+        console.log(dateOfBirthText);
         let splitDate = dateOfBirthText.split('-');
         console.log(splitDate[1]);
         if (!splitDate[0] || !splitDate[1] || !splitDate[2])
         {
             results.append("<li>You must enter valid text in your birthdate bar!</li>");
         }
+        console.log('Kingsbery')
 
         //signUpButton.click();
         let requestConfig = {
@@ -72,80 +75,14 @@
               dateOfBirth: dateOfBirthText
             }),
           };
-          $.ajax(requestConfig).then(function (responseMessage) {
+          console.log('Billy')
+          $.ajax(requestConfig).then(function (responseMessage) {});
             results.removeAttr("hidden");
             results.append(
-              "<li>Post successfully added! Cheers!</h3><p>Please wait to be redirected</li>"
+              "<li>Signup successfully added! Cheers!</h3><p>Please wait to be redirected</li>"
             );
             setTimeout(() => {
               $(location).attr("href", "/feed");
             }, 2000);
           });
-    });
-
-    /*
-    function validateEmail(email)
-    {
-        let containsSymbol = false;
-        for (let i = 0; i < email.length && (containsSymbol === false); i++)
-        {
-            if (email[i] === '@')
-            {
-                containsSymbol = true;
-            }
-        }
-        return containsSymbol;
-    }
-    function hasOneNumber(password)
-    {
-        let hasNumber = false;
-        for (let i = 0; i < password.length && (hasNumber === false); i++)
-        {
-            if (typeof password[i] === 'number')
-            {
-                hasNumber = true;
-            }
-        }
-        return hasNumber;
-    }
-    function validateSignUp(username, password, email, birthday){
-        if (typeof username != 'string')
-        {
-            throw 'Error: Username must be a string!'
-        }
-        if (username.trim().length === 0)
-        {
-            throw 'Error: Username must not be empty'
-        }
-        if (typeof password != 'string')
-        {
-            throw 'Error: Password must be a string!'
-        }
-        if (password.trim().length < 8)
-        {
-            throw 'Error: Password must be 8 characters or more.'
-        }
-        if (password.toLowerCase() === password)
-        {
-            throw 'Error: There must be a capital letter in the password.'
-        }
-        if (this.hasOneNumber(password) === false)
-        {
-            throw 'Error: There must be one number in the password.'
-        }
-        if (typeof email != 'string')
-        {
-            throw 'Error: Email must be a string'
-        }
-        if (email.trim.length() === 0)
-        {
-            throw 'Error: Email must not be empty.'
-        }
-        if (this.validateEmail(email) === false)
-        {
-            throw 'Error: Invalid email format.'
-        }
-    }
-
-*/
 })(window.jQuery);
