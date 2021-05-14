@@ -1,0 +1,19 @@
+<div class="search-container">
+    <h1 class="search-title">Search by User</h1>
+    <p class="search-info">Enter a username to search for their profile!</p>
+    <form method="POST" action="/search/user" id="search-form">
+        <label for="searchUsername">Username:</label>
+        <input id="searchUsername" name="searchUsername" type="text" value={{searchTerm}}>
+        <input class="btn btn-primary btn-sm mb-1" id="search-submit" type="submit">
+        <div id="errors">
+        {{#if errors}} 
+            {{#each errors}}
+                <p class="error-item">{{this}}</p>
+            {{/each}}
+        {{/if}}
+        </div>
+    </form>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <script src="/public/js/searchRecipe.js"></script>
+</div>
