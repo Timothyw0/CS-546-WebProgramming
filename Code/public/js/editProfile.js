@@ -1,21 +1,20 @@
 //const emailValidator = require('email-validator');
 (function ($) {
   console.log(5);
-  let firstName = $("#firstNameSignUp");
-  let lastName = $("#lastNameSignUp");
-  let username = $("#usernameSignUp");
-  let password = $("#passwordSignUp");
-  let email = $("#emailSignUp");
-  let dateOfBirth = $("#dateOfBirthSignUp");
-  let signUpForm = $("#signup-form");
+  let firstName = $("#firstNameEdit");
+  let lastName = $("#lastNameEdit");
+  let username = $("#usernameEdit");
+  let email = $("#emailEdit");
+  let dateOfBirth = $("#dateOfBirthEdit");
+  let favoriteCocktail = $("#cocktailEdit");
+  let editProfileForm = $("#edit-profile-form");
   let results = $("#results");
-  let signUpButton = $("#submitSignUp");
   let alertDiv = $(".alert");
   let successDiv = $(".success");
+  let userID = $(".userID").html().trim();
 
-  signUpForm.submit(function (event) {
+  editProfileForm.submit(function (event) {
     event.preventDefault();
-    console.log("Test BK");
     alertDiv.attr("hidden", true);
     results.empty();
     let firstNameText = firstName.val();
@@ -38,12 +37,6 @@
     let usernameText = username.val();
     if (typeof usernameText !== "string" || usernameText.trim().length === 0) {
       results.append("<li>You must enter text in your username bar!</li>");
-      alertDiv.removeAttr("hidden");
-      return;
-    }
-    let passwordText = password.val();
-    if (typeof passwordText !== "string" || passwordText.trim().length === 0) {
-      results.append("<li>You must enter text in your password bar!</li>");
       alertDiv.removeAttr("hidden");
       return;
     }
@@ -72,37 +65,43 @@
       alertDiv.removeAttr("hidden");
       return;
     }
+    let favoriteCocktailText = favoriteCocktail.val();
+    console.log(favoriteCocktailText);
+    if (
+      typeof favoriteCocktailText !== "string" ||
+      favoriteCocktailText.trim().length === 0
+    ) {
+      results.append("<li>You must enter a favorite cocktail!</li>");
+      alertDiv.removeAttr("hidden");
+      return;
+    }
     let dateOfBirthText = dateOfBirth.val();
-    console.log(dateOfBirthText);
-    let splitDate = dateOfBirthText.split("-");
-    console.log(splitDate[1]);
-    if (!splitDate[0] || !splitDate[1] || !splitDate[2]) {
+    if (!dateOfBirthText) {
       results.append(
         "<li>You must enter valid text in your birthdate bar!</li>"
       );
       alertDiv.removeAttr("hidden");
       return;
     }
-    console.log("Kingsbery");
 
     //signUpButton.click();
     let requestConfig = {
       method: "POST",
-      url: "/signup",
+      url: `/edit/profile/${userID}`,
       contentType: "application/json",
       async: false,
       data: JSON.stringify({
         firstName: firstNameText,
         lastName: lastNameText,
         username: usernameText,
-        password: passwordText,
         email: emailText,
         dateOfBirth: dateOfBirthText,
+        favoriteCocktail: favoriteCocktailText,
       }),
       success: function () {
         successDiv.removeAttr("hidden");
         successDiv.append(
-          "<h3>Signup successful! Cheers!</h3><p>Please wait to be redirected</li>"
+          "<h3>Edit successful! Cheers!</h3><p>Please wait to be redirected</li>"
         );
         setTimeout(() => {
           $(location).attr("href", "/feed");
@@ -119,6 +118,7 @@
         alertDiv.removeAttr("hidden");
       },
     };
+    console.log(requestConfig);
     $.ajax(requestConfig);
   });
 })(window.jQuery);

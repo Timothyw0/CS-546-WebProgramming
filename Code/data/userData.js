@@ -70,6 +70,7 @@ async function createUser(
     recipes: recipes,
     comments: comments,
     profilePicture: "",
+    registerDate: new Date(),
   };
 
   const userCollection = await user();
@@ -128,6 +129,7 @@ async function createSeedUser(
     recipes: recipes,
     comments: comments,
     profilePicture: "",
+    registerDate: new Date(),
   };
 
   const userCollection = await user();
@@ -377,6 +379,13 @@ async function updateUser(userId, updatedUser) {
     updatedUser.dateOfBirth !== userToBeUpdated.dateOfBirth
   ) {
     updateObj.dateOfBirth = updatedUser.dateOfBirth;
+  }
+
+  if (
+    updatedUser.favoriteCocktail &&
+    updatedUser.favoriteCocktail !== userToBeUpdated.favoriteCocktail
+  ) {
+    updateObj.favoriteCocktail = updatedUser.favoriteCocktail;
   }
 
   const userInfo = await userCollection.updateOne(

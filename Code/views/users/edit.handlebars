@@ -43,14 +43,20 @@
         {{/if}}
         <input type="submit" id = "submitEdit" class="btn btn-default"></button>
       <div class="form-group">
-        <div class="alert alert-success">
+        <div class="alert alert-danger" hidden>
           
-          <ul id = "errors-signups">
+          <ul id = "results">
             <li class = "errormessage">{{errors}}</li>
           </ul>
         </div>
       </div>
+      <div class="success">
+
+      </div>
     </form>
-    
+    <div class="userID" hidden>
+      {{userInfo._id}}
+    </div>
+    <script src="/public/js/editProfile.js"></script>
 </body>
 </html>

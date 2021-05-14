@@ -6,6 +6,7 @@ const postData = require("../data/posts");
 const recipeData = require("../data/recipes");
 const bcrypt = require("bcrypt");
 const validator = require("../data/validation");
+const { registerPartial } = require("handlebars");
 // const multer = require('multer');
 // const path = require('path');
 
@@ -196,6 +197,14 @@ router.get("/users/profile/:id", async (req, res) => {
     recipeInfo.push([currRecipe, recipeGet.recipeName]);
   }
 
+  // Get days since they have been a member
+  const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+  const registeredDate = userFound.registerDate;
+  const todayDate = new Date();
+  const daysMembership = Math.round(
+    Math.abs((todayDate - registeredDate) / oneDay)
+  );
+
   const userInfo = {
     _id: userFound._id,
     firstName: userFound.firstName,
@@ -209,6 +218,8 @@ router.get("/users/profile/:id", async (req, res) => {
     comments: userFound.comments,
     profilePicture: userFound.profilePicture,
     isFollowing: isFollowing,
+    favoriteCocktail: userFound.favoriteCocktail,
+    daysMembership: daysMembership,
   };
 
   if (isNotMe) {
@@ -239,6 +250,7 @@ router.post("/edit/profile/:id", async (req, res) => {
     username: xss(req.body.username.toLowerCase().trim()),
     email: xss(req.body.email.toLowerCase().trim()),
     dateOfBirth: xss(req.body.dateOfBirth.trim()),
+    favoriteCocktail: xss(req.body.favoriteCocktail.trim()),
   };
 
   if (!validator.validString(reqBody.firstName))
@@ -248,16 +260,12 @@ router.post("/edit/profile/:id", async (req, res) => {
   if (!validator.validString(reqBody.username))
     errors.push("Invalid username.");
   if (!validator.validEmail(reqBody.email)) errors.push("Invalid email.");
-  if (!validator.validDate(reqBody.dateOfBirth))
+  if (!validator.validDate(xss(req.body.dateOfBirth.trim())))
     errors.push("Invalid Date of Birth.");
-
-  if (errors.length > 0) {
-    return res.status(401).render("users/edit", {
-      title: "Edit Profile",
-      errors: errors,
-      userInfo: req.session.user,
-    });
-  }
+  if (!validator.validAge(xss(req.body.dateOfBirth.trim())))
+    errors.push("Invalid age, must be 21 or older.");
+  if (!validator.validString(reqBody.favoriteCocktail))
+    errors.push("Invalid favorite cocktail");
 
   try {
     const oldUser = await userData.getUserById(req.session.user._id);
@@ -282,13 +290,24 @@ router.post("/edit/profile/:id", async (req, res) => {
     if (reqBody.dateOfBirth && reqBody.dateOfBirth !== oldUser.dateOfBirth) {
       updateInfo.dateOfBirth = reqBody.dateOfBirth;
     }
+
+    if (
+      reqBody.favoriteCocktail &&
+      reqBody.favoriteCocktail !== oldUser.favoriteCocktail
+    ) {
+      updateInfo.favoriteCocktail = reqBody.favoriteCocktail;
+    }
   } catch (e) {
     errors.push(e);
-    return res.status(500).render("users/edit", {
-      title: "Edit Profile",
-      errors: errors,
-      userInfo: req.session.user,
-    });
+    // return res.status(500).render("users/edit", {
+    //   title: "Edit Profile",
+    //   errors: errors,
+    //   userInfo: req.session.user,
+    // });
+  }
+
+  if (errors.length > 0) {
+    return res.status(401).json({ errors: errors });
   }
 
   try {
@@ -303,6 +322,7 @@ router.post("/edit/profile/:id", async (req, res) => {
       req.session.user.username = updatedUser.username;
       req.session.user.email = updatedUser.email;
       req.session.user.dateOfBirth = updatedUser.dateOfBirth;
+      req.session.user.favoriteCocktail = updatedUser.favoriteCocktail;
     }
 
     res.redirect(`/users/profile/${req.session.user._id}`);

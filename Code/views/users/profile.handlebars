@@ -15,8 +15,11 @@
         {{/if}}
     </div>
     <div>Name: {{userInfo.firstName}} {{userInfo.lastName}}</div>
-    <div>Favorite Cocktail: </div>
+    {{#if userInfo.favoriteCocktail}}
+    <div>Favorite Cocktail: {{userInfo.favoriteCocktail}}</div>
+    {{/if}}
     <div>Birthday: {{userInfo.dateOfBirth}}</div>
+    <div>Membership Age: {{userInfo.daysMembership}} days</div>
     <div>Uploaded Posts:</div>
     <div id="postColumn">    
         {{#each userInfo.posts}} {{> post}} {{/each}}
