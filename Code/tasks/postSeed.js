@@ -269,70 +269,7 @@ const main = async () => {
     "6073261f162457f64eddacfb",
     patRecipe._id.toString()
   );
-
-  // const timComment = await makeComments(
-  //   ObjectId("609b31570389485c03d4ab8a"),
-  //   "607322eb50dc91a9bc14955b",
-  //   "606f04246c785b72ecce993f",
-  //   "nice"
-  // ); //tim comment
-  // listOfComments.push(timComment);
-
-  // const kishanComment = await makeComments(
-  //   ObjectId("609b31570389485c03d4ab8b"),
-  //   "60732518372d3ae3b871f315",
-  //   "606f04cf30078a027490273e",
-  //   "very cool!"
-  // ); //kishan comment
-  // listOfComments.push(kishanComment);
-
-  // const patComment = await makeComments(
-  //   ObjectId("609b31570389485c03d4ab8c"),
-  //   "6073261f162457f64eddacfb",
-  //   "606f05bb4e7e233e61f8beb7",
-  //   "wooahh"
-  // ); //patrick comment
-  // listOfComments.push(patComment);
-
-  // const avaniComment = await makeComments(
-  //   ObjectId("609b31570389485c03d4ab8d"),
-  //   "60732f6f9344955ba436a1bc",
-  //   "606f05f5cba5cb48b03f2abc",
-  //   "looks super good."
-  // ); //avani comment
-  // listOfComments.push(avaniComment);
-
-  // const billyComment = await makeComments(
-  //   ObjectId("609b31570389485c03d4ab8e"),
-  //   "60732579ee3a5bd593f2771a",
-  //   "606f054262b48cb2e8dc5af7",
-  //   "sounds delicious!"
-  // ); //billy comment
-  // listOfComments.push(billyComment);
-
-  // await commentsCollection.insertMany(listOfComments);
-  // const addedTim = await users.addCommentToUser(
-  //   "607322eb50dc91a9bc14955b",
-  //   timComment._id.toString()
-  // );
-  // const addedKishan = await users.addCommentToUser(
-  //   "60732518372d3ae3b871f315",
-  //   kishanComment._id.toString()
-  // );
-  // const addedPat = await users.addCommentToUser(
-  //   "6073261f162457f64eddacfb",
-  //   patComment._id.toString()
-  // );
-  // const addedAvani = await users.addCommentToUser(
-  //   "60732f6f9344955ba436a1bc",
-  //   avaniComment._id.toString()
-  // );
-  // const addedBilly = await users.addCommentToUser(
-  //   "60732579ee3a5bd593f2771a",
-  //   billyComment._id.toString()
-  // );
-  // console.log(listOfComments);
-
+  
   console.log(tim);
   console.log(kishan);
   console.log(billy);

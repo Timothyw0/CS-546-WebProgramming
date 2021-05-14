@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const commentData = require("../data/comment");
-const validator = require('../data/validation')
+const validator = require("../data/validation");
+const userData = require("../data/userData");
 
 let { ObjectId } = require("mongodb");
 
-router.get('/comment',async(req, res) => {
-    res.render('posts/commentForm')
-})
-
+router.get("/comment", async (req, res) => {
+  res.render("posts/commentForm");
+});
 
 //GET localhost:3000/comment/{id}
 router.get("/comment/:id", async function (req, res) {
@@ -33,7 +33,7 @@ router.get("/addcomment/:id", async function (req, res) {
   res.render("posts/commentForm", {
     title: "comments",
     postId: req.params.id,
-    userId: req.session.user._id
+    userId: req.session.user._id,
   });
 });
 
@@ -43,10 +43,9 @@ router.post("/comment/new", async (req, res) => {
   let comment = xss(req.body.comment.trim());
   let userId = req.session.user._id;
   if (!req.session.user) errors.push("Must log in to comment.");
-  if(!validator.validString(postId)) errors.push('Invalid postId.');
-  if(!validator.validString(userId)) errors.push('Invalid userId.');
-  if(!validator.validString(comment)) errors.push('Invalid comments.');
-
+  if (!validator.validString(postId)) errors.push("Invalid postId.");
+  if (!validator.validString(userId)) errors.push("Invalid userId.");
+  if (!validator.validString(comment)) errors.push("Invalid comments.");
 
   if (errors.length > 0) {
     res.status(500).json({
@@ -57,8 +56,12 @@ router.post("/comment/new", async (req, res) => {
   }
 
   try {
-    const commentInfo = await commentData.createComment(postId,userId,comment);
- 
+    const commentInfo = await commentData.createComment(
+      postId,
+      userId,
+      comment
+    );
+
     let { username } = await userData.findUserByUsername(userId);
     let commentLayout = {
       name: username,
@@ -130,7 +133,10 @@ router.delete("/:id", async (req, res) => {
   }
   try {
     const deleteData = await commentData.removeComment(req.params.id);
-    res.status(200).json({ "commentId": `${req.params.id}`, "deleted": true });
+    if (deleteData) {
+      await userData.removeCommentToUser(req.session.user._id, req.params.id);
+    }
+    res.status(200).json({ commentId: `${req.params.id}`, deleted: true });
   } catch (e) {
     res.status(500).json({ error: e });
   }
