@@ -10,7 +10,9 @@
 <body>
     <div class = "myDiv"><h1>Username: {{userInfo.username}}</h1></div>
     <div>
-        <a href="" class="followLink">{{userInfo.isFollowing}}</a>
+        {{#if userInfo.isNotMe}} 
+            <a href="" class="followLink">{{userInfo.isFollowing}}</a>
+        {{/if}}
     </div>
     <div>Name: {{userInfo.firstName}} {{userInfo.lastName}}</div>
     <div>Favorite Cocktail: </div>

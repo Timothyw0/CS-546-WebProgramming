@@ -177,6 +177,11 @@ router.get("/users/profile/:id", async (req, res) => {
     isFollowing = "Follow";
   }
 
+  let isNotMe;
+  if (req.session.user._id !== req.params.id) {
+    isNotMe = true;
+  }
+
   // if (userFound.profilePicture !== "") {
   //   userFound.profilePicture = userFound.profilePicture.image.buffer
   // }
@@ -189,22 +194,30 @@ router.get("/users/profile/:id", async (req, res) => {
     recipeInfo.push([currRecipe, recipeGet.recipeName]);
   }
 
+  const userInfo = {
+    _id: userFound._id,
+    firstName: userFound.firstName,
+    lastName: userFound.lastName,
+    username: userFound.username,
+    email: userFound.email,
+    dateOfBirth: userFound.dateOfBirth,
+    following: userFound.following,
+    posts: userPosts,
+    recipes: recipeInfo,
+    comments: userFound.comments,
+    profilePicture: userFound.profilePicture,
+    isFollowing: isFollowing,
+  };
+
+  if (isNotMe) {
+    userInfo.isNotMe = isNotMe;
+  }
+
+  console.log(userInfo);
+
   res.render("users/profile", {
     title: userFound.username,
-    userInfo: {
-      _id: userFound._id,
-      firstName: userFound.firstName,
-      lastName: userFound.lastName,
-      username: userFound.username,
-      email: userFound.email,
-      dateOfBirth: userFound.dateOfBirth,
-      following: userFound.following,
-      posts: userPosts,
-      recipes: recipeInfo,
-      comments: userFound.comments,
-      profilePicture: userFound.profilePicture,
-      isFollowing: isFollowing,
-    },
+    userInfo: userInfo,
   });
 });
 
