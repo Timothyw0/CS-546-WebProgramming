@@ -29,6 +29,13 @@ Handlebars.registerHelper("checklength", function (v1, v2, options) {
   return options.inverse(this);
 });
 
+Handlebars.registerHelper("ifCond", function (v1, v2, options) {
+  if (v1 === v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
 app.use("/public", static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -65,6 +72,14 @@ app.use("/feed", (req, res, next) => {
     const userID = req.session.user._id;
     app.locals.loggedIn = true;
     app.locals.myID = userID;
+    next();
+  }
+});
+
+app.use("/users", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/");
+  } else {
     next();
   }
 });

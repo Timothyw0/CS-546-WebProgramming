@@ -172,9 +172,9 @@ router.get("/users/profile/:id", async (req, res) => {
   let isFollowing;
   console.log(req.session.user);
   if (req.session.user.following.includes(req.params.id)) {
-    isFollowing = true;
+    isFollowing = "Unfollow";
   } else {
-    isFollowing = false;
+    isFollowing = "Follow";
   }
 
   // if (userFound.profilePicture !== "") {
@@ -308,8 +308,22 @@ router.post("/users/follow/:id", async (req, res) => {
       req.params.id
     );
     req.session.user.following = updated.following;
-    res.redirect(`users/profile/${req.params.id}`);
+    res.sendStatus(200);
   } catch (e) {
+    return res.redirect(`users/profile/${req.params.id}`);
+  }
+});
+
+router.post("/users/unfollow/:id", async (req, res) => {
+  try {
+    const updated = await userData.removeFollowingToUser(
+      req.session.user._id,
+      req.params.id
+    );
+    req.session.user.following = updated.following;
+    res.sendStatus(200);
+  } catch (e) {
+    console.log(e);
     return res.redirect(`users/profile/${req.params.id}`);
   }
 });
