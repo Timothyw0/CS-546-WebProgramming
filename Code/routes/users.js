@@ -288,38 +288,38 @@ router.post('/users/follow/:id', async (req, res) => {
     }
 });
 
-var fs = require('fs');
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
-})
+// var fs = require('fs');
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads')
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.fieldname + '-' + Date.now())
+//   }
+// })
  
-var upload = multer({ storage: storage })
+// var upload = multer({ storage: storage })
 
-router.post('/users/upload/picture', upload.single('picture'), async (req, res) => {
-  try {
-    console.log(req.file);
-    var profilePic = fs.readFileSync(req.file.path)
-    var encodedProfilePic = profilePic.toString('base64');
-    var picToAdd = {
-      contentType: req.file.mimetype,
-      image: Buffer.from(encodedProfilePic, 'base64')
-    }
-    const updatedWithPic = await userData.addProfilePhotoToUser(req.session.user._id, picToAdd);
-    req.session.user = updatedWithPic;
-    res.redirect(`users/profile/${updatedWithPic._id}`);
-  } catch (error) {
-    res.status(404).render('users/profile', {
-      title: req.session.user.username,
-      userInfo: req.session.user,
-      error: error
-    });
-  }
-});
+// router.post('/users/upload/picture', upload.single('picture'), async (req, res) => {
+//   try {
+//     console.log(req.file);
+//     var profilePic = fs.readFileSync(req.file.path)
+//     var encodedProfilePic = profilePic.toString('base64');
+//     var picToAdd = {
+//       contentType: req.file.mimetype,
+//       image: Buffer.from(encodedProfilePic, 'base64')
+//     }
+//     const updatedWithPic = await userData.addProfilePhotoToUser(req.session.user._id, picToAdd);
+//     req.session.user = updatedWithPic;
+//     res.redirect(`users/profile/${updatedWithPic._id}`);
+//   } catch (error) {
+//     res.status(404).render('users/profile', {
+//       title: req.session.user.username,
+//       userInfo: req.session.user,
+//       error: error
+//     });
+//   }
+// });
 
 router.get('/logout', async (req, res) => {
     req.session.destroy();
