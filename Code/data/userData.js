@@ -260,15 +260,15 @@ async function updateUser(userId, updatedUser) {
   const userCollection = await user();
   const userToBeUpdated = await getUserById(userId);
   let updateObj = {};
-  if (!userToBeUpdated) throw "No User Found";
-  if (!validation.validString(updatedUser.firstName))
-    throw "Invalid First Name";
-  if (!validation.validString(updatedUser.lastName)) throw "Invalid Last Name.";
-  if (!validation.validString(updatedUser.username)) throw "Invalid Username.";
-  if (!validation.validEmail(updatedUser.email)) throw "Invalid email address.";
-  if (!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
-    throw "Invalid date of birth.";
-  }
+  // if (!userToBeUpdated) throw "No User Found";
+  // if (!validation.validString(updatedUser.firstName))
+  //   throw "Invalid First Name";
+  // if (!validation.validString(updatedUser.lastName)) throw "Invalid Last Name.";
+  // if (!validation.validString(updatedUser.username)) throw "Invalid Username.";
+  // if (!validation.validEmail(updatedUser.email)) throw "Invalid email address.";
+  // if (!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
+  //   throw "Invalid date of birth.";
+  // }
 
   if (
     updatedUser.firstName &&

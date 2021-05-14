@@ -5,8 +5,8 @@ const userData = require("../data/userData");
 const postData = require("../data/posts");
 const bcrypt = require("bcrypt");
 const validator = require("../data/validation");
-const multer = require('multer');
-const path = require('path');
+// const multer = require('multer');
+// const path = require('path');
 
 router.get("/", async (req, res) => {
   if (req.session.user) {
@@ -199,7 +199,7 @@ router.get("/edit/profile/:id", async (req, res) => {
   });
 });
 
-router.post("/edit/:id", async (req, res) => {
+router.post("/edit/profile/:id", async (req, res) => {
   let errors = [];
   console.log(5)
   const updateInfo = {};
@@ -274,8 +274,8 @@ router.post("/edit/:id", async (req, res) => {
       req.session.user.email = updatedUser.email;
       req.session.user.dateOfBirth = updatedUser.dateOfBirth;
     }
-n
-    return res.redirect(`users/profile/${req.session.user._id}`);
+
+    res.redirect(`/users/profile/${req.session.user._id}`);
   } catch (e) {
     errors.push(e);
     return res.status(500).render("users/edit", {

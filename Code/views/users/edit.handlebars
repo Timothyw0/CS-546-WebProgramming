@@ -8,7 +8,7 @@
     <h1>Edit your profile here!</h1>
 </head>
 <body>
-    <form id = "edit-profile-form" method = "POST" action = "edit/{{userInfo._id}}">
+    <form id = "edit-profile-form" method = "POST" action = "/edit/profile/{{userInfo._id}}">
         <div>
             <label for="firstNameEdit">First Name</label>
             <input type="text" class="form-control" id="firstNameEdit" value = {{userInfo.firstName}} name="firstName" placeholder="First Name">
@@ -27,7 +27,7 @@
         </div>
         <div class="form-group-birthday">
             <label for="birthday">Birthday</label>
-            <input type="date" class="form-control" value = {{userInfo.dateOfBirth}} id="dateOfBirthEdit" name="dateOfBirth" placeholder="Birthday">
+            <input type="text" class="form-control" value = {{userInfo.dateOfBirth}} id="dateOfBirthEdit" name="dateOfBirth" placeholder="mm/dd/yyyy">
 
         </div>
         <input type="submit" id = "submitEdit" class="btn btn-default"></button>
