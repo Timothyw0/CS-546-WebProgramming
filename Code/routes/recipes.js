@@ -15,7 +15,8 @@ router.get('/:id', async (req, res) => {
     try {
         req.params.id = req.params.id.trim();
         const recipe = await data.getRecipeById(req.params.id);
-        res.json(recipe);
+        res.render('recipes/showDetails', { title: "Show Found", result: recipe });
+        
     } catch (e) {
         res.status(404).json({ error: 'Recipe not found' });
     }
@@ -45,10 +46,10 @@ router.post('/', async (req, res) => {
         return;
     }
    
-    if (!recipeData.youtubeLink) {
-        res.status(400).json({ error: 'You must provide Youtube Link ' });
-        return;
-    }
+    // if (!recipeData.youtubeLink) {
+    //     res.status(400).json({ error: 'You must provide Youtube Link ' });
+    //     return;
+    // }
 
     try {
         const UserID=req.session.user._id;

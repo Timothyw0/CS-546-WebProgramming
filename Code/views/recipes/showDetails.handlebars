@@ -1,0 +1,28 @@
+{{#if result}}
+<section class="showdetails_recipes">
+ 
+
+
+  <div>
+    
+    <h1>{{result.recipeName}}</h1>
+    
+    <dl>
+      <dt>Alcohol</dt>
+      <dd>{{result.alcohol}}</dd>
+      
+      <dt>Ingredients</dt>
+      <dd>{{result.ingredients}}</dd>
+      <dt>Recipe Body</dt>
+      <dd>{{result.recipeBody}}</dd>
+      <dt>Taste Scale</dt>
+      <dd>{{result.tasteScale}}</dd>
+       <dt>Youtube Link</dt>
+       <dd><a href="{{result.youtubeLink}}" target="_blank"></dd>
+      <dd>{{result.youtubeLink}}</dd>
+    </dl>
+  </div>
+
+</section>
+
+{{/if}}

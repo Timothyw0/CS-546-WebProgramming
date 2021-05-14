@@ -8,7 +8,12 @@
         <p id="noMorePosts" hidden>No more posts!</p>
     </div>
     <div class="rightcolumn">
-        Other info here like friends, recommendations, etc.
+        <h2>Following:</h2>
+        <ul>
+        {{#each followingUsers}}
+            <li><a href="/users/profile/{{this.[1]}}">{{this.[0]}}</a></li>
+        {{/each}}
+        </ul>
     </div>
 </div>
 <script src="/public/js/feed.js"></script>

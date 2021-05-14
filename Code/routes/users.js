@@ -169,10 +169,10 @@ router.get('/users/profile/:id', async (req, res) => {
         isFollowing = false;
     }
 
+    // if (userFound.profilePicture !== "") {
+    //   userFound.profilePicture = userFound.profilePicture.image.buffer
+    // }
 
-    if (userFound.profilePicture !== "") {
-      userFound.profilePicture = userFound.profilePicture.image.buffer
-    }
     res.render('users/profile', {
         title: userFound.username,
         userInfo: {
@@ -192,6 +192,7 @@ router.get('/users/profile/:id', async (req, res) => {
     });
 });
 
+
 router.get("/edit/profile/:id", async (req, res) => {
   res.render("users/edit", {
     title: "Edit Profile",
@@ -201,7 +202,6 @@ router.get("/edit/profile/:id", async (req, res) => {
 
 router.post("/edit/profile/:id", async (req, res) => {
   let errors = [];
-  console.log(5)
   const updateInfo = {};
   const reqBody = {
     firstName: xss(req.body.firstName.trim()),
@@ -331,6 +331,7 @@ router.post('/users/upload/picture', upload.single('picture'), async (req, res) 
   }
 });
 */
+
 router.get('/logout', async (req, res) => {
     req.session.destroy();
     res.redirect('/');

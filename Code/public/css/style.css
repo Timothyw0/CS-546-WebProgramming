@@ -17,6 +17,12 @@
   font-size: 17px;
 }
 
+.showdetails_recipes {
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 20px;
+}
+
 /* Make logout button in topnav appear on the right */
 .topnav .logout,
 .topnav .myprofile {
@@ -41,6 +47,11 @@
   margin-left: 50px;
 }
 
+/* Login error text css */
+.error-text {
+  font-size: 20px;
+}
+
 /* Post css */
 .post {
   background: white;
@@ -50,10 +61,10 @@
   margin-top: 20px;
 }
 
-.myDiv h1{
+.myDiv h1 {
   font-size: 30px;
   color: yellow;
-  }
+}
 
 .post h1 {
   font-size: 25px;

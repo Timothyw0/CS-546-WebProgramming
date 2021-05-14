@@ -314,6 +314,21 @@ async function updateUser(userId, updatedUser) {
   return await getUserById(userId);
 }
 
+async function addProfilePhotoToUser(userId, picture) {
+  const userWithPhoto = await getUserById(userId);
+
+  if (!userWithPhoto) throw 'User not found.';
+  const userInfo = await userCollection.updateOne(
+    { _id: userWithPhoto._id },
+    { $set: {profilePicture: picture} }
+  );
+
+  if (!userInfo.matchedCount && !userInfo.modifiedCount) {
+    throw "Could not update photo";
+  }
+
+  return await getUserById(userId);
+}
 module.exports = {
   getUserById,
   getAllUsers,
@@ -325,4 +340,5 @@ module.exports = {
   addRecipeToUser,
   addCommentToUser,
   updateUser,
+  addProfilePhotoToUser
 };
