@@ -56,17 +56,6 @@ async function createUser(
   }
   if (!validation.validPassword(password)) throw "Invalid Password";
 
-  const allUsers = await getAllUsers();
-  let usernameLowerCase = username.toLowerCase();
-  let emailLowerCase = email.toLowerCase();
-  for (let singleUser of allUsers) {
-    if (usernameLowerCase == singleUser.username) {
-      throw `User with username: ${username} already exists.`;
-    } else if (emailLowerCase == singleUser.email) {
-      throw `User with email: ${email} already exists.`;
-    }
-  }
-
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   let newUser = {
@@ -271,15 +260,15 @@ async function updateUser(userId, updatedUser) {
   const userCollection = await user();
   const userToBeUpdated = await getUserById(userId);
   let updateObj = {};
-  if (!userToBeUpdated) throw "No User Found";
-  if (!validation.validString(updatedUser.firstName))
-    throw "Invalid First Name";
-  if (!validation.validString(updatedUser.lastName)) throw "Invalid Last Name.";
-  if (!validation.validString(updatedUser.username)) throw "Invalid Username.";
-  if (!validation.validEmail(updatedUser.email)) throw "Invalid email address.";
-  if (!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
-    throw "Invalid date of birth.";
-  }
+  // if (!userToBeUpdated) throw "No User Found";
+  // if (!validation.validString(updatedUser.firstName))
+  //   throw "Invalid First Name";
+  // if (!validation.validString(updatedUser.lastName)) throw "Invalid Last Name.";
+  // if (!validation.validString(updatedUser.username)) throw "Invalid Username.";
+  // if (!validation.validEmail(updatedUser.email)) throw "Invalid email address.";
+  // if (!validation.validAge(dateOfBirth) || !validation.validDate(dateOfBirth)) {
+  //   throw "Invalid date of birth.";
+  // }
 
   if (
     updatedUser.firstName &&

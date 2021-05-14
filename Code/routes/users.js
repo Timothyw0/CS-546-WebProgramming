@@ -5,8 +5,8 @@ const userData = require("../data/userData");
 const postData = require("../data/posts");
 const bcrypt = require("bcrypt");
 const validator = require("../data/validation");
-const multer = require('multer');
-const path = require('path');
+// const multer = require('multer');
+// const path = require('path');
 
 router.get("/", async (req, res) => {
   if (req.session.user) {
@@ -72,6 +72,9 @@ router.post('/signup', async (req, res) => {
         dateOfBirth: xss(req.body.dateOfBirth.trim()),
         password: xss(req.body.password.trim())
     }
+    console.log("NEW USER: ")
+    console.log(newUser);
+    
 
     if(!validator.validString(newUser.firstName)) errors.push('Invalid first name.');
     if(!validator.validString(newUser.lastName)) errors.push('Invalid last name.');
@@ -80,7 +83,9 @@ router.post('/signup', async (req, res) => {
     if(!validator.validEmail(newUser.email)) errors.push('Invalid email.');
     if(!validator.validDate(newUser.dateOfBirth)) errors.push('Invalid Date of Birth.');
 
+    console.log("HERE WE GO.Z")
     if(errors.length > 0) {
+      console.log(errors)
         return res.status(401).render('users/signup', {
             title: 'Sign Up',
             errors: errors,
@@ -99,7 +104,6 @@ router.post('/signup', async (req, res) => {
             signupInfo: newUser
         });
     }
-
     try {
         const addedUser = await userData.createUser(
             newUser.firstName,
@@ -123,6 +127,7 @@ router.post('/signup', async (req, res) => {
             comments: addedUser.comments,
             profilePicture: addedUser.profilePicture
         };
+        console.log(req.session.user)
         res.redirect('/feed');
     } catch(e) {
         errors.push(e);
@@ -157,6 +162,7 @@ router.get('/users/profile/:id', async (req, res) => {
     }
 
     let isFollowing;
+    console.log(req.session.user)
     if(req.session.user.following.includes(req.params.id)) {
         isFollowing = true;
     } else {
@@ -166,6 +172,7 @@ router.get('/users/profile/:id', async (req, res) => {
     // if (userFound.profilePicture !== "") {
     //   userFound.profilePicture = userFound.profilePicture.image.buffer
     // }
+
     res.render('users/profile', {
         title: userFound.username,
         userInfo: {
@@ -185,14 +192,16 @@ router.get('/users/profile/:id', async (req, res) => {
     });
 });
 
-router.get("/users/profile/edit", async (req, res) => {
+
+router.get("/edit/profile/:id", async (req, res) => {
   res.render("users/edit", {
     title: "Edit Profile",
     userInfo: req.session.user,
   });
 });
 
-router.patch("/users/profile/edit", async (req, res) => {
+router.post("/edit/profile/:id", async (req, res) => {
+  let errors = [];
   const updateInfo = {};
   const reqBody = {
     firstName: xss(req.body.firstName.trim()),
@@ -266,7 +275,7 @@ router.patch("/users/profile/edit", async (req, res) => {
       req.session.user.dateOfBirth = updatedUser.dateOfBirth;
     }
 
-    return res.redirect(`/profile/${req.session.user._id}`);
+    res.redirect(`/users/profile/${req.session.user._id}`);
   } catch (e) {
     errors.push(e);
     return res.status(500).render("users/edit", {
@@ -288,38 +297,40 @@ router.post('/users/follow/:id', async (req, res) => {
     }
 });
 
-// var fs = require('fs');
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, 'uploads')
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.fieldname + '-' + Date.now())
-//   }
-// })
+/*
+var fs = require('fs');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
  
-// var upload = multer({ storage: storage })
+var upload = multer({ storage: storage })
 
-// router.post('/users/upload/picture', upload.single('picture'), async (req, res) => {
-//   try {
-//     console.log(req.file);
-//     var profilePic = fs.readFileSync(req.file.path)
-//     var encodedProfilePic = profilePic.toString('base64');
-//     var picToAdd = {
-//       contentType: req.file.mimetype,
-//       image: Buffer.from(encodedProfilePic, 'base64')
-//     }
-//     const updatedWithPic = await userData.addProfilePhotoToUser(req.session.user._id, picToAdd);
-//     req.session.user = updatedWithPic;
-//     res.redirect(`users/profile/${updatedWithPic._id}`);
-//   } catch (error) {
-//     res.status(404).render('users/profile', {
-//       title: req.session.user.username,
-//       userInfo: req.session.user,
-//       error: error
-//     });
-//   }
-// });
+router.post('/users/upload/picture', upload.single('picture'), async (req, res) => {
+  try {
+    console.log(req.file);
+    var profilePic = fs.readFileSync(req.file.path)
+    var encodedProfilePic = profilePic.toString('base64');
+    var picToAdd = {
+      contentType: req.file.mimetype,
+      image: Buffer.from(encodedProfilePic, 'base64')
+    }
+    const updatedWithPic = await userData.addProfilePhotoToUser(req.session.user._id, picToAdd);
+    req.session.user = updatedWithPic;
+    res.redirect(`users/profile/${updatedWithPic._id}`);
+  } catch (error) {
+    res.status(404).render('users/profile', {
+      title: req.session.user.username,
+      userInfo: req.session.user,
+      error: error
+    });
+  }
+});
+*/
 
 router.get('/logout', async (req, res) => {
     req.session.destroy();

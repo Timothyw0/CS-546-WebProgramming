@@ -5,34 +5,34 @@
     <meta charset="utf-8">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/public/main.css">
-    <h1>Welcome to HTML: How to Mix Liquor!</h1>
+    <h1>Welcome to HTML: How to Mix Liquor- Sign Up Here!</h1>
 </head>
 <body>
     <p1>Sign up your Account Now</p1>
-    <form class = "signup-form" method = "post" action = "/users/signup">
+    <form id = "signup-form" method = "post" action = "/signup">
         <div class="form-group-firstname">
-            <label for="username">Enter Your First Name Here</label>
-            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name">
+            <label for="firstnameSignUp">Enter Your First Name Here</label>
+            <input type="text" class="form-control" id="firstNameSignUp" name="firstname" placeholder="First Name">
         </div>
-        <div class="form-group-lastname">
+        <div class="form-group-lastnameSignUp">
             <label for="lastname">Enter Your Last Name here!</label>
-            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name">
+            <input type="text" class="form-control" id="lastNameSignUp" name="lastname" placeholder="Last Name">
         </div>
         <div class="form-group-username">
-            <label for="username">Enter Your Username Here</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+            <label for="usernameSignUp">Enter Your Username Here</label>
+            <input type="text" class="form-control" id="usernameSignUp" name="username" placeholder="Username">
         </div>
         <div class="form-group-password">
-            <label for="password">Enter Your Password here!</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            <label for="passwordSignUp">Enter Your Password here!</label>
+            <input type="password" class="form-control" id="passwordSignUp" name="password" placeholder="Password">
         </div>
         <div class="form-group-email">
-            <label for="email">Enter Your E-Mail Here!</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="E-mail Address">
+            <label for="emailSignUp">Enter Your E-Mail Here!</label>
+            <input type="text" class="form-control" id="emailSignUp" name="email" placeholder="E-mail Address">
         </div>
         <div class="form-group-birthday">
-            <label for="birthday">Enter Your Birthday Here</label>
-            <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Birthday">
+            <label for="dateOfBirthSignUp">Enter Your Birthday Here</label>
+            <input type="date" class="form-control" id="dateOfBirthSignUp" name="birthday" placeholder="Birthday">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       <div class="form-group">
@@ -45,5 +45,7 @@
       </div>
     </form>
     <footer>HTML: How to Mix Liquor, Created Spring 2021</footer>
+    <script src="/public/js/signup.js"></script>
 </body>
 </html>
+

@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="./public/style.css">
+    <h1>Welcome to {{userInfo.firstName}}'s Profile!</h1>
+</head>
+<body>
+    <div class = "myDiv"><h1>Username: {{userInfo.username}}</h1></div>
+    <div>Name: {{userInfo.firstName}} {{userInfo.lastName}}</div>
+    <div>Favorite Cocktail: </div>
+    <div>Birthday: {{userInfo.dateOfBirth}}</div>
+    <div>Uploaded Posts:{{userInfo.posts}}</div>
+    <div>Uploaded Recipes: {{userInfo.recipes}}</div>
+
+    
+    <footer><a href="/edit/profile/{{userInfo._id}}">Edit</a>{{!-- <button type="submit" id = "editProfile" class="btn btn-default" action = "/edit/profile/{{userInfo._id}}" value = "Edit Profile">Edit Profile</button> --}}
+        <div>HTML: How to Mix Liquor, Created Spring 2021</div></footer>
+    
+</body>
+</html>
