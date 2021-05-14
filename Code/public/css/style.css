@@ -181,6 +181,52 @@ form {
   padding-bottom: 50px;
 }
 
+.login-title {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+.login-page {
+  padding-top: 100px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group1 input {
+  max-width: 30%;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  margin-bottom: 20px;
+}
+
+.signup-form {
+  margin-bottom: 20px;
+}
+
+.signup-title {
+  text-align: center;
+}
+
+#signup-form input {
+  max-width: 30%;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.edit-profile-title {
+  text-align: center;
+}
+
+#edit-profile-form input {
+  max-width: 30%;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
 .edit-post label {
   margin-top: 50px;
   font-weight: bold;
@@ -261,6 +307,7 @@ textarea {
   resize: vertical;
   padding: 15px;
   margin-bottom: 15px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
 }
 
 .footer {
@@ -311,6 +358,10 @@ Here is css for recipe search page
 
 .error {
   color: red;
+}
+
+#recipe {
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
 }
 
 .recipe-box {

@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>{{title}}</title>
-    <link rel="stylesheet" href="/public/main.css">
-    <h1>Welcome to HTML: How to Mix Liquor- Sign Up Here!</h1>
-</head>
-<body>
-    <p1>Sign up your Account Now</p1>
+
+    <h1 class="signup-title">Sign up your Account Now</h1>
     <form id = "signup-form" action = "/signup" method = "POST">
         <div class="form-group-firstname">
-            <label for="firstnameSignUp">Enter Your First Name Here</label>
+            <label for="firstNameSignUp">Enter Your First Name Here</label>
             <input type="text" class="form-control" id="firstNameSignUp" name="firstName" placeholder="First Name">
         </div>
         <div class="form-group-lastnameSignUp">
-            <label for="lastname">Enter Your Last Name here!</label>
+            <label for="lastNameSignUp">Enter Your Last Name here!</label>
             <input type="text" class="form-control" id="lastNameSignUp" name="lastName" placeholder="Last Name">
         </div>
         <div class="form-group-username">
@@ -31,7 +23,7 @@
         </div>
         <div class="form-group-birthday">
             <label for="dateOfBirthSignUp">Enter Your Birthday Here</label>
-            <input type="date" class="form-control" id="dateOfBirthSignUp" name="dateOfBirth" placeholder="Birthday">
+            <input type="date" class="form-control" id="dateOfBirthSignUp" name="dateOfBirth">
         </div>
         <input type="submit" class="btn btn-default" value = "Submit">
       <div class="form-group">
@@ -47,5 +39,3 @@
     </form>
     <footer>HTML: How to Mix Liquor, Created Spring 2021</footer>
     <script src="/public/js/signup.js"></script>
-</body>
-</html>

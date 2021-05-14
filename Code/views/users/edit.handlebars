@@ -1,47 +1,39 @@
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="/public/main.css">
-    <h1>Edit your profile here!</h1>
-</head>
-<body>
+    <h1 class="edit-profile-title">Edit your profile!</h1>
     <form id = "edit-profile-form" method = "POST" action = "/edit/profile/{{userInfo._id}}">
         <div>
             <label for="firstNameEdit">First Name</label>
             <input type="text" class="form-control" id="firstNameEdit" value = {{userInfo.firstName}} name="firstName" placeholder="First Name">
         </div>
         <div>
-            <label for="lastnameEdit">Last Name</label>
+            <label for="lastNameEdit">Last Name</label>
             <input type="text" class="form-control" value = {{userInfo.lastName}} id="lastNameEdit" name="lastName" placeholder="Last Name">
         </div>
         <div class="usernameEdit">
-            <label for="username">Username</label>
+            <label for="usernameEdit">Username</label>
             <input type="text" class="form-control" value ={{userInfo.username}} id="usernameEdit" name="username" placeholder="Username">
         </div>
         <div class="form-group-email">
-            <label for="email">E-Mail</label>
+            <label for="emailEdit">E-Mail</label>
             <input type="text" class="form-control" value = {{userInfo.email}} id="emailEdit" name="email" placeholder="E-mail Address">
         </div>
         <div class="form-group-birthday">
-            <label for="birthday">Birthday</label>
+            <label for="dateOfBirthEdit">Birthday</label>
             <input type="text" class="form-control" value = {{userInfo.dateOfBirth}} id="dateOfBirthEdit" name="dateOfBirth" placeholder="mm/dd/yyyy">
 
         </div>
         {{#if userInfo.favoriteCocktail}}
         <div class="form-group-cocktail">
-            <label for="cocktail">Favorite Cocktail</label>
+            <label for="cocktailEdit">Favorite Cocktail</label>
             <input type="text" class="form-control" value={{userInfo.favoriteCocktail}} id="cocktailEdit" name="cocktail" placeholder="Favorite Cocktail">
         </div>
         {{else}}
         <div class="form-group-cocktail">
-            <label for="cocktail">Favorite Cocktail</label>
+            <label for="cocktailEdit">Favorite Cocktail</label>
             <input type="text" class="form-control" value="" id="cocktailEdit" name="cocktail" placeholder="Favorite Cocktail">
         </div>
         {{/if}}
-        <input type="submit" id = "submitEdit" class="btn btn-default"></button>
+        <input type="submit" id = "submitEdit" class="btn btn-default">
       <div class="form-group">
         <div class="alert alert-danger" hidden>
           
@@ -58,5 +50,3 @@
       {{userInfo._id}}
     </div>
     <script src="/public/js/editProfile.js"></script>
-</body>
-</html>

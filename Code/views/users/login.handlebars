@@ -1,23 +1,12 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <title>{{title}}</title>
-  {{!--
-  <link rel="stylesheet" href="/public/main.css"> --}}
-  <h1>Welcome to HTML: How to Mix Liquor!</h1>
-</head>
-
-<body>
+  <h1 class="login-title">Welcome to HTML: How to Mix Liquor!</h1>
   <form class="login-form">
     <div class="form-group">
-      <label class = "login-page" for="username">Enter Username Here!</label>
+      <label for="username-login">Enter username Here!</label>
       <input type="text" class="form-control" id="username-login" name="username" placeholder="Username">
     </div>
     <div class="form-group1">
       <div class="form-group1">
-        <label class = "login-page" for="password">Enter Password here!</label>
+        <label for="password-login">Enter password here!</label>
         <input type="password" class="form-control" id="password-login" name="password" placeholder="Password">
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
@@ -30,13 +19,9 @@
       </div>
     </div>
   </form>
-
-  <form action = "/signup">
+  <form action = "/signup" class="signup-form">
     <div>Don't have an account? Sign-Up Here!</div>
     <input type = "submit" class = "btn btn-default" value = "Sign-Up"/>
   </form>
   <footer>HTML: How to Mix Liquor, Created Spring 2021</footer>
   <script src="/public/js/login.js"></script>
-</body>
-
-</html>

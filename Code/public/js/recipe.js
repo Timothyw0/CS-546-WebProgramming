@@ -96,8 +96,12 @@
           $(location).attr("href", "/feed");
         }, 2000);
       },
-      error: function () {
-        results.append('<li class="error-text">Server error!</li>');
+      error: function (response) {
+        const errors = response.responseJSON.errors;
+        for (let i = 0; i < errors.length; i++) {
+          console.log(errors[i]);
+          results.append(`<li>${errors[i]}!</li>`);
+        }
         errorGroup.removeAttr("hidden");
         return;
       },
