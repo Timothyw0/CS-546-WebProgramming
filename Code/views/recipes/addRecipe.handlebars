@@ -1,28 +1,35 @@
-<header>
-    <h1>Enter Recipe</h1>
-</header>
+    <h1 class="newRecipeText">Enter New Recipe</h1>
 
-    <form action="/recipes" method="POST" class="form">
+    <form action="/recipes" method="POST" id="recipe-form" class="form">
 
         <label for="recipeName">Recipe Name:</label>
-        <input type="text" name="recipeName" placeholder="Enter Recipe Name" id="recipeName" required><br>
+        <input type="text" name="recipeName" placeholder="Enter Recipe Name" id="recipeName"><br>
 
         <label for="Alcohol">Alcohol:</label>
-        <input type="text" name="alcohol" placeholder="Enter Alcohol" id="Alcohol" required><br>
+        <input type="text" name="alcohol" placeholder="Enter Alcohol" id="Alcohol"><br>
         <label for="Ingredients">Ingredients:</label>
-        <input type="text" name="ingredients" placeholder="Enter Ingredients" id="Ingredients" required><br>
+        <input type="text" name="ingredients" placeholder="Enter Ingredients" id="Ingredients"><br>
 
         <label for="Recipe">Recipe:</label>
-        <textarea id="Recipe" name="recipeBody" rows="3" cols="25" placeholder="Enter Recipe" required></textarea>
+        <textarea id="Recipe" name="recipeBody" rows="3" cols="25" placeholder="Enter Recipe"></textarea>
         <br>
-        <label for="Taste Scale">Taste Scale:</label>
-        <input type="number" name="tasteScale" placeholder="Enter Taste Scale" id="Taste Scale" required><br>
+        <label for="tasteScale">Taste Scale (1: Bitter - 10: Sweet):</label>
+        <input type="number" name="tasteScale" placeholder="Enter Taste Scale" id="tasteScale"><br>
         <label for="youtubeLink">Youtube Link (optional):</label>
         <input type="text" name="youtubeLink" placeholder="Enter Youtube Link" id="youtubeLink"><br>  
         
         <button type="submit" class="button">Submit!</button>
     </form>
 
-    {{#if err}}
-        <p class="error-message">Invalid information</p>
-    {{/if}}
+    <div class="error-group alert alert-danger" hidden>
+          <ul id = "errors-recipe">
+            {{#if errors}}
+              <li>{{errors}}</li>
+            {{/if}}
+          </ul>
+      </div>
+
+    <div id="successDiv" hidden></div>
+
+
+    <script src="/public/js/recipe.js"></script>

@@ -292,6 +292,8 @@ router.delete("/delete", async (req, res) => {
   // It's all good, let's send the request to delete
   const deleteSuccess = await postData.removePost(reqBody.postID);
   if (deleteSuccess) {
+    // Remove the post from user collection too
+    await userData.removePostToUser(req.session.user._id, reqBody.postID);
     res.sendStatus(200);
   }
 });

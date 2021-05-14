@@ -316,3 +316,7 @@ Here is css for recipe search page
 .recipe-box {
   width: 300px;
 }
+
+.newRecipeText {
+  text-align: center;
+}
