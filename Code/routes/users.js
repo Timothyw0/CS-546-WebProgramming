@@ -172,9 +172,14 @@ router.get("/users/profile/:id", async (req, res) => {
   let isFollowing;
   console.log(req.session.user);
   if (req.session.user.following.includes(req.params.id)) {
-    isFollowing = true;
+    isFollowing = "Unfollow";
   } else {
-    isFollowing = false;
+    isFollowing = "Follow";
+  }
+
+  let isNotMe;
+  if (req.session.user._id !== req.params.id) {
+    isNotMe = true;
   }
 
   // if (userFound.profilePicture !== "") {
@@ -189,22 +194,30 @@ router.get("/users/profile/:id", async (req, res) => {
     recipeInfo.push([currRecipe, recipeGet.recipeName]);
   }
 
+  const userInfo = {
+    _id: userFound._id,
+    firstName: userFound.firstName,
+    lastName: userFound.lastName,
+    username: userFound.username,
+    email: userFound.email,
+    dateOfBirth: userFound.dateOfBirth,
+    following: userFound.following,
+    posts: userPosts,
+    recipes: recipeInfo,
+    comments: userFound.comments,
+    profilePicture: userFound.profilePicture,
+    isFollowing: isFollowing,
+  };
+
+  if (isNotMe) {
+    userInfo.isNotMe = isNotMe;
+  }
+
+  console.log(userInfo);
+
   res.render("users/profile", {
     title: userFound.username,
-    userInfo: {
-      _id: userFound._id,
-      firstName: userFound.firstName,
-      lastName: userFound.lastName,
-      username: userFound.username,
-      email: userFound.email,
-      dateOfBirth: userFound.dateOfBirth,
-      following: userFound.following,
-      posts: userPosts,
-      recipes: recipeInfo,
-      comments: userFound.comments,
-      profilePicture: userFound.profilePicture,
-      isFollowing: isFollowing,
-    },
+    userInfo: userInfo,
   });
 });
 
@@ -308,8 +321,22 @@ router.post("/users/follow/:id", async (req, res) => {
       req.params.id
     );
     req.session.user.following = updated.following;
-    res.redirect(`users/profile/${req.params.id}`);
+    res.sendStatus(200);
   } catch (e) {
+    return res.redirect(`users/profile/${req.params.id}`);
+  }
+});
+
+router.post("/users/unfollow/:id", async (req, res) => {
+  try {
+    const updated = await userData.removeFollowingToUser(
+      req.session.user._id,
+      req.params.id
+    );
+    req.session.user.following = updated.following;
+    res.sendStatus(200);
+  } catch (e) {
+    console.log(e);
     return res.redirect(`users/profile/${req.params.id}`);
   }
 });

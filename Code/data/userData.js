@@ -174,6 +174,33 @@ async function addFollowingToUser(userId, followId) {
   return await getUserById(userId);
 }
 
+async function removeFollowingToUser(userId, unfollowId) {
+  if (!validation.validId(userId) || !validation.validId(unfollowId))
+    throw "invalid user id";
+
+  const currentUser = await getUserById(userId);
+  const followUser = await getUserById(unfollowId);
+
+  if (currentUser === null) throw "User not found";
+  if (followUser === null) throw "User not found";
+
+  found = false;
+  for (let userFollow of currentUser.following) {
+    if (unfollowId === userFollow) found = true;
+  }
+  if (!found) throw "User not found in following array";
+
+  const userCollection = await user();
+  const updatedUser = userCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $pull: { following: unfollowId } }
+  );
+  if (updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0)
+    throw "Could not unfollow user.";
+
+  return await getUserById(userId);
+}
+
 async function addPostToUser(userId, postId) {
   if (!validation.validId(userId)) throw "invalid user id";
   if (!validation.validId(postId)) throw "invalid post id";
@@ -317,10 +344,10 @@ async function updateUser(userId, updatedUser) {
 async function addProfilePhotoToUser(userId, picture) {
   const userWithPhoto = await getUserById(userId);
 
-  if (!userWithPhoto) throw 'User not found.';
+  if (!userWithPhoto) throw "User not found.";
   const userInfo = await userCollection.updateOne(
     { _id: userWithPhoto._id },
-    { $set: {profilePicture: picture} }
+    { $set: { profilePicture: picture } }
   );
 
   if (!userInfo.matchedCount && !userInfo.modifiedCount) {
@@ -336,9 +363,10 @@ module.exports = {
   createSeedUser,
   findUserByUsername,
   addFollowingToUser,
+  removeFollowingToUser,
   addPostToUser,
   addRecipeToUser,
   addCommentToUser,
   updateUser,
-  addProfilePhotoToUser
+  addProfilePhotoToUser,
 };

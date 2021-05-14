@@ -9,6 +9,11 @@
 </head>
 <body>
     <div class = "myDiv"><h1>Username: {{userInfo.username}}</h1></div>
+    <div>
+        {{#if userInfo.isNotMe}} 
+            <a href="" class="followLink">{{userInfo.isFollowing}}</a>
+        {{/if}}
+    </div>
     <div>Name: {{userInfo.firstName}} {{userInfo.lastName}}</div>
     <div>Favorite Cocktail: </div>
     <div>Birthday: {{userInfo.dateOfBirth}}</div>
@@ -25,11 +30,15 @@
         {{/each}}
     </div>
 
+    <p class="userID" hidden>
+        {{userInfo._id}}
+    </p>
+
     
     <footer><a href="/edit/profile/{{userInfo._id}}">Edit</a>{{!-- <button type="submit" id = "editProfile" class="btn btn-default" action = "/edit/profile/{{userInfo._id}}" value = "Edit Profile">Edit Profile</button> --}}
         <div>HTML: How to Mix Liquor, Created Spring 2021</div></footer>
 
-        <script src="/public/js/feed.js"></script>
+        <script src="/public/js/profile.js"></script>
     
 </body>
 </html>
