@@ -72,7 +72,7 @@ router.post("/", async (req, res) => {
       return res.redirect("/posts/add");
     }
   } catch (e) {
-    res.status(400).json({ error: e });
+    res.status(401).json({ error: e });
   }
 });
 

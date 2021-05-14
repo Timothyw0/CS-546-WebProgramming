@@ -97,11 +97,9 @@
         }, 2000);
       },
       error: function (response) {
-        const errors = response.responseJSON.errors;
-        for (let i = 0; i < errors.length; i++) {
-          console.log(errors[i]);
-          results.append(`<li>${errors[i]}!</li>`);
-        }
+        console.log(response);
+        const errors = response.responseJSON.error;
+        errorList.append(`<li>${errors}!</li>`);
         errorGroup.removeAttr("hidden");
         return;
       },

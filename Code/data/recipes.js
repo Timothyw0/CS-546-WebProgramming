@@ -1,7 +1,6 @@
 const { recipes } = require("../config/mongoCollections");
 const mongoCollections = require("../config/mongoCollections");
 const exportedMethods = {
-  
   //ADD RECIPE TO DATABASE
   async addRecipe(
     UserId,
@@ -13,17 +12,13 @@ const exportedMethods = {
     youtubeLink
   ) {
     try {
-
       //WILL NOT ADD DUPLICATE RECIPES
-      var temp=await this.getAllRecipes()
-      for(let i=0;i<temp.length;i++)
-      {
-        if(recipeName==temp[i].recipeName)
-        {
-          throw 'Recipe Name already exists';
+      var temp = await this.getAllRecipes();
+      for (let i = 0; i < temp.length; i++) {
+        if (recipeName == temp[i].recipeName) {
+          throw "Recipe Name already exists";
         }
       }
-
 
       if (typeof recipeName !== "string") throw "Recipe Name is not a string";
       if (typeof alcohol !== "string") throw "Alcohol is not a string";
@@ -68,7 +63,7 @@ const exportedMethods = {
       const recipe = await this.getRecipeById(temp);
       return recipe;
     } catch (e) {
-      res.status(500).json({ error: e });
+      throw e;
     }
   },
 
