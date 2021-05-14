@@ -184,7 +184,7 @@ async function removeFollowingToUser(userId, unfollowId) {
   if (currentUser === null) throw "User not found";
   if (followUser === null) throw "User not found";
 
-  found = false;
+  let found = false;
   for (let userFollow of currentUser.following) {
     if (unfollowId === userFollow) found = true;
   }
@@ -223,6 +223,31 @@ async function addPostToUser(userId, postId) {
   );
   if (updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0)
     throw "Post could not be added.";
+
+  return await getUserById(userId);
+}
+
+async function removePostToUser(userId, postId) {
+  if (!validation.validId(userId) || !validation.validId(postId))
+    throw "invalid user ID or post ID";
+
+  const currentUser = await getUserById(userId);
+
+  if (currentUser === null) throw "User not found";
+
+  let found = false;
+  for (let postOfList of currentUser.posts) {
+    if (postOfList === postId) found = true;
+  }
+  if (!found) throw "post not found in posts array";
+
+  const userCollection = await user();
+  const updatedUser = userCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $pull: { posts: postId } }
+  );
+  if (updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0)
+    throw "Could not remove post.";
 
   return await getUserById(userId);
 }
@@ -279,6 +304,31 @@ async function addCommentToUser(userId, commentId) {
   );
   if (updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0)
     throw "Comment could not be added.";
+
+  return await getUserById(userId);
+}
+
+async function removeCommentToUser(userId, commentId) {
+  if (!validation.validId(userId) || !validation.validId(commentId))
+    throw "invalid comment or user id";
+
+  const currentUser = await getUserById(userId);
+
+  if (currentUser === null) throw "User not found";
+
+  let found = false;
+  for (let commentOfList of currentUser.comments) {
+    if (commentOfList === commentId) found = true;
+  }
+  if (!found) throw "Comment not found in comment array";
+
+  const userCollection = await user();
+  const updatedUser = userCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $pull: { comments: commentId } }
+  );
+  if (updatedUser.modifiedCount === 0 && updatedUser.deletedCount === 0)
+    throw "Could not remove comment.";
 
   return await getUserById(userId);
 }
@@ -365,8 +415,10 @@ module.exports = {
   addFollowingToUser,
   removeFollowingToUser,
   addPostToUser,
+  removePostToUser,
   addRecipeToUser,
   addCommentToUser,
+  removeCommentToUser,
   updateUser,
   addProfilePhotoToUser,
 };
