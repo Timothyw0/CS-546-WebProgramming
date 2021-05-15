@@ -26,9 +26,9 @@
             <a href="/recipes/addRecipe">Add Recipe</a>
             <a href="/search/recipe">Search Recipes</a>
             <a href="/search/user">Search Users</a>
-            <a href="/logout" class="logout">Logout</a>
             {{#if loggedIn}}
-             <a href="/users/profile/{{myID}}" class="myprofile">My Profile</a>
+            <a href="/logout" class="logout">Logout</a>
+            <a href="/users/profile/{{myID}}" class="myprofile">My Profile</a>
             {{/if}}
         </div>
     </header>
