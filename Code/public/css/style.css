@@ -63,7 +63,16 @@
 
 .myDiv h1 {
   font-size: 30px;
-  color: yellow;
+  color: green;
+  margin-left: 50px;
+}
+
+.profileInfo {
+  margin-left: 50px;
+}
+
+.profileBold {
+  font-weight: bold;
 }
 
 .post h1 {

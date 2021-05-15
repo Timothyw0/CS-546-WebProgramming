@@ -1,27 +1,29 @@
 
     <div class = "myDiv"><h1>Username: {{userInfo.username}}</h1></div>
-    <div>
+    <a href="/edit/profile/{{userInfo._id}}"><p class="profileInfo">Edit Profile</p></a>
+    <div class="profileInfo">
         {{#if userInfo.isNotMe}} 
             <a href="" class="followLink">{{userInfo.isFollowing}}</a>
         {{/if}}
     </div>
-    <div>Name: {{userInfo.firstName}} {{userInfo.lastName}}</div>
+    <div class="profileInfo">Name: {{userInfo.firstName}} {{userInfo.lastName}}</div>
     {{#if userInfo.favoriteCocktail}}
-    <div>Favorite Cocktail: {{userInfo.favoriteCocktail}}</div>
+    <div class="profileInfo">Favorite Cocktail: {{userInfo.favoriteCocktail}}</div>
     {{/if}}
-    <div>Birthday: {{userInfo.dateOfBirth}}</div>
-    <div>Membership Age: {{userInfo.daysMembership}} days</div>
-    <div>Uploaded Posts:</div>
-    <div id="postColumn">    
-        {{#each userInfo.posts}} {{> post}} {{/each}}
-    </div>
-    <div>Uploaded Recipes:</div>
+    <div class="profileInfo">Birthday: {{userInfo.dateOfBirth}}</div>
+    <div class="profileInfo">Membership Age: {{userInfo.daysMembership}} days</div>
+    <br/>
+    <div class="profileInfo profileBold">Uploaded Recipes:</div>
     <div>
         {{#each userInfo.recipes}} 
             <a href="/recipes/{{this.[0]}}">
-                <p>{{ this.[1] }}</p>
+                <p class="profileInfo">{{ this.[1] }}</p>
             </a>
         {{/each}}
+    </div>
+    <div class="profileInfo profileBold">Uploaded Posts:</div>
+    <div id="postColumn">    
+        {{#each userInfo.posts}} {{> post}} {{/each}}
     </div>
 
     <p class="userID" hidden>
@@ -29,7 +31,6 @@
     </p>
 
     
-    <footer><a href="/edit/profile/{{userInfo._id}}">Edit</a>{{!-- <button type="submit" id = "editProfile" class="btn btn-default" action = "/edit/profile/{{userInfo._id}}" value = "Edit Profile">Edit Profile</button> --}}
-        <div>HTML: How to Mix Liquor, Created Spring 2021</div></footer>
+    <footer><div>HTML: How to Mix Liquor, Created Spring 2021</div></footer>
 
         <script src="/public/js/profile.js"></script>
