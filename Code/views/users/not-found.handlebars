@@ -1,0 +1,10 @@
+<div class="search-container">
+    <h1> 404 - Whoops! We couldn't find that</h1>
+    {{#if errors}}
+        {{#each errors}}
+            <div class='error'>{{this}}</div>
+        {{/each}}
+    {{/if}}
+
+    <a href="/feed">Back to Main Feed</a>
+</div>
