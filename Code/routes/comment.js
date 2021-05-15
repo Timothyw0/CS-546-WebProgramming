@@ -119,6 +119,7 @@ router.post("/insertData", async (req, res) => {
 
   try {
     const newComment = await commentData.createComment(userId, postId, comment);
+    const addCommentToUser = await userData.addCommentToUser(userId, newComment._id.toString());
     res.status(200).send(newComment);
   } catch (e) {
     res.status(500).json({ error: e });
@@ -133,9 +134,9 @@ router.delete("/:id", async (req, res) => {
   }
   try {
     const deleteData = await commentData.removeComment(req.params.id);
-    if (deleteData) {
+   
       await userData.removeCommentToUser(req.session.user._id, req.params.id);
-    }
+  
     res.status(200).json({ commentId: `${req.params.id}`, deleted: true });
   } catch (e) {
     res.status(500).json({ error: e });
