@@ -17,7 +17,7 @@ HTML is made for people over the age of 21 to discover and discuss cocktail reci
 <p> In the terminal, navigate to the directory containing app.js, and run the following commands:</p>
 <ul>
     <li> npm install: install all the dependencies for the project </li>
-    <li> npm run seed: for the best experience, seed the database with restaurants, users, and reviews </li>
+    <li> npm run seed: for the best experience, seed the database with recipes, users, posts, and comments </li>
     <li> npm start: start the server </li>
     <li> Navigate to localhost:3000/ </li>
 </ul>
